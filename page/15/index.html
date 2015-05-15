@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ViTarn Blog">
+<meta property="og:url" content="http://blog.vitarn.com/page/15/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViTarn Blog">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-vtc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2007/04/05/vtc/" class="article-date">
+  <time datetime="2007-04-04T16:00:00.000Z" itemprop="datePublished">2007-04-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2007/04/05/vtc/">VTC</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>产生在WP之前的一些文字, 当初是挂在内网上自娱自乐的,现在把这些摘录下来,将来考古以许用得上 ~_~不想浪费时间的朋友可以到此止步了.</p>
+<hr>
+<h3 id="铁塔加工术语英汉对照表:">铁塔加工术语英汉对照表:</h3><p><em>2007-05-10 13:20:52</em></p>
+<p>仅作为VTC32内部”函数名/变量名/键值”的备忘录之用,并非行业标准.</p>
+<p>参照”灵格斯翻译专家”,翻译时以同类事物首字母不重复为原则,并力求简洁易懂.</p>
+<p>角钢: angle steel<br>件号: mark   n.痕迹; 记号;<br>分数.号圈: circle   n.圆(圈).<br>材质: material   n.材料, 物资.<br>长度: length   n.长, 长度, 距离.<br>重量: weight   n.重量.<br>切角: cut  vt.切, 割, 剪.<br>开合角: heel  n.<br>倾侧制弯: bend    n.弯曲.<br>压扁: flat   n.扁平物, 平面.<br>刨根: dig   (暂定)<br>铲背: backoff<br>电焊: weld   n.焊接, 焊缝.<br>钻孔: drill   v.钻(孔), 打(眼);<br>芯: axis   n.轴, 轴线, 中心线; 坐标轴, 基准线.<br>楞: ridge  n.脊, 山脊; 垄, 埂, 脊状突起;<br>轧制边: edge   n.边(缘); 刃.<br>肢厚: ply   n.厚度, 板层.<br>始端: start   n.起点.<br>末端: end   n.末尾; 尽头; 终止.<br>肢宽: angleB<br>厚度: angleD<br>芯距: angleG<br>长度: AngleL<br>端距: AngleSE AngleEE<br>负头: angleSD angleED<br>材质: angleM<br>重量: angleW<br>切角: angleSC angleEC</p>
+<hr>
+<p><em>2007-05-09 10:00:19</em></p>
+<h3 id="VTC32开发进度:">VTC32开发进度:</h3><ul>
+<li>总图格式转换<ul>
+<li>以注册表记录颜色配置,方便个性DIY.</li>
+</ul>
+</li>
+<li>图纸配置<ul>
+<li>将工程信息记录在xRecord中,以备日后输出时读取.</li>
+<li>对话框智能属性: 所有输入项自动过滤逗号 工程代号自动转换为大写字母</li>
+</ul>
+</li>
+<li>型钢配置<ul>
+<li>型钢参数中,稳定特征记录在注册表,如:重量,R弧.</li>
+<li>动态特征记录在xRecord,如:芯距.</li>
+</ul>
+</li>
+<li>螺栓配置<ul>
+<li>综合各方面考虑,最终决定废止”孔符”这一名词. 以长远计,螺栓的变动可能性比孔径要小得多.</li>
+</ul>
+</li>
+<li>基础函数进展:<ul>
+<li>字符串: 分割 过滤</li>
+<li>图元: 到指定层 到模型空间 到图纸空间</li>
+<li>扩展数据: 提交 读取 删除</li>
+<li>外部记录: 提交 读取 删除</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="VTC32开发环境:">VTC32开发环境:</h3><p><em>2007-04-28 17:00:56</em></p>
+<p>开发语言: AutoLisp, ActiveX, Shell.</p>
+<p>开发平台: Windows DataCenter Server 2003, AutoCAD 2004 中文版, VLisp, LispLink.</p>
+<p>开发代号: 7th element</p>
+<p><strong>VTC32初步计划:</strong></p>
+<ul>
+<li>尽量减少对BLOCK的滥用,以XDATA做为主要数据载体.</li>
+<li>随时控制命令回显,减少ACAD响应时间.</li>
+<li>每个功能的起始和结束均做回退标记,避免回退时的盲目性.</li>
+<li>不采用n-n视图的概念,保持铁塔的完整性.</li>
+<li>件号圈尽可能只记录图元句柄和型钢参数,不再记录型钢计算结果.</li>
+<li>引入节点新概念,使型钢两端有所依附,增加调整的灵活性.</li>
+<li>少用全局变量,改用参数传递.</li>
+<li>所有图元颜色与线型均随层,便于DIY.</li>
+<li>有可能尝试反应器,只作为次选方案.</li>
+<li>以随机缓存做为文本载体,而不是固定的库.</li>
+<li>以全局变量定位ACAD根目录,使图形不受目录限制.</li>
+<li>饿了,吃饭去,回来继续写.</li>
+<li>以正肢芯线定楞线,以楞线和板厚定侧肢芯线,正侧肢采用同一号圈.</li>
+<li>尽量在型钢搭建时计算板厚,以备三维化.</li>
+</ul>
+<hr>
+<h3 id="Vlisp">Vlisp</h3><p><em>2007-04-22 16:31:27</em></p>
+<p><strong>本次更新的内容:</strong></p>
+<p>发现AutoLisp新大陆 “vl-“, 基本上是无敌了, 目前正在逐个试验, 新奇功能敬请关注.<br>期待值较高的几项功能如下: <em>板输出</em> <em>两面板</em> <em>小图输出</em> <em>脚钉布置</em></p>
+<p><strong>闲聊几句题外话:</strong> <em>(我的地盘我说点废话你有意见吖?那RFC文档都能把PARTY地点写进去,我这点算什么!)</em></p>
+<p>在这个世界上谁是孤独的?</p>
+<ul>
+<li>女娲: 生了那么多孩子,没有一个管她叫妈的,一个也没有,直到她累死都没有.</li>
+<li>盘古: 一个加班狂,努力工作直到死了还是个单身汉,何止孤独,简直是可怜.</li>
+<li>夸父: 如果不是因为孤独,为什么要追逐太阳?就算是轻生也不能选择这种自残的方式啊!</li>
+<li>大禹: 三过家门而不入,有家都不回,没有困难就创造困难,没有孤独就创造孤独.</li>
+<li>牛顿: 他说白光是七彩的,所有人都笑了,狗没笑,因为狗是色盲,不过后来人也不笑了.</li>
+<li>麦哲伦: 他说地球是圆的,所有人都笑了,他想哭,上帝看到后笑了,于是麦哲伦也笑了.</li>
+<li>爱因斯坦: “人们对爱因斯坦微笑是因为没人能理解他的相对论,人们对我微笑是因为谁都能理解我的幽默.” <em>—- 查理.卓别林</em></li>
+</ul>
+<p>所以,享受孤独吧,如果你做到了,将来不是神仙就是伟人!</p>
+<hr>
+<h3 id="相似形标注">相似形标注</h3><p><em>4月 05, 2007 @ 16:34</em></p>
+<p><strong>本次更新的内容:</strong></p>
+<ul>
+<li>开通<em>三角标注</em>功能,智能判断细微误差,经测试有一定的兼容性.使用技巧如下:</li>
+<li>横隔面: 请输入一定的余量(50左右), 以确保水平面能够组成完整矩形.双材: 请先使用<em>号圈显隐</em>将内侧主材芯线隐藏, 只有这样才能将标注应用于中轴线.</li>
+<li>V面: 请先使用<em>号圈显隐</em>将斜材芯线,火曲线,内侧孔心线隐藏, 之后切换到25层, 用红线将V面连成三角形.</li>
+<li>横担: 若要标注到火曲线为止, 请先使用<em>号圈显隐</em>将火曲线隐藏, 之后切换到25层, 用红线连接火曲线的首末端. 若要标注到塔身主材芯线为止, 请先使用<em>号圈显隐</em>将火曲线及主材芯线隐藏, 之后切换到25层, 用红线连接横担主材两端并延伸到塔身主材, 再将横担口连接闭合. 横担上平面, 两端不封闭的情况下, 请切换到25层, 用红线将其封闭.</li>
+<li>其它: 稍微给一些余量(10以下)可以弥补斜线输入和镜像时的细微误差. 过大的余量会影响正常标注, 建议对特殊部位使用较大余量后, 回车结束程序循环, 再次运行.</li>
+<li>余量大小请自行总结经验.</li>
+</ul>
+<hr>
+<h3 id="更新器">更新器</h3><p><em>3月 24, 2007 @ 08:47</em></p>
+<p><strong>本次更新的内容:</strong></p>
+<ul>
+<li>提供更新器以便快速方便的部署关键更新.</li>
+<li>修复<em>修正图号</em>功能一处BUG:偶尔导致材质与件数中间的空格丢失,至使角钢不能镜像.</li>
+<li>修复<em>孔距标注</em>功能一处BUG:不能识别红号圈11节点之后的孔距.</li>
+<li>Advanced Installer  3月 07, 2007 @ 17:17本次更新的内容:</li>
+<li>采用正规安装包形式,智能识别”AutoCAD 2002”根目录,可以在”添加/删除程序”中删除本软件.</li>
+<li><em>改视图号</em>重命名为<em>修正图号</em>,避免歧义.</li>
+</ul>
+<p><strong>已知存在的问题:</strong></p>
+<ul>
+<li>某些绿色件号圈的断材在<em>刷新节点</em>后无法做包钢,(节点定义的问题).</li>
+<li>V面内角钢<em>刷新节点</em>后镜像出错,(怀疑是对角镜像功能本身存在问题).</li>
+<li>acad.mnl OR plus.mns  2月 13, 2007 @ 16:07本次更新主要内容:</li>
+<li>改进安装过程为静态模式,避免之前的强制模式代来的一些问题.</li>
+<li>辅菜单vtc.mns与主菜单acad.mns实现了真正的捆绑式挂接,避免因CAD本身的问题导致的VTC菜单消失现象.</li>
+<li>因为一些测试功能的开发停滞不前,现决定彻底移除这些不再列入计划的功能选项.</li>
+<li><em>测试</em>菜单中,新增<em>智能初始化</em>功能,新版CAD菜单可以实现绝大部分功能的智能初始化.如果感觉不适或不足,可随时还原.</li>
+<li><em>联板</em>菜单中,新增<em>线段伸缩</em>功能,可以实现对线段的”加/减/乘/除”线性修改.</li>
+<li><em>样板</em>菜单被去除.</li>
+</ul>
+<hr>
+<h3 id="孔符问题">孔符问题</h3><p><em>1月 06, 2007 @ 09:11</em></p>
+<p><strong>本次更新主要内容:</strong></p>
+<ul>
+<li>修正一个严重错误,由于我厂将”△”用于13.5孔,实际上此孔符归属17.5孔.导致<em>小图漂白</em>功能误将这一紫色孔符替换成白色13.5孔符.</li>
+<li>此前一天关于小图芯线的新规定,导致<em>小图漂白</em>功能对芯线的炸开和延长操作失效.</li>
+<li>由于近期主攻方向有所改变,新加入的测试菜单中所有功能均为预览效果,不能用于现有的放样操作.</li>
+<li>为方便审图,特将<em>搜索件号</em>功能列入<em>审图</em>菜单中,并加入一个测量线段长度的新功能.</li>
+</ul>
+<hr>
+<h3 id="紧急通知">紧急通知</h3><p><em>12月 03, 2006 @ 19:19</em></p>
+<p><strong>紧急通知 (两处严重错误):</strong></p>
+<ul>
+<li>由于先前客户端主动连接服务器次数过于频繁,导致路由交换设备堵塞,局域网访问困难.</li>
+<li>客户端连接服务器时,未指定超时数值,导致服务器关机后CAD打开文件速度迟缓.</li>
+<li>特发布此补丁, 给您带来诸多不便, 深表歉意!</li>
+</ul>
+<hr>
+<h3 id="C/S动态实时更新">C/S动态实时更新</h3><p><em>11月 30, 2006 @ 16:00</em></p>
+<ul>
+<li>VTC2.00版正式推出本次更新重写所有安装代码,实现C/S动态实时更新模式.</li>
+</ul>
+<hr>
+<h3 id="控制点">控制点</h3><p><em>11月 22, 2006 @ 08:30</em></p>
+<ul>
+<li><em>控制点</em>菜单集推出,一次性增加4个低风险功能</li>
+<li><em>两点型</em>已初具雏形.</li>
+</ul>
+<p>回顾一下: 到现在为止,程序代码共计2850行,67034字. 函数41个, 外部函数22个.cheers~</p>
+<p>安装包尺寸也有意配合,文件尺寸神奇般的停留在256KB.再次举杯~</p>
+<hr>
+<h3 id="角钢_-_两点型">角钢 - 两点型</h3><p><em>11月 20, 2006 @ 07:00</em></p>
+<ul>
+<li><em>角钢 - 两点型</em>强力推出,稳定性马马虎虎.</li>
+<li>修正<em>空间切角</em>的一个小问题,”0节点”为空时程序意外中止.</li>
+</ul>
+<hr>
+<h3 id="小图漂白">小图漂白</h3><p><em>11月 18, 2006 @ 08:51</em></p>
+<ul>
+<li>新增<em>小图漂白</em>功能,养成一个好习惯,不要再对小图进行炸开操作.为<em>批量打印</em>功能做好准备.在此对批量打印的作者表示感谢和敬意.</li>
+<li>由于CAD本身的限制,<em>平面板</em>无法圈中屏幕外的孔径,特此加入自动调整视口功能,进一步避免丢孔现象.若仍有丢孔现象发生,请及时反馈.</li>
+</ul>
+<hr>
+<h3 id="刷新节点">刷新节点</h3><p><em>11月 17, 2006 @ 15:42</em></p>
+<ul>
+<li><em>刷新节点</em>功能对绿号圈开放,很不完善,仅作为侧试,请不要用于正式图纸,切记!!!</li>
+<li>由于角钢正侧肢条件的特殊性,<em>侧肢孔位</em>功能不再对料长进行判断.</li>
+</ul>
+<hr>
+<h3 id="3D角钢">3D角钢</h3><p><em>11月 08, 2006 @ 15:19</em></p>
+<ul>
+<li><em>3D角钢</em>实现角钢孔径显示功能,<em>全塔3D</em>运行速度有所下降.为避免因测试版而发生的误操作,特效未完成的菜单项加锁.</li>
+</ul>
+<hr>
+<h3 id="BUG_FIX">BUG FIX</h3><p><em>11月 07, 2006 @ 08:49</em></p>
+<ul>
+<li>修复<em>平面板</em>关于圈孔的一处BUG,加入橡皮线提示.</li>
+<li>修复<em>侧肢孔位</em>在正侧肢负头不同时不能正确识别角钢起点的错误.</li>
+<li>修复对小图识别上的错误,误认为被炸开小图为”其它文件”.</li>
+<li>改进了安装过程,无需重启CAD,安装后直接使用.</li>
+<li><em>刷新节点</em>功能全力研发中…</li>
+</ul>
+<hr>
+<h3 id="VLX">VLX</h3><p><em>11月 05, 2006 @ 09:01</em></p>
+<ul>
+<li>脚本部分统一打包成.vlx格式,与CAD工作目录尽可能分离.基本上可以归属为CAD外挂式绿色软件.</li>
+</ul>
+<hr>
+<h3 id="TAD">TAD</h3><p><em>11月 02, 2006 @ 19:56</em></p>
+<ul>
+<li>AHA~!~BingO~!~</li>
+<li>\TAD\GGXJ.DAT</li>
+<li>Yep! Crazy Feelin\’</li>
+</ul>
+<hr>
+<h3 id="AutoLisp">AutoLisp</h3><p><em>10月 31, 2006 @ 07:26</em></p>
+<ul>
+<li>VTC: Visual Tower for CAD</li>
+<li>正式定位LISP平台, AutoLisp简单明了, 开发周期短.</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  _      _&#10;  \\    //&#10;   \\  //&#10;    \\//&#10;####+--+####&#10;     ||&#10;     ||&#10;     ||&#10;    ====</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2007/04/05/vtc/" data-id="ci9p9dwfr008x47jjxdfilkoz" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2007/04/05/vtc/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/14/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="page-number" href="/page/14/">14</a><span class="page-number current">15</span>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

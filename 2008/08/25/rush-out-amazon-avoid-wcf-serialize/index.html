@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>冲出亚马逊 --- 避开 WCF 序列化 | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="或许这个标题会让你觉得很是不解.
+还是先说说为什么会产生这个荒唐的想法吧:
+对于 WCF 来说最应该出现的地方应该是 IIS 中, MSDN 上的例子也是以 IIS 作宿主的居多. 但是我要存放的东西并不多, 所以我并不想用 IIS, 对于静态的页面和 Silverlight 倒还好说, 用 F# 实现的异步并发袖珍静态网站服务器在响应速度方面一点也不亚于 IIS. 至于 WCF, 几经打拼终于自">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冲出亚马逊 --- 避开 WCF 序列化">
+<meta property="og:url" content="http://blog.vitarn.com/2008/08/25/rush-out-amazon-avoid-wcf-serialize/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="或许这个标题会让你觉得很是不解.
+还是先说说为什么会产生这个荒唐的想法吧:
+对于 WCF 来说最应该出现的地方应该是 IIS 中, MSDN 上的例子也是以 IIS 作宿主的居多. 但是我要存放的东西并不多, 所以我并不想用 IIS, 对于静态的页面和 Silverlight 倒还好说, 用 F# 实现的异步并发袖珍静态网站服务器在响应速度方面一点也不亚于 IIS. 至于 WCF, 几经打拼终于自">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="冲出亚马逊 --- 避开 WCF 序列化">
+<meta name="twitter:description" content="或许这个标题会让你觉得很是不解.
+还是先说说为什么会产生这个荒唐的想法吧:
+对于 WCF 来说最应该出现的地方应该是 IIS 中, MSDN 上的例子也是以 IIS 作宿主的居多. 但是我要存放的东西并不多, 所以我并不想用 IIS, 对于静态的页面和 Silverlight 倒还好说, 用 F# 实现的异步并发袖珍静态网站服务器在响应速度方面一点也不亚于 IIS. 至于 WCF, 几经打拼终于自">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-rush-out-amazon-avoid-wcf-serialize" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/08/25/rush-out-amazon-avoid-wcf-serialize/" class="article-date">
+  <time datetime="2008-08-24T16:00:00.000Z" itemprop="datePublished">2008-08-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      冲出亚马逊 --- 避开 WCF 序列化
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>或许这个标题会让你觉得很是不解.</p>
+<p>还是先说说为什么会产生这个荒唐的想法吧:</p>
+<p>对于 WCF 来说最应该出现的地方应该是 IIS 中, MSDN 上的例子也是以 IIS 作宿主的居多. 但是我要存放的东西并不多, 所以我并不想用 IIS, 对于静态的页面和 Silverlight 倒还好说, 用 F# 实现的异步并发袖珍静态网站服务器在响应速度方面一点也不亚于 IIS. 至于 WCF, 几经打拼终于自承载了(Self-Host) .</p>
+<p>一切看起来已经没问题了, 可是我又一次败给了我的完美主义… 之前因为要解决 Silverlight 的跨域访问, 曾经在官方论坛上使用了一种构造 Message 的方法成功的把 clientaccesspolicy.xml 返回给客户端了, 这让我变的不安分起来, 要是我能把任意类型的文件返回给浏览器, 那我还自己实现网站服务器做什么?</p>
+<p>本来应该承载在网站中的 WCF, 如今却要扮演网站的角色, 你中有我, 我中有你, 这听起来很有趣, 我曾经这样解释给我的一个朋友听: 我要养鱼, 可我不想麻烦换水, 我希望我的鱼自己会吐出清洁富含氧气的水.</p>
+<p>但是如何实现呢? 似乎不管是什么都逃不过序列化这一关,</p>
+<p>返回字符串?</p>
+<p>结果根结点是 String.</p>
+<p>返回 FileStream 或 MemoryStream?</p>
+<p>够狠! 根结点仍然是序列化后的结果.</p>
+<p>构造 Message 么?</p>
+<p>我有想过, 我曾经想改变 Xml 数据主根结点名为 html, 但字符串内容被转义丢失了所有符号.</p>
+<p>为此郁闷了好久, 但结果却让我非常意外, 以至于我都不想写什么演示代码</p>
+<p>微软其实早就留好了后门: Stream</p>
+<p>对~ 就是这么简单 你只要把各种流 Upcast 为 Stream 就 OK 了! 哭~</p>
+<p>感谢和羡慕官方论坛上的 <a href="http://silverlight.net/forums/t/22952.aspx" target="_blank" rel="external">rico.sauve</a>, 能用英文做关键词来进行搜索真好, 我就是找不到中文资料又不知道英文如何表述所以才会郁闷这么久…</p>
+<p>参考:</p>
+<p><a href="http://msdn.microsoft.com/en-us/library/cc681221.aspx" target="_blank" rel="external">How to: Create a Service That Returns Arbitrary Data Using The WCF Web Programming Model</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/08/25/rush-out-amazon-avoid-wcf-serialize/" data-id="ci9p9dw3d005047jjwv1oilpp" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/08/25/rush-out-amazon-avoid-wcf-serialize/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2008/08/30/f-ctp-1960-release-notes-summary/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          F# CTP 1.9.6.0 发行说明摘要
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2008/08/16/sl2b2-for-vs2008sp1-chs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">用于 VS2008sp1 的 SL2b2 简体中文版</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2008/08/25/rush-out-amazon-avoid-wcf-serialize/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

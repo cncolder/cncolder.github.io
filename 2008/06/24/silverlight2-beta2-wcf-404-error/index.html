@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Silverlight 2 Beta2 + WCF = 404 Error ? | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="大致情形是这样的:
+
+Silverlight 2 beta2 (目前最新的支持 VS2008 中文版的开发包)
+WCF (采用 SL2b2 安装后新增的那个模板创建的)
+LINQ to SQL (对应 SQL 服务器中的四个表)
+
+使用 DataGrid 控件来显示和编辑 SQL 中的 Component 表, 强大的LINQ帮我创建了一个对应的 Component 类, 查询和显示的过程很顺利.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Silverlight 2 Beta2 + WCF = 404 Error ?">
+<meta property="og:url" content="http://blog.vitarn.com/2008/06/24/silverlight2-beta2-wcf-404-error/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="大致情形是这样的:
+
+Silverlight 2 beta2 (目前最新的支持 VS2008 中文版的开发包)
+WCF (采用 SL2b2 安装后新增的那个模板创建的)
+LINQ to SQL (对应 SQL 服务器中的四个表)
+
+使用 DataGrid 控件来显示和编辑 SQL 中的 Component 表, 强大的LINQ帮我创建了一个对应的 Component 类, 查询和显示的过程很顺利.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Silverlight 2 Beta2 + WCF = 404 Error ?">
+<meta name="twitter:description" content="大致情形是这样的:
+
+Silverlight 2 beta2 (目前最新的支持 VS2008 中文版的开发包)
+WCF (采用 SL2b2 安装后新增的那个模板创建的)
+LINQ to SQL (对应 SQL 服务器中的四个表)
+
+使用 DataGrid 控件来显示和编辑 SQL 中的 Component 表, 强大的LINQ帮我创建了一个对应的 Component 类, 查询和显示的过程很顺利.">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-silverlight2-beta2-wcf-404-error" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/24/silverlight2-beta2-wcf-404-error/" class="article-date">
+  <time datetime="2008-06-23T16:00:00.000Z" itemprop="datePublished">2008-06-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Silverlight 2 Beta2 + WCF = 404 Error ?
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大致情形是这样的:</p>
+<ul>
+<li>Silverlight 2 beta2 (目前最新的支持 VS2008 中文版的开发包)</li>
+<li>WCF (采用 SL2b2 安装后新增的那个模板创建的)</li>
+<li>LINQ to SQL (对应 SQL 服务器中的四个表)</li>
+</ul>
+<p>使用 DataGrid 控件来显示和编辑 SQL 中的 Component 表, 强大的LINQ帮我创建了一个对应的 Component 类, 查询和显示的过程很顺利.</p>
+<p>可是到了更新数据这一步, 却碰上了莫名其妙的 404 错误… 少量可以, 大量数据就会出错.</p>
+<blockquote>
+<p>The remote server returned an unexpected response: (404) Not Found.</p>
+</blockquote>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[OperationContract]</span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Component&gt; <span class="title">QueryComponentList</span><span class="params">(Guid TowerID)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> db = <span class="keyword">new</span> LINQDataContext())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> linq =</span><br><span class="line">            <span class="keyword">from</span> l <span class="keyword">in</span> db.Component</span><br><span class="line">            <span class="keyword">where</span> l.TowerID.Equals(TowerID)</span><br><span class="line">            <span class="keyword">orderby</span> l.Section, l.Number</span><br><span class="line">            <span class="keyword">select</span> l;</span><br><span class="line">        <span class="keyword">return</span> linq.ToList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[OperationContract]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateComponentList</span><span class="params">(Guid tid, List&lt;Component&gt; source)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> db = <span class="keyword">new</span> LINQDataContext())</span><br><span class="line">    &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在官方论坛上我看到了N种解释, 总结如下:</p>
+<p>跨域安全问题, 也就是传说中的 crossdomain.xml 和 clientaccesspolicy.xml 两个文件. 试试, 虽然我知道不会奏效的.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- crossdomain.xml --&gt;</span></span><br><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">access-policy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">cross-domain-access</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">policy</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">allow-from</span> <span class="attribute">http-request-headers</span>=<span class="value">"*"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">domain</span> <span class="attribute">uri</span>=<span class="value">"*"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">allow-from</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">grant-to</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">resource</span> <span class="attribute">path</span>=<span class="value">"/"</span> <span class="attribute">include-subpaths</span>=<span class="value">"true"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">grant-to</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">policy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">cross-domain-access</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">access-policy</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- clientaccesspolicy.xml --&gt;</span></span><br><span class="line"><span class="pi">&lt;?xml version="1.0"?&gt;</span></span><br><span class="line"><span class="doctype">&lt;!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">cross-domain-policy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">allow-http-request-headers-from</span> <span class="attribute">domain</span>=<span class="value">"*"</span> <span class="attribute">headers</span>=<span class="value">"*"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">cross-domain-policy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Silverlight 项目中的 ServiceReferences.ClientConfig 文件, 增大 maxBufferSize 和 maxReceivedMessageSize. 我加到了 2147483647, 也就是 2G, 结果不行.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">binding</span> <span class="attribute">name</span>=<span class="value">"BasicHttpBinding_WCF"</span> <span class="attribute">maxBufferSize</span>=<span class="value">"2147483647"</span> <span class="attribute">maxReceivedMessageSize</span>=<span class="value">"2147483647"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>网站中的 web.config 文件, 增大若干个 max 开头的属性. 我估计有几项是客户端根本无法识别的 设置了也没用…</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">bindings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">basicHttpBinding</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">binding</span> <span class="attribute">name</span>=<span class="value">"BasicHttpBinding_WCF"</span> <span class="attribute">maxBufferSize</span>=<span class="value">"2147483647"</span> <span class="attribute">maxReceivedMessageSize</span>=<span class="value">"2147483647"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">readerQuotas</span> <span class="attribute">maxArrayLength</span>=<span class="value">"2147483647"</span> <span class="attribute">maxDepth</span>=<span class="value">"2147483647"</span> <span class="attribute">maxBytesPerRead</span>=<span class="value">"2147483647"</span> <span class="attribute">maxNameTableCharCount</span>=<span class="value">"2147483647"</span> <span class="attribute">maxStringContentLength</span>=<span class="value">"2147483647"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">security</span> <span class="attribute">mode</span>=<span class="value">"None"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">binding</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">basicHttpBinding</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">bindings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">services</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">service</span> <span class="attribute">behaviorConfiguration</span>=<span class="value">"WCFBehavior"</span> <span class="attribute">name</span>=<span class="value">"WCF"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">endpoint</span> <span class="attribute">address</span>=<span class="value">""</span> <span class="attribute">binding</span>=<span class="value">"basicHttpBinding"</span> <span class="attribute">bindingConfiguration</span>=<span class="value">"BasicHttpBinding_WCF"</span> <span class="attribute">contract</span>=<span class="value">"WCF"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">endpoint</span> <span class="attribute">address</span>=<span class="value">"mex"</span> <span class="attribute">binding</span>=<span class="value">"mexHttpBinding"</span> <span class="attribute">contract</span>=<span class="value">"IMetadataExchange"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">service</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">services</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在 web.config 文件中的 system.web/httpRuntime 节点下, 设置 POST 允许的最大长度, 以kb为单位, 那就是 int.MaxValue/1024=2097151. 早就知道问题不在这…</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">httpRuntime</span> <span class="attribute">maxRequestLength</span>=<span class="value">"2097151"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>web.config 中关于 WCF 还有个秘密, 那就是 <code>system.serviceModel/behaviors/serviceBehaviors/behavior/dataContractSerializer</code>. 天啊, 连这个都有人挖出来啦! 兴奋了几秒钟, 发现还是没搞定!</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">behaviors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">serviceBehaviors</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">behavior</span> <span class="attribute">name</span>=<span class="value">"WCFBehavior"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">serviceMetadata</span> <span class="attribute">httpGetEnabled</span>=<span class="value">"true"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">serviceDebug</span> <span class="attribute">includeExceptionDetailInFaults</span>=<span class="value">"false"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">dataContractSerializer</span> <span class="attribute">maxItemsInObjectGraph</span>=<span class="value">"2147483647"</span> <span class="attribute">ignoreExtensionDataObject</span>=<span class="value">"true"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">behavior</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">serviceBehaviors</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">behaviors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>仔细回忆到底是哪里出了问题, 我发现当数据少于 176 行时是没有问题的, 只要一超过这个数量, 就会弹出异常, 而且感觉上是在异步传递数据之后立即发生的, 比能够上传成功的 176 行数据响应的还快许多, 更奇怪的是虽然 VS2008 跳出异常, 接收到了 404 错误, 但此时任务管理器的 WebDev.WebServer.EXE 和 sqlserver.exe 都正忙着, 查看 SQL 发现数据也是成功写入了…</p>
+<p>那这 404 是哪里来的鬼东西? 无意中直接打开 IE 不经过调试, 结果我也没接收到 404 错误, 真的无奈了, 最后决定死马当活马医. 把上传数据那个函数从 void 类型改成 bool 类型, 让它具备一个布尔型的返回结果, 以确认上传是否成功(之前一直感觉这是多余的).</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[OperationContract]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">UpdateComponentList</span><span class="params">(Guid tid, List&lt;Component&gt; source)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">using</span> (<span class="keyword">var</span> db = <span class="keyword">new</span> LINQDataContext())</span><br><span class="line">        &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>古怪的问题就这样华丽的消失了… 别问我为什么, 我也不知道!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/24/silverlight2-beta2-wcf-404-error/" data-id="ci9p9dw6u006447jjwx1nkr9y" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/24/silverlight2-beta2-wcf-404-error/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2008/06/28/secret-of-blizzard/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Blizzard冰封之谜
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2008/06/09/silverlight2beta2-kidding-us/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Silverlight 2 Beta2 把我们都涮了</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2008/06/24/silverlight2-beta2-wcf-404-error/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

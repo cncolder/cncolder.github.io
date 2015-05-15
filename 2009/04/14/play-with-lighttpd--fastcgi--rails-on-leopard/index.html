@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Leopard 上尝试 lightTPD + FASTCGI + Rails | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="拜读ribbon和ShiningRay的性能分析贴, 决定在 mac 上尝试一下 lightTPD + FastCGI 这种 rails 部署方式.
+关于如何在 Leopard 上面编译安装, 这里有两篇极为详细的教程:
+http://hivelogic.com/articles/view/ruby-rails-leopard
+http://hivelogic.com/articles/view/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leopard 上尝试 lightTPD + FASTCGI + Rails">
+<meta property="og:url" content="http://blog.vitarn.com/2009/04/14/play-with-lighttpd--fastcgi--rails-on-leopard/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="拜读ribbon和ShiningRay的性能分析贴, 决定在 mac 上尝试一下 lightTPD + FastCGI 这种 rails 部署方式.
+关于如何在 Leopard 上面编译安装, 这里有两篇极为详细的教程:
+http://hivelogic.com/articles/view/ruby-rails-leopard
+http://hivelogic.com/articles/view/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leopard 上尝试 lightTPD + FASTCGI + Rails">
+<meta name="twitter:description" content="拜读ribbon和ShiningRay的性能分析贴, 决定在 mac 上尝试一下 lightTPD + FastCGI 这种 rails 部署方式.
+关于如何在 Leopard 上面编译安装, 这里有两篇极为详细的教程:
+http://hivelogic.com/articles/view/ruby-rails-leopard
+http://hivelogic.com/articles/view/">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-play-with-lighttpd--fastcgi--rails-on-leopard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/04/14/play-with-lighttpd--fastcgi--rails-on-leopard/" class="article-date">
+  <time datetime="2009-04-13T16:00:00.000Z" itemprop="datePublished">2009-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Leopard 上尝试 lightTPD + FASTCGI + Rails
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>拜读<a href="http://robbin.javaeye.com/blog/155542" target="_blank" rel="external">ribbon</a>和<a href="https://docs.google.com/View?docid=ddcvzh74_28f9xppqfh" target="_blank" rel="external">ShiningRay</a>的性能分析贴, 决定在 mac 上尝试一下 lightTPD + FastCGI 这种 rails 部署方式.</p>
+<p>关于如何在 Leopard 上面编译安装, 这里有两篇极为详细的教程:</p>
+<p><a href="http://hivelogic.com/articles/view/ruby-rails-leopard" target="_blank" rel="external">http://hivelogic.com/articles/view/ruby-rails-leopard</a></p>
+<p><a href="http://hivelogic.com/articles/view/installing-mysql-on-mac-os-x" target="_blank" rel="external">http://hivelogic.com/articles/view/installing-mysql-on-mac-os-x</a></p>
+<p>同样也是从这个博主的文章中弄懂了 Unix-like 系统的目录结构, 明白了为什么要把自己编译的软件安装在/usr/local/下面. (03年就把自己闷在宿舍装 RedHat, 可是后来一直对 Unix-like 知之甚少.)</p>
+<p><a href="http://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard" target="_blank" rel="external">http://en.wikipedia.org/wiki/Filesystem_Hierarchy_Standard</a></p>
+<p>有了前辈的探索, 这一路装来倒也没碰上太大的麻烦, 不过还是要注意以下几点:</p>
+<p><strong>ruby1.9 和 ruby-fcgi 不合</strong>, 研究如何部署到生产环境的话, 还是不要贪玩的好.</p>
+<p><strong>编译 mysql 的时候记得加 max 参数</strong>, rails 好多操作都是靠事务支持的, 所以离不开 InnoDB.</p>
+<pre><code>--<span class="reserved">with</span>-plugins=max-<span class="literal">no</span>-ndb
+</code></pre><hr>
+<h3 id="关于下面的安装过程:">关于下面的安装过程:</h3><p>curl -O 代表下载文件, 要是你不喜欢这种方式, 也可以用别的软件来下载.</p>
+<p>sudo 的前提是你得有个密码, 否则在输入密码那里直接回车是不被接受的.</p>
+<hr>
+<h3 id="第一步:_配置_PATH">第一步: 配置 PATH</h3><p>编辑 .profile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mate ~/.profile</span><br></pre></td></tr></table></figure>
+<p>根据具体情况加入如下内容:</p>
+<p>冒号分隔, 想要先查找的路径放前面, 最后那个 $PATH 代表系统原有的路径, 我们把它放到最末尾.</p>
+<p>现在我们还没有这么多软件, 只是提前准备着.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> PATH=<span class="string">"/usr/local/ruby/bin:/usr/local/mysql/bin:/usr/local/lighttpd/bin:/usr/local/fcgi/bin:/usr/local/pcre/bin:/usr/local/bin:/usr/local/sbin:<span class="variable">$PATH</span>"</span></span><br></pre></td></tr></table></figure>
+<p>重新加载配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. ~/.profile</span><br></pre></td></tr></table></figure>
+<p>OK~, 根据前文提到的博主的建议, 让我们给源码建立一个目录统一管理:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p /usr/<span class="built_in">local</span>/src</span><br><span class="line">sudo chgrp admin /usr/<span class="built_in">local</span>/src</span><br><span class="line">sudo chmod -R <span class="number">775</span> /usr/<span class="built_in">local</span>/src</span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/src</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="第二步:_安装_Ruby">第二步: 安装 Ruby</h3><p>虽然已经内置 ruby1.8.6 了, 不过我只是想亲自试一下安装过程.</p>
+<p>内存大补贴(MBARIpatch)地址有点乱, 自己下载吧.</p>
+<p><a href="http://sites.google.com/site/brentsrubypatches" target="_blank" rel="external">http://sites.google.com/site/brentsrubypatches</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">curl -O ftp://ftp.ruby-lang.org/pub/ruby/<span class="number">1.8</span>/ruby-<span class="number">1.8</span>.<span class="number">7</span>-p72.tar.gz</span><br><span class="line">tar xzvf ruby-<span class="number">1.8</span>.<span class="number">7</span>-p72</span><br><span class="line">tar xzvf MBARIp72patches.tar.gz</span><br><span class="line">MBARIp72patches/apply ruby-<span class="number">1.8</span>.<span class="number">7</span>-p72</span><br><span class="line"><span class="built_in">cd</span> ruby-<span class="number">1.8</span>.<span class="number">7</span>-p72</span><br><span class="line">./configure --typo:codefix=/usr/<span class="built_in">local</span>/ruby --enable-shared --enable-pthread CFLAGS=<span class="string">"-O2 -fno-stack-protector -D_XOPEN_SOURCE=1"</span></span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<p>检查一下安上了没有:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> ruby</span><br><span class="line">ruby -v</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="第三步:_安装_RubyGems">第三步: 安装 RubyGems</h3><p>在你的 Mac 上面会有很多预置的 gem, 而且还 cleanup 不掉, 要是实在觉得碍眼, 可以查看一下路径, 然后重命名屏蔽掉, 但是千万别删除内置的 ruby, 否则后果很严重 (例如: textmate 失明.)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">gem environment</span><br><span class="line"></span><br><span class="line">curl -O http://rubyforge.org/frs/download.php/<span class="number">45905</span>/rubygems-<span class="number">1.3</span>.<span class="number">1</span>.tgz</span><br><span class="line">tar xzvf rubygems-<span class="number">1.3</span>.<span class="number">1</span>.tgz</span><br><span class="line"><span class="built_in">cd</span> rubygems-<span class="number">1.3</span>.<span class="number">1</span></span><br><span class="line">sudo ruby setup.rb</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<p>gem 命令可以通过以下命令查看</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem <span class="built_in">help</span> commands</span><br></pre></td></tr></table></figure>
+<p>命令参数是可以进行简化输入的, 只要不产生歧义. 例如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gem e   <span class="comment"># gem environment</span></span><br><span class="line">gem sea <span class="comment"># gem search</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="第四步:_安装_Rails">第四步: 安装 Rails</h3><p>网慢是么? 把 rails 连同依赖包都下载到本地安装吧. 查看一下 rails 都依赖哪些 gem</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem dependency rails -v <span class="number">2.3</span>.<span class="number">2</span> -r</span><br></pre></td></tr></table></figure>
+<p>写这些文字的时候我看到的结果是6个 (其中 rake 要求 &gt;= 0.8.3, 不过实际安装时却管我要 0.8.4, 不晓得为什么)</p>
+<ul>
+<li>rake (&gt;= 0.8.3, runtime)</li>
+<li>activesupport (= 2.3.2, runtime)</li>
+<li>activerecord (= 2.3.2, runtime)</li>
+<li>actionpack (= 2.3.2, runtime)</li>
+<li>actionmailer (= 2.3.2, runtime)</li>
+<li>activeresource (= 2.3.2, runtime)</li>
+</ul>
+<p>到 <a href="http://rubyforge.org" target="_blank" rel="external">http://rubyforge.org</a> 把这些 .gem 文件都下载回来, 放在一起, 文件名不要改.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /Downloads/*.gem .</span><br><span class="line">gem install <span class="operator">-l</span> rails-<span class="number">2.3</span>.<span class="number">2</span>.gem</span><br></pre></td></tr></table></figure>
+<p>速度很快吧~ 要是不安装文档会更快.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gem install <span class="operator">-l</span> rails-<span class="number">2.3</span>.<span class="number">2</span>.gem --no-rdoc --no-ri</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="第五步:_安装_Mysql">第五步: 安装 Mysql</h3><p>网上流行的编译参数, 具体这些参数的含义, 我这个菜鸟目前还无法回答, 注意 —with-plugins=max-no-ndb</p>
+<p>编译和安装的过程有点长 (加起来大约20分钟), CPU 有点热…</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">curl -O http://mysql.mirror.tw/Downloads/MySQL-<span class="number">5.1</span>/mysql-<span class="number">5.1</span>.<span class="number">33</span>.tar.gz</span><br><span class="line">tar xzvf mysql-<span class="number">5.1</span>.<span class="number">33</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> mysql-<span class="number">5.1</span>.<span class="number">33</span></span><br><span class="line">CC=gcc</span><br><span class="line">CFLAGS=<span class="string">"-O3 -fno-omit-frame-pointer"</span></span><br><span class="line">CXX=gcc</span><br><span class="line">CXXFLAGS=<span class="string">"-O3 -fno-omit-frame-pointer -felide-constructors</span><br><span class="line">-fno-exceptions -fno-rtti"</span></span><br><span class="line">./configure --typo:codefix=/usr/<span class="built_in">local</span>/mysql</span><br><span class="line">--with-extra-charsets=complex --enable-thread-safe-client</span><br><span class="line">--enable-local-infile --enable-shared --with-plugins=max-no-ndb</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<p>既然是 DIY, 你就得自己运行脚本填充最初的系统表.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/mysql</span><br><span class="line">sudo ./bin/mysql_install_db --user=mysql</span><br><span class="line">sudo chown -R mysql ./var</span><br></pre></td></tr></table></figure>
+<p>mac os x 是靠 launchd 守护进程运行的, 配置文件用的是 PropertyList (XML 格式), 通过观察发现每10秒检查一次, 发现进程不在就启动.</p>
+<p>现在我们让 launchd 去看着 mysql, 保证它 7*24 都在运行.</p>
+<p>方法是新建 /Library/LaunchDaemons/com.mysql.mysqld.plist 写入如下内容.</p>
+<p><em>问:为什么是这个名字?</em><br>答:我看 apple 内置的文件都是这样命令的, 看起来像是 com.公司.产品.plist</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="doctype">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">plist</span> <span class="attribute">version</span>=<span class="value">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">dict</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">true</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">string</span>&gt;</span>com.mysql.mysqld<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>Program<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/mysql/bin/mysqld_safe<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">true</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>UserName<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">string</span>&gt;</span>mysql<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>WorkingDirectory<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/mysql<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>加入守护清单</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo launchctl load -w /Library/LaunchDaemons/com.mysql.mysqld.plist</span><br></pre></td></tr></table></figure>
+<p>查看清单</p>
+<pre><code>launchctl <span class="type">list</span>
+</code></pre><p>解除守护</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo launchctl unload -w /Library/LaunchDaemons/com.mysql.mysqld.plist</span><br></pre></td></tr></table></figure>
+<p>有了自己编译的 mysql, 当然少不了那个 C 版本的 ruby 驱动.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -O http://rubyforge.org/fsr/download.php/<span class="number">51087</span>/mysql-ruby-<span class="number">2.8</span>.<span class="number">1</span>.tar.gz</span><br><span class="line">tar xzvf mysql-ruby-<span class="number">2.8</span>.<span class="number">1</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> mysql-ruby-<span class="number">2.8</span>.<span class="number">1</span></span><br><span class="line">ruby extconf.rb --with-mysql-dir=/usr/<span class="built_in">local</span>/mysql</span><br><span class="line">make</span><br><span class="line">sudo make instal</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<p>mysql 的 make 文件比较完整, 你可以随时通过这份编译好的源码卸载掉它</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make uninstall</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="第六步:_安装_FastCGI">第六步: 安装 FastCGI</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">curl -O http://www.fastcgi.com/dist/fcgi-<span class="number">2.4</span>.<span class="number">0</span>.tar.gz</span><br><span class="line">tar xzvf fcgi-<span class="number">2.4</span>.<span class="number">0</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> fcgi-<span class="number">2.4</span>.<span class="number">0</span></span><br><span class="line">./configure --typo:codefix=/usr/<span class="built_in">local</span>/fcgi</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br><span class="line"> </span><br><span class="line">curl -O http://rubyforge.org/fsr/download.php/<span class="number">11368</span>/ruby-fcgi-<span class="number">0.8</span>.<span class="number">7</span>.tar.gz</span><br><span class="line">tar xzvf ruby-fcgi-<span class="number">0.8</span>.<span class="number">7</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> ruby-fcgi-<span class="number">0.8</span>.<span class="number">7</span></span><br><span class="line">sudo ruby install.rb config -- --with-fcgi-include=/usr/<span class="built_in">local</span>/fcgi/include --with-fcgi-lib=/usr/<span class="built_in">local</span>/fcgi/lib</span><br><span class="line">ruby install.rb setup</span><br><span class="line">sudo ruby install.rb install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="第七步:_安装_lightTPD">第七步: 安装 lightTPD</h3><p>ribbon 的文章里告诫我们要先装 PCRE, 我们不要去怀疑:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">curl -O ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-<span class="number">7.8</span>.tar.gz</span><br><span class="line">tar xzvf pcre-<span class="number">7.8</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> pcre-<span class="number">7.8</span></span><br><span class="line">CFLAGS=<span class="string">'-O2 -Wall'</span></span><br><span class="line">./configure --typo:codefix=/usr/<span class="built_in">local</span>/pcre</span><br><span class="line">make</span><br><span class="line">sudo make instal</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<p>有了前辈经验作为铺垫, 安装倒也简单:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">curl -O http://www.lighttpd.net/download/lighttpd-<span class="number">1.4</span>.<span class="number">22</span>.tar.gz</span><br><span class="line">tar xzvf lighttpd-<span class="number">1.4</span>.<span class="number">22</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> lighttpd-<span class="number">1.4</span>.<span class="number">22</span></span><br><span class="line">./configure --typo:codefix=/usr/<span class="built_in">local</span>/lighttpd --with-pcre=/usr/<span class="built_in">local</span>/pcre</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+<p>把默认配置文件复制出来</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp ./doc/lighttpd.conf /etc/lighttpd.conf</span><br></pre></td></tr></table></figure>
+<p>至于怎么配置, 有点超出我的能力范围了, 我只能勉强让它跑起来. 我只改动了下面几处:</p>
+<ul>
+<li>开几个模块 mod_  rewrite access fastcgi simple_vhost cgi comtypo:codess accesslog</li>
+<li>指定路径的时候不能用 ~/ 这样的路径</li>
+<li>指定日志 accesslog.filename = “/var/log/lighttpd/access.log”, 这里的路径不是硬性规定,  但是记得如果没有这个目录的话要先创建.  </li>
+</ul>
+<p>lighttpd 配置:</p>
+<pre><code>$HTTP[<span class="string">"host"</span>] =~ <span class="string">".+"</span> {
+    server.<span class="built_in">document</span>-root = <span class="string">"/Users/colder/Sites/rails/public"</span>
+    server.error-handler-<span class="number">404</span> = <span class="string">"/dispatch.fcgi"</span>
+    fastcgi.server = (<span class="string">".fcgi"</span> =&gt;
+        ( <span class="string">"localhost"</span> =&gt;
+            ( <span class="string">"min-procs"</span> =&gt; <span class="number">3</span>,
+                <span class="string">"max-procs"</span> =&gt; <span class="number">3</span>,
+                <span class="string">"socket"</span> =&gt; <span class="string">"/tmp/rails.socket"</span>,
+                <span class="string">"bin-path"</span> =&gt; <span class="string">"/Users/colder/Sites/rails/public/dispatch.fcgi"</span>,
+                <span class="string">"bin-environment"</span> =&gt; (<span class="string">"RAILS_ENV"</span> =&gt; <span class="string">"development"</span>)
+            )
+        )
+    )
+}
+</code></pre><p>launchd 的配置过程和 mysql 相似, 但也有点特殊. 从这份文件中可以看出如果守护的程序是带参数的, 那么第一个参数必须是程序本身. 参数名与参数值之前还不能留空格.<br>新建 /Library/LaunchDaemons/com.lighttpd.lighttpd.plist 写入如下内容:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="doctype">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">plist</span> <span class="attribute">version</span>=<span class="value">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">dict</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">true</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 这就是个名字, 会显示在 launchctl list 里看到. --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">string</span>&gt;</span>lighttpd<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>OnDemand<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">false</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>Program<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/lighttpd/sbin/lighttpd<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/lighttpd/sbin/lighttpd<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 这行很奇怪是吧? -f 后面紧挨着参数值, 你要不这样写, 就甭想启动. --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">string</span>&gt;</span>-f/etc/lighttpd.conf<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">string</span>&gt;</span>-D<span class="tag">&lt;/<span class="title">string</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">array</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="title">key</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">true</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后加载这个文件:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo launchctl load -w /Library/LaunchDaemons/com.lighttpd.lighttpd.plist</span><br></pre></td></tr></table></figure>
+<hr>
+<p>有了 launchd, mysql 和 lighttpd 的运行基本上不用担心了, 那 rails 的运行靠谁呢? 答案是 lighttpd. 配置文件说明了这一点, 当 lighttpd 启动的时候, 它会启动若干个 rails 实例 (数量由 min-procs 和 max-procs 决定). 即使是中途手动杀掉了 ruby 进程, 只要有请求进来, lighttpd 还是会去启动 rails 实例进行响应的.</p>
+<p>OK~ 如果人品没有什么大问题的话, 到这里应该已经跑起来了, 这也正应了 rails 官方的那句台词:”先跑起来再说!”</p>
+<p>如果跑不起来呢? 嗯! 我就碰到了下面的这个问题: 在 Windows 创建的 rails 项目, 复制到 Mac 上面就跑不起来了. 碰到这种情况, 看看你的rails目录下面的 public/dispatch.fcgi 开头第一句, 如果类似于: #!C:/Ruby/bin 这样的话, 请竖起中指!</p>
+<p>然后心平气和的改成</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/ruby/bin/ruby</span></span><br></pre></td></tr></table></figure>
+<p>还有, 不要可惜了你的 Mac, 她不只有个光鲜的外表, 里边也很有内涵, 例如 tail</p>
+<p>想知道 lighttpd 为什么启动不了的时候可以用它查看错误日志, 然后再一边修改配置, 一边回来查看这10秒一次的新日志.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail <span class="operator">-f</span> /var/<span class="built_in">log</span>/lighttpd/error.log</span><br></pre></td></tr></table></figure>
+<p>当然, 用在 rails 开发的时候会更合适:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail <span class="operator">-f</span> ~/Sites/rails/<span class="built_in">log</span>/development.log</span><br></pre></td></tr></table></figure>
+<p>经过这一番折腾, Rails 开发环境总算是跑起来了.</p>
+<p>不是部署环境么?</p>
+<p>呃. 就我目前的水平, 还不敢谈部署, 只想着用 ribbon 推荐的部署环境进行开发, 就已经满意了, 至于什么时候谈部署, 还得慢慢来, 现在水平还太烂, 深入学习 *nix 和 rails 才一个月, 不敢奢望太多.</p>
+<p>至少目前很多问题还不好解决, 例如:</p>
+<p>不知道为什么后端有时候会死掉, 而且 lighttpd 又不会去重开. (手动杀的就可以重开).</p>
+<p>偶尔还会出现连接失败(开发环境, 小量请求).</p>
+<p>好吧~ 世上没有十全十美, 不是么?</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/04/14/play-with-lighttpd--fastcgi--rails-on-leopard/" data-id="ci9p9dvxx003547jjl9okqiw4" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/04/14/play-with-lighttpd--fastcgi--rails-on-leopard/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Rails/">Rails</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2009/04/30/hide-unix-files-in-mac-os-x/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hide Unix Files in Mac OS X
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2009/04/01/rails-evial--april-fools-days/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Rails Ev(i|a)l @ April Fools Days</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2009/04/14/play-with-lighttpd--fastcgi--rails-on-leopard/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

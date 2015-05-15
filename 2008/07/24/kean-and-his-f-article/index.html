@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Kean 和 F# | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最后更新: 2008年7月24日 (21篇)
+原文作者: Kean Walmsley
+文档格式: Word文档 (.doc) | 7zip (.7z)
+完整下载
+章节下载
+文章目录:
+
+A simple 3D LOGO implementation inside AutoCAD using F#在 AutoCAD 中使用 F# 实现 3D LOGO 的简单应用
+Sectioning an Auto">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kean 和 F#">
+<meta property="og:url" content="http://blog.vitarn.com/2008/07/24/kean-and-his-f-article/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="最后更新: 2008年7月24日 (21篇)
+原文作者: Kean Walmsley
+文档格式: Word文档 (.doc) | 7zip (.7z)
+完整下载
+章节下载
+文章目录:
+
+A simple 3D LOGO implementation inside AutoCAD using F#在 AutoCAD 中使用 F# 实现 3D LOGO 的简单应用
+Sectioning an Auto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kean 和 F#">
+<meta name="twitter:description" content="最后更新: 2008年7月24日 (21篇)
+原文作者: Kean Walmsley
+文档格式: Word文档 (.doc) | 7zip (.7z)
+完整下载
+章节下载
+文章目录:
+
+A simple 3D LOGO implementation inside AutoCAD using F#在 AutoCAD 中使用 F# 实现 3D LOGO 的简单应用
+Sectioning an Auto">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kean-and-his-f-article" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/07/24/kean-and-his-f-article/" class="article-date">
+  <time datetime="2008-07-23T16:00:00.000Z" itemprop="datePublished">2008-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Kean 和 F#
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>最后更新: 2008年7月24日 (21篇)</strong></p>
+<p>原文作者: <a href="http://through-the-interface.typepad.com/" target="_blank" rel="external">Kean Walmsley</a></p>
+<p>文档格式: Word文档 (<em>.doc) | 7zip (</em>.7z)</p>
+<p><a href="http://www.box.net/shared/qsmfdafvcn" target="_blank" rel="external">完整下载</a></p>
+<p><a href="http://www.box.net/shared/x8d3ydgqb2" target="_blank" rel="external">章节下载</a></p>
+<p>文章目录:</p>
+<ul>
+<li>A simple 3D LOGO implementation inside AutoCAD using F#<br>在 AutoCAD 中使用 F# 实现 3D LOGO 的简单应用</li>
+<li>Sectioning an AutoCAD solid using F#<br>使用 F# 分割 AutoCAD 实体</li>
+<li>Generating fractals inside AutoCAD using F#<br>在 AutoCAD 中使用 F# 生成分形</li>
+<li>Initialization code in your F# AutoCAD application<br>AutoCAD程序初始化F#代码</li>
+<li>Using AutoCAD 2009 s new transient graphics API to show point clouds from F#<br>利用F#和AutoCAD 2009的新API临时图形来显示点云</li>
+<li>New APIs in AutoCAD 2009<br>AutoCAD 2009中新的API</li>
+<li>Recursive F# code to generate random point clouds inside AutoCAD<br>递归F#代码在AutoCAD中产生随机点云</li>
+<li>Using Reflector to diagnose tail call optimization in F#<br>使用Reflector对F#进行诊断跟踪优化</li>
+<li>Pointing at clouds&nbsp; more random musings on AutoCAD and F#<br>点云 关于AutoCAD和F#的更多遐想</li>
+<li>Parallelizing robotic AutoCAD hatching with F# and .Net<br>使用F#及.NET实现并行智能AutoCAD填充</li>
+<li>Robotic hatching inside AutoCAD using F# and .Net<br>使用F#及.NET在AutoCAD中实现智能填充</li>
+<li>Mardi Gras Super Tuesday and F#<br>狂欢节 超级周二与F#</li>
+<li>Using F# to simulate hardware behaviour<br>使用F#模拟硬件行为</li>
+<li>Using F# Asynchronous Workflows to simplify concurrent programming in AutoCAD<br>在AutoCAD中使用F#异步工作流程简化并行程序</li>
+<li>Turning AutoCAD into an RSS reader with F#<br>在AutoCAD中使用F#实现RSS阅读器</li>
+<li>Metaprogramming with AutoCAD - Part 3<br>元编程与AutoCAD 第三部分</li>
+<li>Metaprogramming with AutoCAD - Part 2<br>元编程与AutoCAD 第二部分</li>
+<li>Metaprogramming with AutoCAD - Part 1<br>元编程与AutoCAD 第一部分</li>
+<li>Getting the total volume of 3D solids in an AutoCAD model using F#<br>使用F#获取AutoCAD模型中3D实体的总体积</li>
+<li>More fun with F# and AutoCAD string extraction and manipulation<br>F#更多有趣的东西与AutoCAD字符串的提取及操作</li>
+<li>A mathematical F# application integrating with AutoCAD via .NET<br>一个AutoCAD F# .NET的完整数学程序</li>
+<li>F# - a perfect fit for AutoCAD .NET programming<br>F# - 非常适合AutoCAD .NET程序开发么</li>
+<li>My first F# application for AutoCAD<br>我的第一份用于AutoCAD的F#程序</li>
+</ul>
+<p>关于 F# 语言:</p>
+<p>F# 是一门函数式编程语言! (Functional Programming  Language)</p>
+<p><a href="http://msdn.microsoft.com/zh-cn/fsharp/" target="_blank" rel="external">官方网站</a></p>
+<p>目前已经进入产品化阶段, 预计今夏(2008年)发布第一个CTP版</p>
+<p>维护者: <a href="http://blogs.msdn.com/dsyme" target="_blank" rel="external">Don  Syme</a></p>
+<p>发布方式: Visual Studio 扩展</p>
+<p>什么是函数式编程?</p>
+<p>简单的定义是: 在函数式语言中, 函数是第一等公民.</p>
+<p>函数式语言其实比你想象中的要多得多, 只不过它们长期处在计算机技术发展的边缘,  所以好多都是不为人知.</p>
+<p>如: LISP, Scheme,Perl, ML, Miranda, Haskell, XSLT, Ruby,  erlang, Ocaml 等等.</p>
+<p>F# 有什么用?</p>
+<p>形象的比喻: 用C#吸引C/C++程序员, 用VB.NET替换VB6, 用J#拉拢JAVA程序员,  那么F#就是招安那些处在边缘的函数式小语种, 这也就是为什么Kean会说 - F#是最适合AutoCAD开发的编程语言 - 的原因! Kean  Walmsley是Autodesk的专家, 他从2007年10月31日起连续发表关于使用 F# 开发 AutoCAD 的文章,  但是由于我们平常所见到的编程技术多半是类 C 技术, 再加上 F# 时间较短, 所以Kean所研究的技术显然是有些超前了,  但是他对这门语言的崇拜显然已经达到了宗教般的高度, 这使我坚信他所追求的一定很有价值!</p>
+<p>由于一些原因, Kean的博客不容易访问, 因此我会不间断的摘录并坚持翻译, 但仅限于F#有关的文章.</p>
+<p>有趣的是: 在 Google 中搜索 F# 会返回近百万个匹配的结果,  而在百度中搜索就只会返回0个.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/07/24/kean-and-his-f-article/" data-id="ci9p9dw52005l47jj61c7gh8v" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/07/24/kean-and-his-f-article/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AutoCAD/">AutoCAD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2008/07/30/good-fsharp-article/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          难得的 F# 好文
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2008/07/23/fsharp-generate-md5-dictionary/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">F#生成MD5字典</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2008/07/24/kean-and-his-f-article/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

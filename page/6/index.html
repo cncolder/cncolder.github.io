@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ViTarn Blog">
+<meta property="og:url" content="http://blog.vitarn.com/page/6/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViTarn Blog">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-something-about-dotnet" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/11/24/something-about-dotnet/" class="article-date">
+  <time datetime="2008-11-23T16:00:00.000Z" itemprop="datePublished">2008-11-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/11/24/something-about-dotnet/">.NET 有的没的</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转眼间发现快一个月没有更新BLOG了, 终于明白了为什么有那么多人整天说忙, 现在轮到自己了, 是不是瞎忙还不清楚, 但是是真忙.</p>
+<p>总结一下这个月的新发现:</p>
+<h3 id="WCF_数据契约不是专指_DataContract_而言的吗?">WCF 数据契约不是专指 DataContract 而言的吗?</h3><p><a href="http://www.cnblogs.com/zlgcool/archive/2008/11/22/1338850.html" target="_blank" rel="external">Allan 的文章</a>里看到:</p>
+<p>WCF 在 .NET3.5sp1 中, 实体类即使不指定 DataContract 特性也能够被序列化. 具体规则是:</p>
+<ul>
+<li>不指定特性, 序列化公有属性.</li>
+<li>指定 Serializable 特性, 序列化所有属性.</li>
+<li>指定 DataContract 特性, 仅序列化注明 DataMember 的属性.</li>
+</ul>
+<p>之前确实不知道, 还有这么一说, 试了试也确实如此. 不过对我来说 DataMember 的 Order 属性同样重要, 所以还是坚持原来的做法好了.</p>
+<h3 id="MySQL_要怎么对付_Guid?">MySQL 要怎么对付 Guid?</h3><p>这个问题一直困扰着我, 在 MySQL.NET 连接器 5.2 版的更新中有这样一句:</p>
+<p><code>BINARY(16) columns are now treated as Guid objects</code></p>
+<p>嗯, 我该如何理解这句话呢? 暂且当做是官方的建议好了. 不过接下来实在是忍不住要抱怨一下.</p>
+<p>当列类型是 BINARY(16) 的时候, 我该如何把一个 Guid 存入数据库呢?</p>
+<p>显然拼接 SQL 语句是不行的. 况且对于我这样的一个完美主义者来说也是不可能容忍的.</p>
+<p>那么参数化插入会怎样? 答案是报错: 数据太长. 看来连接器是把 Guid 当成字符串装入参数了, 那的确是太长了 (36比16). 看来我还得自己手动转化成二进制才行 (ToByteArray), OK~ 这次算是插入成功了. 不过接下来在查询浏览器里看到的结果就… (æýO.-áG©÷).</p>
+<p>等等, MySQL 不是有个 UUID() 函数么?, 难道它不能和 Guid 统一起来么? 答案是”不能!”. UUID 的生成原理与 Guid 几乎相同, 但结果却不一样, UUID 本质上是个字符串, 而 Guid 却是 .NET 的一个类型. 倘若我们使用 VARCHAR(36) 来做主键, 不仅仅是空间上的浪费, 索引的性能, 而且还会带来存取双向转换的麻烦.</p>
+<p>反观参考手册中的那句话 (treated as Guid), 大概意思是说一个 BINARY(16) 列会被当成 Guid 读取, 但你不能直接把 Guid 存储进去. 唉~</p>
+<h3 id="MySQL_名称引号陷阱-">MySQL 名称引号陷阱.</h3><p>用过 WorkBench 的人肯定知道, 数据库名和表名会用”点号”括起 ( <code>Database</code>.<code>Table</code> ), 也就是数字 1 前面那个键.</p>
+<p>我因此也想当然的认为这是官方的”建议”, 这样括起的部分应该不会被语义解析, 而是当成名字来使用, 所以我在存储过程中写下了灰色的一段:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> <span class="string">`TEST`</span>.<span class="string">`User_Delete`</span> (id <span class="built_in">BINARY</span>(<span class="number">16</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">  <span class="keyword">DELETE</span> <span class="keyword">FROM</span> <span class="string">`User`</span> <span class="keyword">WHERE</span> <span class="string">`ID`</span>=id;</span></span><br><span class="line">  <span class="operator"><span class="keyword">SELECT</span> <span class="keyword">ROW_COUNT</span>();</span></span><br><span class="line"><span class="operator"><span class="keyword">END</span></span></span><br></pre></td></tr></table></figure>
+<p>我本以为这样名称会统一些, 虽然我知道 MySQL 是不区分大小写的, 不过括起来的 <code>ID</code> 自然会代表列名, 而 id 自然是传递过来的参数. 结果 MySQL 却不这样认为, 那条 WHERE 语句被解释成了 id=id (又或者 <code>ID</code>=<code>ID</code>)</p>
+<p>User 表就这样被清空了… (还好是测试!)</p>
+<h3 id="F#_项目组近来在忙什么?">F# 项目组近来在忙什么?</h3><p>已经很久没有关于 F# 的任何新闻了, 很久是多久? 可能两个月左右吧, 是有些心急, 只不过感觉有些奇怪, Don 的博客没了更新, cs.hubfs.net 也变得冷冷清清, 连 MailList 都不如以前热闹.</p>
+<p>昨天再一次碰到智能感知失效的问题, 这次精准定位到了 System.Xml.Linq 上面, 只要打开这个命名空间就会导致某些类型的智能感知显示不出来. 成员列表只有一个 <code>&lt;None&gt;</code>, 显示的信息是:</p>
+<p>&gt;<br>    a reference to the type ‘System.Xml.Linq.XNode’ supposedly in assembly mscorlib was found, but the type could not be found in that assembly.</p>
+<p>我决定把这个问题反映到 hubfs 上面去, <a href="http://cs.hubfs.net/forums/thread/7889.aspx" target="_blank" rel="external">证实这的确是一个 BUG</a>, 只不过早就有人提交过了, 让我感兴趣的是这句:</p>
+<p>&gt;<br>    It is already known and fixed in the latest internal version.</p>
+<p>嗯, 看来项目组没有偷懒, 只是可能版本处在一个大的跨度区间上面, 没办法单独发布吧.</p>
+<h3 id="DLR_为什么会和_Silverlight_走的这么近?">DLR 为什么会和 Silverlight 走的这么近?</h3><p><a href="http://www.codeplex.com/sdlsdk" target="_blank" rel="external">Silverlight 动态语言 SDK</a> 已经出现有一段时间了, 另一个<a href="http://www.codeplex.com/dlr" target="_blank" rel="external">动态语言运行时</a>也在跃跃欲试, 再看看这个用 Silverlight 实现的 <a href="http://silverlight.net/samples/sl2/dlrconsole/index.html" target="_blank" rel="external">DLR 命名行</a> 吧. 他们到底想要干什么? 动态语言就一定要和动画联系在一起么? 或者这样才符合 DLR 时髦的外型?</p>
+<p>当然对于 Python 我知之甚少, Ruby 一直没太大的兴趣, 至于 JScript 不是已经死了么? 难道是死而不僵?</p>
+<p>抛开这些个人的喜好, 推荐看一看 <a href="http://rednaxelafx.javaeye.com/blog/237822" target="_blank" rel="external">rednaxelafx 的一套文章</a>, 了解一下 DLR 的前世今生, 从某种意义上说, 可以认为 IronPython 对于 LINQ 意义真是蛮大的, 这种作用就好像 F# 之于 Lambda, 如果继续说下去又会被当成谬论了, 那么, 好吧, .NET是一家.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/11/24/something-about-dotnet/" data-id="ci9p9dvzf004547jjjr4rpn2i" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/11/24/something-about-dotnet/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-silverlight-tools-rtw-en-release" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/10/29/silverlight-tools-rtw-en-release/" class="article-date">
+  <time datetime="2008-10-28T16:00:00.000Z" itemprop="datePublished">2008-10-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/10/29/silverlight-tools-rtw-en-release/">Silverlight Tools RTW 英文版释出</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Silverlight Tools</p>
+<p><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=c22d6a7b-546f-4407-8ef6-d60c8ee221ed&amp;DisplayLang=en" target="_blank" rel="external">http://www.microsoft.com/downloads/details.aspx?FamilyID=c22d6a7b-546f-4407-8ef6-d60c8ee221ed&amp;DisplayLang=en</a></p>
+<p>Silverlight Toolkit</p>
+<p><a href="http://www.codeplex.com/Silverlight" target="_blank" rel="external">http://www.codeplex.com/Silverlight</a></p>
+<p><em>Silverlight Toolkit 是什么?</em></p>
+<p>Silverlight Toolkit 是搜集 Silverlight 控件, 组件和在 Silverlight 发行版之外有用的部分. 它为设计和开发人员迅速的提供新功能, 还能借力社区以便帮助快速定位 创意和 BUG 修复. 第一个发行版本包含 12 个新控件 (图表 样式 布局和用户输入) 的完整源代码 单元测试, 例子和文档.</p>
+<p>DEMO:</p>
+<p><a href="http://silverlight.net/samples/sl2/toolkitcontrolsamples/run/default.html" target="_blank" rel="external">http://silverlight.net/samples/sl2/toolkitcontrolsamples/run/default.html</a></p>
+<p><a href="http://silverlight.net/samples/sl2/toolkitchartsamples/run/default.html" target="_blank" rel="external">http://silverlight.net/samples/sl2/toolkitchartsamples/run/default.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/10/29/silverlight-tools-rtw-en-release/" data-id="ci9p9dvzo004a47jjszpqrpc9" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/10/29/silverlight-tools-rtw-en-release/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-find-earth-in-spore" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/10/25/find-earth-in-spore/" class="article-date">
+  <time datetime="2008-10-24T16:00:00.000Z" itemprop="datePublished">2008-10-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/10/25/find-earth-in-spore/">Spore 寻找地球</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/S760ZFallUI/AAAAAAAABVE/OAf6T97NUjM/s800/_.jpg" alt="Spore"></p>
+<p><a href="http://picasaweb.google.com/cncolder/Spore" target="_blank" rel="external">更多图片</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/10/25/find-earth-in-spore/" data-id="ci9p9dvzy004c47jjdfycjcx6" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/10/25/find-earth-in-spore/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Game/">Game</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-conflact-between-blend-and-visualsvn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/10/23/conflact-between-blend-and-visualsvn/" class="article-date">
+  <time datetime="2008-10-22T16:00:00.000Z" itemprop="datePublished">2008-10-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/10/23/conflact-between-blend-and-visualsvn/">Blend 与 VisualSVN 冲突</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>Silverlight 身上有一样东西, MS 能碰, SVN 不能碰. 是什么?</em></p>
+<p>呃… 很不时髦的笑话. 今天却发生在我身上.</p>
+<p>如果你在开发 Silverlight, 肯定离不开 Blend, 你需要用 Blend 来打开解决方案. 当然可能你还需要 SVN 进行源代码管理.</p>
+<p>一切看起来理所当然, 不幸的是, 如果你碰巧使用的是 VisualSVN, 你会发现 Blend 与 SVN 之间罕见的冲突. 受 SVN 管理的解决方案在 Blend 中再也打不开了, 即使是你把 SVN 卸载掉!</p>
+<p>问题出在你的解决方案 (XXX.sln) 文件上面, 使用记事本打开, 末尾会发现这样三行:</p>
+<pre><code><span class="function"><span class="title">GlobalSection</span><span class="params">(ExtensibilityGlobals)</span></span> = postSolution
+VisualSVNWorkingCopyRoot = EndGlobalSection
+</code></pre><p>这是 VisualSVN 用来记录目录的节点, 怕生的 Blend 看到后就会提示打开的解决方案包含不安全代码拒绝打开.</p>
+<p>解决方案竟然不能解决问题, 真是个大笑话.</p>
+<p>把这三行删除掉就可以解决这一问题, 注意: .sln 文件的内容对格式要求极严, 你要保证只删除这三行且不留空行才可以.</p>
+<p>如果你也碰巧同时安装了 Blend 和 VisualSVN, 试试这个解决方案吧.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/10/23/conflact-between-blend-and-visualsvn/" data-id="ci9p9dw01004e47jjac2itkln" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/10/23/conflact-between-blend-and-visualsvn/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SVN/">SVN</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-resolve-an-old-question-with-f" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/10/18/resolve-an-old-question-with-f/" class="article-date">
+  <time datetime="2008-10-17T16:00:00.000Z" itemprop="datePublished">2008-10-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/10/18/resolve-an-old-question-with-f/">旧问题的 F# 新解法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在我还对程序开发比较迷糊的时候, 曾经听说过一个问题, 编写一段程序, 运行的结果是输出程序的全部源代码(一字不差).</p>
+<p>当初曾经有很多人认为这是不可能的, 因为这与逻辑相悖, 不过后来真的有人用纯C做到了, 思路一出, 其他版本纷纷涌现.</p>
+<p>这是一个老问题了, 今天在订阅里意外的看到一篇文章:</p>
+<p>代码摘自: <a href="http://lorgonblog.spaces.live.com/blog/cns!701679AD17B6D310!599.entry" target="_blank" rel="external">http://lorgonblog.spaces.live.com/blog/cns!701679AD17B6D310!599.entry</a></p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#light </span><br><span class="line"><span class="keyword">open</span> System </span><br><span class="line"><span class="keyword">let</span> nl = <span class="keyword">new</span> String([|char <span class="number">13</span>;char <span class="number">10</span>|]) </span><br><span class="line"><span class="keyword">let</span> quote = char <span class="number">34</span></span><br><span class="line"><span class="keyword">let</span> Quote (s:String) = s.Replace(<span class="keyword">new</span> String([|quote|]), <span class="keyword">new</span> String([|char <span class="number">92</span>; quote|])) </span><br><span class="line"><span class="keyword">let</span> Quine s = </span><br><span class="line">    String.Format(<span class="string">"let s = &#123;0&#125;&#123;1&#125;&#123;2&#125;&#123;3&#125;printf &#123;4&#125;%s%s&#123;5&#125; s (Quine s)&#123;6&#125;"</span>,  </span><br><span class="line">        [| box quote; box (Quote s); box quote; box nl; box quote; box quote; box nl|]) </span><br><span class="line"><span class="keyword">let</span> s = <span class="string">"#light </span><br><span class="line">open System </span><br><span class="line">let nl = new String([|char 13;char 10|]) </span><br><span class="line">let quote = char 34 </span><br><span class="line">let Quote (s:String) = s.Replace(new String([|quote|]), new String([|char 92; quote|])) </span><br><span class="line">let Quine s = </span><br><span class="line">    String.Format(\"let s = &#123;0&#125;&#123;1&#125;&#123;2&#125;&#123;3&#125;printf &#123;4&#125;%s%s&#123;5&#125; s (Quine s)&#123;6&#125;\",  </span><br><span class="line">        [| box quote; box (Quote s); box quote; box nl; box quote; box quote; box nl|]) </span><br><span class="line">"</span> </span><br><span class="line">printf <span class="string">"%s%s"</span> s (Quine s)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/10/18/resolve-an-old-question-with-f/" data-id="ci9p9dw0d004h47jj4mh6cnky" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/10/18/resolve-an-old-question-with-f/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-silverlight-2-rc1-zhcn-release" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/10/17/silverlight-2-rc1-zhcn-release/" class="article-date">
+  <time datetime="2008-10-16T16:00:00.000Z" itemprop="datePublished">2008-10-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/10/17/silverlight-2-rc1-zhcn-release/">Silverlight 2 RC1 简体中文版释出</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.microsoft.com/downloads/details.aspx?FamilyID=c22d6a7b-546f-4407-8ef6-d60c8ee221ed&amp;DisplayLang=zh-cn" target="_blank" rel="external">http://www.microsoft.com/downloads/details.aspx?FamilyID=c22d6a7b-546f-4407-8ef6-d60c8ee221ed&amp;DisplayLang=zh-cn</a></p>
+<p>安装体验较之前的版本好了很多, 可以自动对之前的版本进行卸载, 不过强烈建议还是先卸载旧版本之后再装.</p>
+<p>另外: 从 <a href="http://blogs.msdn.com/sburke/archive/2008/10/14/silverlight-2-released-silverlight-toolkit-on-the-way.aspx" target="_blank" rel="external">Shawn Burke’s Blog</a> 看到了 Silverlight 接下来的走向, 我们可以看到实际上控件还是很丰富的, 为了尽可能的减少运行时的体积, 非内置的控件将会以控件包的形式发布:</p>
+<p><img src="http://blogs.msdn.com/blogfiles/sburke/WindowsLiveWriter/Silverlight2ReleasedSilverlightToolkiton_9422/ControlsPPCT%20(4)_2.jpg" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/10/17/silverlight-2-rc1-zhcn-release/" data-id="ci9p9dw0g004j47jjltu1ri83" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/10/17/silverlight-2-rc1-zhcn-release/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-silverlight-2-rc0-release" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/09/26/silverlight-2-rc0-release/" class="article-date">
+  <time datetime="2008-09-25T16:00:00.000Z" itemprop="datePublished">2008-09-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/09/26/silverlight-2-rc0-release/">Silverlight 2 RC0 释出</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Visual Studio 2008 Tools RC0:</p>
+<p><a href="http://go.microsoft.com/fwlink/?LinkId=129043" target="_blank" rel="external">http://go.microsoft.com/fwlink/?LinkId=129043</a></p>
+<p>Expression Blend SP1 RC0:</p>
+<p><a href="http://www.microsoft.com/expression/try-it/default.aspx?filter=prerelease" target="_blank" rel="external">http://www.microsoft.com/expression/try-it/default.aspx?filter=prerelease</a></p>
+<p>Windows Silverlight 2 Dev Runtime RC0:<br><a href="http://go.microsoft.com/fwlink/?linkid=129011" target="_blank" rel="external">http://go.microsoft.com/fwlink/?linkid=129011</a></p>
+<p>我是从 <a href="http://silverlight.net/forums/p/30209/97238.aspx#97238" target="_blank" rel="external">http://silverlight.net/forums/p/30209/97238.aspx#97238</a> 得知的消息之后转到 <a href="http://silverlight.net/blogs/msnow/archive/2008/09/25/silverlight-version-2-rc0-released.aspx" target="_blank" rel="external">http://silverlight.net/blogs/msnow/archive/2008/09/25/silverlight-version-2-rc0-released.aspx</a> 找到的下载地址, 详细的我也没来得及细看, 就是这样…</p>
+<p>突然发现近来莫名其妙的忙…</p>
+<p><strong>补充: 中文版VS2008用户稍安勿燥</strong></p>
+<blockquote>
+<p>Installation Requirements:</p>
+<p>Visual Studio 2008 (English) or Visual Web Developer Express 2008 (English) must be installed before installation of Silverlight Tools can continue. Silverlight Tools is available in other languages at <a href="http://go.microsoft.com/fwlink/?LinkId=120319" target="_blank" rel="external">http://go.microsoft.com/fwlink/?LinkId=120319</a></p>
+<p>Build 9.0.30729.XX of Visual Studio 2008 SP1 or Visual Web Developer 2008 SP1 must be installed before installation can continue. See <a href="http://go.microsoft.com/fwlink/?LinkID=122094" target="_blank" rel="external">http://go.microsoft.com/fwlink/?LinkID=122094</a> for download information.</p>
+<p>Beta and preview versions of Microsoft Expression Blend must be uninstalled before installation can continue.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/09/26/silverlight-2-rc0-release/" data-id="ci9p9dw0j004l47jjigh6vczs" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/09/26/silverlight-2-rc0-release/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-fckeditor-double-quote-became-single-quote" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/09/17/fckeditor-double-quote-became-single-quote/" class="article-date">
+  <time datetime="2008-09-16T16:00:00.000Z" itemprop="datePublished">2008-09-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/09/17/fckeditor-double-quote-became-single-quote/">FCKeditor 双引号变单引号</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>内置于 WordPress 中的 TinyMCE 从 2.2 时代开始就罢工了, 连续升级 N 次 WP 程序也救不活.</p>
+<p>一直以来都是用的 FCKeditor, 大部分感觉还算好, 最不爽的是它会转化许多符号, 例如双引号变成 &amp;quot.&nbsp;经常要发一些代码, 这些符号当然不会少, 以至于大部分时间我都是先编写文字, 后最在编辑 HTML 加入源代码段.</p>
+<p>今天终于忍无可忍, 必须解决这个问题!</p>
+<p>首先我在 <a href="http://www.fckeditor.net/demo" target="_blank" rel="external">http://www.fckeditor.net/demo</a> 试了一下, 发现不是我自己的问题, 官方的 DEMO 也是如此.</p>
+<p>之后我试着用各种关键词搜索答案, 最后总算被我找对了关键词 <em>FCKeditor double quotes</em></p>
+<p><a href="http://www.fckeditor.net/forums/viewtopic.php?f=5&amp;t=9497" target="_blank" rel="external">官方论坛</a>上看到的一个解释是把 fckconfig.js 中的 FCKConfig.ProcessHTMLEntities 置为 false</p>
+<p>还有 <a href="http://drupal.fckeditor.net/troubleshooting#11" target="_blank" rel="external">Drupal 版块</a>给出的解决方案</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/09/17/fckeditor-double-quote-became-single-quote/" data-id="ci9p9dw0m004n47jjet6qq6r4" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/09/17/fckeditor-double-quote-became-single-quote/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Wordpress/">Wordpress</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-reply-from-hubfs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/09/08/reply-from-hubfs/" class="article-date">
+  <time datetime="2008-09-07T16:00:00.000Z" itemprop="datePublished">2008-09-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/09/08/reply-from-hubfs/">Hubfs 给出的答复</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我在初学 F# 的时候, 对 C# 只能算是一知半解, 甚至可以说是个门外汉, 所以我一直没有机会去深刻的领会什么是 OOP, 连最基本的类都定义不好. 反倒是学习 F# 后, 经常需要到网络上搜索一些 C# 代码再转换, 这样才对 C# 有了一些了解…</p>
+<p>我说我连类都定义不好, 这是个很尴尬的事实. 比如像 C# 的可视化设计器生成的代码那样, 新建一个 Form 修改窗口标题, 再加入一个Button. 这是再简单不过的例子了, 可是用 F# 该如何写呢?</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 例子程序里展示了如何使用 FP 的风格建立窗体</span></span><br><span class="line"><span class="keyword">let</span> form =</span><br><span class="line">    <span class="keyword">let</span> form = <span class="keyword">new</span> Form(Text = <span class="string">"MyForm"</span>)</span><br><span class="line">    <span class="keyword">let</span> b = <span class="keyword">new</span> Button()</span><br><span class="line">    form.Controls.Add b</span><br><span class="line">    form</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 但是今天我们要讨论的是如何像 C# 那样继承自 Form 实现自己的类</span></span><br><span class="line"><span class="comment">// 第一种方法是我在 Simple101 中看到的</span></span><br><span class="line"><span class="comment">// 这是一种被称为详尽语法(Explicit syntax)</span></span><br><span class="line"><span class="comment">// 这是最中规中矩的定义方式 当然也最繁琐</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyForm1</span> </span>=</span><br><span class="line">    <span class="keyword">inherit</span> Form</span><br><span class="line">    <span class="keyword">val</span> b :Button</span><br><span class="line">    <span class="keyword">member</span> t.InitializeComponent() =</span><br><span class="line">        t.Text &lt;- <span class="string">"MyForm1"</span></span><br><span class="line">        t.Controls.Add t.b</span><br><span class="line">    <span class="keyword">new</span>() <span class="keyword">as</span> t =</span><br><span class="line">        &#123; b = <span class="keyword">new</span> Button() &#125;</span><br><span class="line">        <span class="keyword">then</span></span><br><span class="line">            t.InitializeComponent()</span><br><span class="line">            </span><br><span class="line"><span class="comment">// 第二种是很常规的定义类的方法</span></span><br><span class="line"><span class="comment">// 被称为隐含语法(Implicit syntax)</span></span><br><span class="line"><span class="comment">// 隐含了什么? 我猜是隐含了构造函数吧</span></span><br><span class="line"><span class="comment">// 之前一直疑惑构造函数隐含了 那我怎么调用呢?</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyForm2</span></span>() =</span><br><span class="line">    <span class="keyword">inherit</span> Form()</span><br><span class="line">    <span class="keyword">let</span> b = <span class="keyword">new</span> Button()</span><br><span class="line">    <span class="keyword">member</span> t.InitializeComponent() =</span><br><span class="line">        t.Text &lt;- <span class="string">"MyForm2"</span></span><br><span class="line">        t.Controls.Add b</span><br><span class="line">        </span><br><span class="line"><span class="comment">// 感谢 Tomas Petricek</span></span><br><span class="line"><span class="comment">// 我一直不解的问题终于解开了 原来可以后接 as 语法来指向自己</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyForm3</span></span>() <span class="keyword">as</span> t =</span><br><span class="line">    <span class="keyword">inherit</span> Form()</span><br><span class="line">    <span class="keyword">let</span> b = <span class="keyword">new</span> Button()</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        t.Text &lt;- <span class="string">"MyForm3"</span></span><br><span class="line">        t.Controls.Add b</span><br><span class="line">        </span><br><span class="line"><span class="comment">// 感谢 Danny Asher</span></span><br><span class="line"><span class="comment">// 他的方法提醒了我基类的方法是可以直接调用的</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">MyForm4</span></span>() =</span><br><span class="line">    <span class="keyword">inherit</span> Form()</span><br><span class="line">    <span class="keyword">let</span> b = <span class="keyword">new</span> Button()</span><br><span class="line">    <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">base</span>.Text &lt;- <span class="string">"MyForm4"</span></span><br><span class="line">        <span class="keyword">base</span>.Controls.Add b</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/09/08/reply-from-hubfs/" data-id="ci9p9dw2k004q47jjb8vupvg0" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/09/08/reply-from-hubfs/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-f-1962-ctp-release" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/09/06/f-1962-ctp-release/" class="article-date">
+  <time datetime="2008-09-05T16:00:00.000Z" itemprop="datePublished">2008-09-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/09/06/f-1962-ctp-release/">F# 1.9.6.2 CTP 释出</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.microsoft.com/downloads/details.aspx?familyid=61ad6924-93ad-48dc-8c67-60f7e7803d3c&amp;displaylang=en&amp;tm" target="_blank" rel="external">http://www.microsoft.com/downloads/details.aspx?familyid=61ad6924-93ad-48dc-8c67-60f7e7803d3c&amp;displaylang=en&amp;tm</a></p>
+<p>更新如下:</p>
+<ul>
+<li>修正包含单位的浮点型类型缩写行为</li>
+<li>修正Quotations.Expr.TupleGet 零索引异常</li>
+<li>CodeDom 使用 ‘—nologo’ 参数</li>
+<li>修正 decimal 不支持操作符的问题</li>
+<li>修正包括 ‘let’ 和 ‘use’ 的序列化表达式回收 enumerator 过早的问题</li>
+<li>修正对有效的表达式评估不成功的问题 (Credit Suisse 报告)</li>
+<li>修正对象表达式中的 base 变量与类型中的 base 变量行为不一致的问题</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/09/06/f-1962-ctp-release/" data-id="ci9p9dw2o004s47jjmrmkau0w" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/09/06/f-1962-ctp-release/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

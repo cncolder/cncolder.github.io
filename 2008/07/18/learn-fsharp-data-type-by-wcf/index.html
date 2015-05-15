@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>通过 WCF 认识 F# 中的类型 | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="近来正在试着用 F# 实现自承载 WCF 服务, 供 Silverlight 调用.一些数据会通过 “添加服务引用” 这一功能, 实现从 F# 到 C# 的转换. 正好借此机会看下会发生什么样有趣的事情.
+由于我要在服务端读取数据库, 之前的 LINQ to SQL 经历告诉我, 我应该为数据库的每个表定义相应的类, 以 Boy 表为例:
+12345678910111213141516171819">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通过 WCF 认识 F# 中的类型">
+<meta property="og:url" content="http://blog.vitarn.com/2008/07/18/learn-fsharp-data-type-by-wcf/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="近来正在试着用 F# 实现自承载 WCF 服务, 供 Silverlight 调用.一些数据会通过 “添加服务引用” 这一功能, 实现从 F# 到 C# 的转换. 正好借此机会看下会发生什么样有趣的事情.
+由于我要在服务端读取数据库, 之前的 LINQ to SQL 经历告诉我, 我应该为数据库的每个表定义相应的类, 以 Boy 表为例:
+12345678910111213141516171819">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通过 WCF 认识 F# 中的类型">
+<meta name="twitter:description" content="近来正在试着用 F# 实现自承载 WCF 服务, 供 Silverlight 调用.一些数据会通过 “添加服务引用” 这一功能, 实现从 F# 到 C# 的转换. 正好借此机会看下会发生什么样有趣的事情.
+由于我要在服务端读取数据库, 之前的 LINQ to SQL 经历告诉我, 我应该为数据库的每个表定义相应的类, 以 Boy 表为例:
+12345678910111213141516171819">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-learn-fsharp-data-type-by-wcf" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/07/18/learn-fsharp-data-type-by-wcf/" class="article-date">
+  <time datetime="2008-07-17T16:00:00.000Z" itemprop="datePublished">2008-07-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      通过 WCF 认识 F# 中的类型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>近来正在试着用 F# 实现自承载 WCF 服务, 供 Silverlight 调用.一些数据会通过 “添加服务引用” 这一功能, 实现从 F# 到 C# 的转换. 正好借此机会看下会发生什么样有趣的事情.</p>
+<p>由于我要在服务端读取数据库, 之前的 LINQ to SQL 经历告诉我, 我应该为数据库的每个表定义相应的类, 以 Boy 表为例:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">(* F# 在类(Class)的定义方面是很灵活的从某种意义上讲 对类的表达近乎恶搞</span><br><span class="line">因为类(Class)对 F# 来说只不过是个表达式而已 *)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 可以这样:</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Boy1</span> </span>=</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">mutable</span> _name :string</span><br><span class="line">    <span class="keyword">val</span> <span class="keyword">mutable</span> _age :int</span><br><span class="line">    <span class="keyword">member</span> t.Name</span><br><span class="line">        <span class="keyword">with</span> get() = t._name</span><br><span class="line">        <span class="keyword">and</span> set(v) = t._name &lt;- v</span><br><span class="line">    <span class="keyword">member</span> t.Age</span><br><span class="line">        <span class="keyword">with</span> get() = t._age</span><br><span class="line">        <span class="keyword">and</span> set(v) = t._age &lt;- v</span><br><span class="line">    <span class="keyword">new</span> () =</span><br><span class="line">    &#123;</span><br><span class="line">        _name = <span class="string">""</span></span><br><span class="line">        _age = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 这种形式要求必须实例化之后才能使用</span></span><br><span class="line"><span class="keyword">let</span> boya =</span><br><span class="line">    <span class="keyword">let</span> boy = <span class="keyword">new</span> Boy1()</span><br><span class="line">    boy._name &lt;- <span class="string">"colder"</span></span><br><span class="line">    boy._age &lt;- Int32.MaxValue</span><br><span class="line">    boy</span><br><span class="line"><span class="comment">// 或</span></span><br><span class="line"><span class="keyword">let</span> boyb = <span class="keyword">new</span> Boy1(Name = <span class="string">"colder"</span>, Age = Int32.MaxValue)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 还可以定义成这样:</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Boy2</span></span>(name :string, age :int) =</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mutable</span> _name = name</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mutable</span> _age = age</span><br><span class="line">    <span class="keyword">member</span> t.Name</span><br><span class="line">        <span class="keyword">with</span> get() = _name</span><br><span class="line">        <span class="keyword">and</span> set(v) = _name &lt;- v</span><br><span class="line">    <span class="keyword">member</span> t.Age</span><br><span class="line">        <span class="keyword">with</span> get() = _age</span><br><span class="line">        <span class="keyword">and</span> set(v) = _age &lt;- v</span><br><span class="line"><span class="comment">// 实例化时参数即为字段</span></span><br><span class="line"><span class="keyword">let</span> boyc = <span class="keyword">new</span> Boy2(<span class="string">"colder"</span>, Int32.MaxValue)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这两种方式定义的类 都是在模仿 C# 定义类的方式</span></span><br><span class="line"><span class="comment">// 不过怎么看都没有 C#3.0 使用的 &#123; get; set; &#125; 形式简单</span></span><br><span class="line"><span class="comment">// 可不可以使用 Records 呢?</span></span><br><span class="line"><span class="comment">// 答案是肯定的 生成的客户端代码并没有区别</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Boy</span> </span>=</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">mutable</span> Name :string</span><br><span class="line">    <span class="keyword">mutable</span> Age :int</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 实例化也是最简单的</span></span><br><span class="line"><span class="keyword">let</span> boyd =</span><br><span class="line">&#123;</span><br><span class="line">    Name = <span class="string">"colder"</span></span><br><span class="line">    Age = Int32.MaxValue</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>验证的依据很简单, 在服务端开放数据契约和服务契约, 之后生成客户端代码, 看是否有异常就可以了</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 给 Boy 记录加上相关的属性</span></span><br><span class="line"><span class="annotation">[&lt;DataContract(Name="Boy")&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Boy</span> </span>=</span><br><span class="line">&#123;</span><br><span class="line">    <span class="annotation">[&lt;DataMember(Order = 1)&gt;]</span></span><br><span class="line">    <span class="keyword">mutable</span> Name :string</span><br><span class="line">    <span class="annotation">[&lt;DataMember(Order = 2)&gt;]</span></span><br><span class="line">    <span class="keyword">mutable</span> Age :int</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 返回值采用标准的 List&lt;T&gt; 泛型</span></span><br><span class="line"><span class="comment">// 也就是微软官方视频教程中提到的 LINQ 表达式的 ToList() 方法返回的类型</span></span><br><span class="line"><span class="annotation">[&lt;ServiceContract(Name = "Wcf")&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Wcf</span></span>() =</span><br><span class="line">    <span class="keyword">let</span> boy =</span><br><span class="line">    &#123;</span><br><span class="line">        Name = <span class="string">"colder"</span></span><br><span class="line">        Age = Int32.MaxValue</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="annotation">[&lt;OperationContract&gt;]</span></span><br><span class="line">    <span class="keyword">member</span> t.BoyListT() =</span><br><span class="line">        <span class="keyword">let</span> list = <span class="keyword">new</span> System.Collections.Generic.List&lt;Boy&gt;()</span><br><span class="line">        list.Add boy</span><br><span class="line">        list</span><br></pre></td></tr></table></figure>
+<p>使用 WCF 工具生成客户端代码</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">// 以下是客户端服务引用自动生成的代码片段</span><br><span class="line">[System.Diagnostics.DebuggerStepThroughAttribute()]</span><br><span class="line">[System.Runtime.Serialization.DataContractAttribute(Name="Boy", Namespace="http://schemas.datacontract.org/2004/07/")]</span><br><span class="line">public partial class Boy : object, System.ComponentModel.INotifyPropertyChanged</span><br><span class="line">&#123;</span><br><span class="line">    private string NameField;</span><br><span class="line">    private int AgeField;</span><br><span class="line">    [System.Runtime.Serialization.DataMemberAttribute()]</span><br><span class="line">    public string Name</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;</span><br><span class="line">            return this.NameField;</span><br><span class="line">        &#125;</span><br><span class="line">        set</span><br><span class="line">        &#123;</span><br><span class="line">            if ((object.ReferenceEquals(this.NameField, value) != true))</span><br><span class="line">            &#123;</span><br><span class="line">                this.NameField = value;</span><br><span class="line">                this.RaisePropertyChanged("Name");</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    [System.Runtime.Serialization.DataMemberAttribute(Order=1)]</span><br><span class="line">    public int Age</span><br><span class="line">    &#123;</span><br><span class="line">        get</span><br><span class="line">        &#123;</span><br><span class="line">            return this.AgeField;</span><br><span class="line">        &#125;</span><br><span class="line">        set</span><br><span class="line">        &#123;</span><br><span class="line">            if ((this.AgeField.Equals(value) != true))</span><br><span class="line">            &#123;</span><br><span class="line">                this.AgeField = value;</span><br><span class="line">                this.RaisePropertyChanged("Age");</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;</span><br><span class="line">    protected void RaisePropertyChanged(string propertyName)</span><br><span class="line">    &#123;</span><br><span class="line">        System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;</span><br><span class="line">        if ((propertyChanged != null))</span><br><span class="line">        &#123;</span><br><span class="line">            propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面这个例子生动的说明: 什么时候该使用 Class, 什么时候该使用 Records.个人理解, 有行为的才是 Class, 只是数据的就应该是 Records.</p>
+<p>难怪蔡学镛先生会提醒初学 F# 的人 宁可矫枉过正 也要保持 FP 的原汁原味 只有这样才能深刻体会 FP 的真谛</p>
+<p>数据契约弄清楚了, 那 WCF 操作契约的返回值可不可以采用 F# 常见的 list 或 seq 之类的呢? 试一下便清楚了!</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改契约 返回 list, 也就是 F# 特有的数据类型 Boy list.</span></span><br><span class="line"><span class="comment">// seq 会返回同样的效果, 不再重复了.</span></span><br><span class="line"><span class="annotation">[&lt;ServiceContract(Name = "Wcf")&gt;]</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Wcf</span></span>() =</span><br><span class="line">    <span class="keyword">let</span> boy =</span><br><span class="line">    &#123;</span><br><span class="line">        Name = <span class="string">"colder"</span></span><br><span class="line">        Age = Int32.MaxValue</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="annotation">[&lt;OperationContract&gt;]</span></span><br><span class="line">    <span class="keyword">member</span> t.BoyList() =</span><br><span class="line">        [boy]</span><br></pre></td></tr></table></figure>
+<p>这次客户端代码有点奇怪了.</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 生成的 C# 代码是个畸型的怪胎...</span><br><span class="line">// 不可思议的类名: ListOfBoyMTRdQN6P</span><br><span class="line">[System.Diagnostics.DebuggerStepThroughAttribute()]</span><br><span class="line">[System.Runtime.Serialization.DataContractAttribute(Name="ListOfBoyMTRdQN6P", Namespace="http://schemas.datacontract.org/2004/07/Microsoft.FSharp.Collections")]</span><br><span class="line">public partial class ListOfBoyMTRdQN6P : object, System.ComponentModel.INotifyPropertyChanged</span><br><span class="line">&#123;</span><br><span class="line">    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;</span><br><span class="line">    protected void RaisePropertyChanged(string propertyName)</span><br><span class="line">    &#123;</span><br><span class="line">        System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;</span><br><span class="line">        if ((propertyChanged != null))</span><br><span class="line">        &#123;</span><br><span class="line">            propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到了吧, 此 list 非彼 List, 真的想不通把 Boy 放到 list 以后究竟发生了什么, 导致离开 F# 环境, 取出的 Boy 就不再是 Boy 了 (ListOfBoyXXXXXXXX)</p>
+<p>我并不是一个像 <a href="http://www.rainsts.net" target="_blank" rel="external">Q.yuhen</a> 这样内功深厚的武林高手, 否则我会一直追问直到找出原因. 事实上我只是个样样好奇却样样平庸的功夫小子, 玩弄些花拳绣腿罢了, 所以尝试只能在此结束, 无法继续找出真正的答案了.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/07/18/learn-fsharp-data-type-by-wcf/" data-id="ci9p9dw69005r47jjw51zxydn" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/07/18/learn-fsharp-data-type-by-wcf/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2008/07/22/cadbury-gorilla-at-cannes-lions-advertising-campaign-2008/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          吉百利大猩猩 - 2008嘎纳广告节
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2008/07/15/fsharp-compiler-1-9-4-19-msi/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">F# Compiler 1.9.4.19 (Msi)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2008/07/18/learn-fsharp-data-type-by-wcf/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ViTarn Blog">
+<meta property="og:url" content="http://blog.vitarn.com/page/2/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViTarn Blog">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-mac-os-x-server-samba-crash" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/08/08/mac-os-x-server-samba-crash/" class="article-date">
+  <time datetime="2010-08-07T16:00:00.000Z" itemprop="datePublished">2010-08-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/08/08/mac-os-x-server-samba-crash/">Mac OS X Server Samba Crash</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>My Mac pro shutdown because power cut last night.</p>
+<p>Today. Windows user can ping me by computer name. But they can’t visit my share folder. There are some error in log:</p>
+<pre><code><span class="string">Samba:</span> <span class="string">ERROR:</span> failed to setup guest info.
+</code></pre><p>When I open /etc/smb.conf. I found it’s blank file. OK! So. To fix this:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp -p /etc/smb.conf.template /etc/smb.conf</span><br></pre></td></tr></table></figure>
+<p>Then it works.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/08/08/mac-os-x-server-samba-crash/" data-id="ci9p9dvub000z47jjdrn87vaa" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/08/08/mac-os-x-server-samba-crash/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Server/">Server</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-the-notes-of-learning-objective-c" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/07/24/the-notes-of-learning-objective-c/" class="article-date">
+  <time datetime="2010-07-23T16:00:00.000Z" itemprop="datePublished">2010-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/24/the-notes-of-learning-objective-c/">Objective-C 笔记</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>声明一个类需要两个文件, 接口(.h)和实现(.m).</p>
+<p>接口(interface)更像是”声明”, 协议(protocol)才是起到”接口”的作用.</p>
+<hr>
+<p>类方法用加号(+), 实例方法用减号(-).</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ alloc;</span><br><span class="line">- init;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>引用类型带星号(*).</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">NSString</span> *) name</span><br></pre></td></tr></table></figure>
+<hr>
+<p>方法名包括参数名.</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 方法名: setWidth:andHeight:   参数: width, height</span></span><br><span class="line">- (<span class="keyword">void</span>)setWidth:(<span class="keyword">float</span>)width andHeight:(<span class="keyword">float</span>)height;</span><br><span class="line"><span class="comment">// 调用写法</span></span><br><span class="line">[receiver setWidth:<span class="number">1.0</span> andHeight:<span class="number">2.0</span>];</span><br></pre></td></tr></table></figure>
+<hr>
+<p>super是关键字; self是变量名, 可以被覆盖.</p>
+<hr>
+<p>“类采纳了某协议”, 翻译过来就是:”类实现了某接口”. “协议采纳另个协议”, 翻译过来就是:”接口继承”.</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Formatter采纳了Formatting和Prettifying两个协议 </span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Formatter</span> : <span class="title">NSObject</span> &lt; <span class="title">Formatting</span>, <span class="title">Prettifying</span> &gt;</span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 协议采纳协议</span></span><br><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">Paging</span> &lt; <span class="title">Formatting</span> &gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用协议类型表示实例变量</span></span><br><span class="line"><span class="keyword">id</span> &lt;Formatting&gt; anObject;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>属性声明的格式.</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span>(这里是一些特性, 例如<span class="keyword">readonly</span>/retain/<span class="keyword">copy</span>) 类型 名称;</span><br><span class="line"></span><br><span class="line"><span class="comment">// IBOutlet的意思是把属性暴露给Interface Builder设计器</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, retain) <span class="keyword">IBOutlet</span> <span class="built_in">NSButton</span> *myButton;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>如何在XCode中使用Interface Builder设计器里的对象.</p>
+<p>在设计器里选中对象, 切换到Connections标签, 从Referencing Outlets里扯一条线连接到Controller上, 然后选择实例变量名.</p>
+<hr>
+<p>数据源委托到控制器.</p>
+<p>对于需要集合数据类型作为数据源的界面元素, 会把dataSource连接到控制器上, 然后由控制器采纳数据源协议并实现方法. 这与以往所见的大不相同, 如果有两个数据源该怎么办?</p>
+<hr>
+<p>关于#pragma. 是用于XCode识别代码的标记, 被编译器忽略.</p>
+<p>方法分类:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#pragma mark 采纳UIPickerDataSource协议</span></span><br></pre></td></tr></table></figure>
+<p>白空格:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#pragma mark -</span></span><br></pre></td></tr></table></figure>
+<p>压制未使用变量警告:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#pragma unused(unusedVar)</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/07/24/the-notes-of-learning-objective-c/" data-id="ci9p9dvuf001247jjreefxwnh" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/07/24/the-notes-of-learning-objective-c/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objc/">Objc</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-frog-under-well-think-web-inspector-copy-firebug" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/07/23/frog-under-well-think-web-inspector-copy-firebug/" class="article-date">
+  <time datetime="2010-07-22T16:00:00.000Z" itemprop="datePublished">2010-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/23/frog-under-well-think-web-inspector-copy-firebug/">只有井底之蛙才会觉得 Web Inspector 复制了 Firebug</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>一个部落格饶有兴致的介绍Chrome6.0dev中的开发人员工具, 也就是Web Inspector. 博主谦虚的口吻是清晰可见的, 然而急躁的国人仍然在回复中丝毫不客气, 含蓄的骂着”兰州烧饼”, 还说”对Firebug的复制品无爱”.</p>
+<p>谁让咱是个爱钻牛角尖的人咧! 我偏要挖一挖历史:</p>
+<p>有据可查的Firebug历史:<br><a href="https://addons.mozilla.org/en-US/firefox/addon/1843/versions/?page=2#version-0.2" target="_blank" rel="external">https://addons.mozilla.org/en-US/firefox/addon/1843/versions/?page=2#version-0.2</a></p>
+<p>有据可查的Web Inspector历史:<br><a href="http://webkit.org/blog/41/introducing-the-web-inspector/" target="_blank" rel="external">http://webkit.org/blog/41/introducing-the-web-inspector/</a></p>
+<p>看看吧, 相隔4天, 哪里谈得上谁复制谁.</p>
+<p>如果偏要说复制品, 倒是可以看看这篇文章:<br><a href="http://antennasoft.net/robcee/2010/05/14/inspector-landing/" target="_blank" rel="external">http://antennasoft.net/robcee/2010/05/14/inspector-landing/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/07/23/frog-under-well-think-web-inspector-copy-firebug/" data-id="ci9p9dvuo001547jjcah5s228" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/07/23/frog-under-well-think-web-inspector-copy-firebug/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-a-lazy-usage-for-factory-girl" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/07/02/a-lazy-usage-for-factory-girl/" class="article-date">
+  <time datetime="2010-07-01T16:00:00.000Z" itemprop="datePublished">2010-07-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/02/a-lazy-usage-for-factory-girl/">A Lazy Usage for Factory Girl</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://github.com/thoughtbot/factory_girl" target="_blank" rel="external">Factory girl</a> let us product model instance feel luck. But for me(a lazy boy). I wanna write shorter that standard way.</p>
+<p>So a… Look code below. I’m lazy to explain.</p>
+<figure class="highlight ruby"><figcaption><span>spec/factories.rb</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">F</span></span></span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="inheritance">&lt;</span><span class="inheritance">&lt; <span class="parent">self</span></span></span></span><br><span class="line">    &#123;<span class="symbol">:a</span> =&gt; <span class="symbol">:attributes_for</span>, <span class="symbol">:b</span> =&gt; <span class="symbol">:build</span>, <span class="symbol">:c</span> =&gt; <span class="symbol">:create</span>, <span class="symbol">:d</span> =&gt; <span class="symbol">:define</span>, <span class="symbol">:s</span> =&gt; <span class="symbol">:stub</span>, <span class="symbol">:*</span> =&gt; <span class="symbol">:sequence</span>, <span class="symbol">:+</span> =&gt; <span class="symbol">:next</span>&#125;.each <span class="keyword">do</span> |k,v|</span><br><span class="line">      delegate v, <span class="symbol">:to</span> =&gt; <span class="constant">Factory</span></span><br><span class="line">      alias_method k, v</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="constant">F</span>.d <span class="symbol">:user</span> <span class="keyword">do</span> |u|</span><br><span class="line">  u.name <span class="string">"foo"</span></span><br><span class="line">  u.full_name <span class="string">"福娃"</span></span><br><span class="line">  u.password <span class="string">"0"</span></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"><span class="constant">F</span>.* <span class="symbol">:foos</span> <span class="keyword">do</span> |n|</span><br><span class="line">  <span class="string">"foo_<span class="subst">#&#123;n&#125;</span>"</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><figcaption><span>spec/models/user_spec.rb</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">require</span> <span class="string">"spec_helper"</span></span><br><span class="line"></span><br><span class="line">describe <span class="constant">User</span> <span class="keyword">do</span></span><br><span class="line">  after <span class="keyword">do</span></span><br><span class="line">    <span class="constant">User</span>.delete_all</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  it <span class="string">"should valid"</span> <span class="keyword">do</span></span><br><span class="line">    <span class="constant">F</span>.b(<span class="symbol">:user</span>).should be_valid</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  it <span class="string">"should save success"</span> <span class="keyword">do</span></span><br><span class="line">    <span class="constant">F</span>.c(<span class="symbol">:user</span>).should_not be_new_record</span><br><span class="line">    <span class="constant">User</span>.all.should be_one</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">  it <span class="string">"should product some foos"</span> <span class="keyword">do</span></span><br><span class="line">    <span class="constant">F</span>.+(<span class="symbol">:foos</span>).should eql <span class="string">"foo_1"</span></span><br><span class="line">    (<span class="constant">F</span> + <span class="symbol">:foos</span>).should eql <span class="string">"foo_2"</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/07/02/a-lazy-usage-for-factory-girl/" data-id="ci9p9dvuy001747jjsm0x0p1u" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/07/02/a-lazy-usage-for-factory-girl/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ruby/">Ruby</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-wash-cloth-or-wash-brain" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/07/02/wash-cloth-or-wash-brain/" class="article-date">
+  <time datetime="2010-07-01T16:00:00.000Z" itemprop="datePublished">2010-07-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/07/02/wash-cloth-or-wash-brain/">Wash Cloth or Wash Brain</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Look_at_a_good_sample:">Look at a good sample:</h2><p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/TEBYM7_wjnI/AAAAAAAABdI/0ABj3V6f5zo/s400/siemens.JPG" alt="Siemens"></p>
+<h2 id="And_another_stupids:">And another stupids:</h2><p><img src="http://lh6.ggpht.com/_M94xOMOWd6s/TEBYNKeVCTI/AAAAAAAABdM/iqqwUknH7c4/1.jpg" alt=""></p>
+<p><img src="http://lh5.ggpht.com/_M94xOMOWd6s/TEBYNA0YxLI/AAAAAAAABdQ/lf9-FUFT9HY/2.jpg" alt=""></p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/TEBYNFGDOVI/AAAAAAAABdU/w3M-2hkLTPY/3.jpg" alt=""></p>
+<p><img src="http://lh6.ggpht.com/_M94xOMOWd6s/TEBYNulvr2I/AAAAAAAABdY/KD_vNrwnzO8/4.jpg" alt=""></p>
+<p><img src="http://lh6.ggpht.com/_M94xOMOWd6s/TEBYZt73VgI/AAAAAAAABdc/j2eHsKzHGHU/5.jpg" alt=""></p>
+<p><img src="http://lh3.ggpht.com/_M94xOMOWd6s/TEBYZsYowzI/AAAAAAAABdg/tAb2wdGoIyo/6.jpg" alt=""></p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/TEBYZjYZKpI/AAAAAAAABdk/yQEssjItfjY/7.jpg" alt=""></p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/TEBYZ6sUmUI/AAAAAAAABdo/PyBkqtrXCes/8.jpg" alt=""></p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/TEBYZ88ozZI/AAAAAAAABds/MCmRCM8yCrA/9.jpg" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/07/02/wash-cloth-or-wash-brain/" data-id="ci9p9dvus001647jjavr6puaw" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/07/02/wash-cloth-or-wash-brain/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-a-joke-about-mate-and-pirate" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/06/27/a-joke-about-mate-and-pirate/" class="article-date">
+  <time datetime="2010-06-26T16:00:00.000Z" itemprop="datePublished">2010-06-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/06/27/a-joke-about-mate-and-pirate/">A Joke About Mate and Pirate</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://macromates.com" target="_blank" rel="external">Textmate</a> has a shell version named “mate”. It’s a simple way to open a project directory.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mate ~/Documents/myproj</span><br></pre></td></tr></table></figure>
+<p>I use Chinese Wubi input method. And I always forgot switch it. So when I input:</p>
+<p><strong>mate</strong></p>
+<p>The output word is:</p>
+<p><strong>贼船</strong></p>
+<p>Translate into English:</p>
+<p><strong>Pirate ship</strong></p>
+<p>lol</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/06/27/a-joke-about-mate-and-pirate/" data-id="ci9p9dvv2001947jjjze2ak7b" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/06/27/a-joke-about-mate-and-pirate/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Textmate/">Textmate</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-when-rails-ujs-met-chrome-frame" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/06/11/when-rails-ujs-met-chrome-frame/" class="article-date">
+  <time datetime="2010-06-10T16:00:00.000Z" itemprop="datePublished">2010-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/06/11/when-rails-ujs-met-chrome-frame/">When Rails Ujs Met Chrome Frame</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Rails ujs let us use other javascript frameworks (like jQuery) in our project. That’s cool.</p>
+<p><img src="http://jquery.org/wp-content/uploads/2010/01/JQuery_logo_color_onwhite-300x74.png" alt="jQuery"></p>
+<p>Here is an article about <a href="http://www.tripwiremagazine.com/2009/11/top-10-javascript-frameworks-by-google.html" target="_blank" rel="external">top 10 javascript frameworks by google</a>. He use a way (an easy way) to sort these frameworks. Search “javascript frameworks” in Google. You can see that the default rails javascript frameworks <a href="http://www.prototypejs.org" target="_blank" rel="external">prototype</a> is not the most popular one now.</p>
+<p>I’m working on a small project for my company by rails and jQuery. The newest rails3 use many html5 features. So I decide let user use a modern browser to use my web page. Otherwise IE6 will kill me. How to switch smoothly? I found chrome frame has beta yesterday!</p>
+<p>Someone said that they hate the web page of xxx-browser only. But wait! I use this in my company only! Didn’t you saw those enterprise-level soft let you install their plugin?</p>
+<p>Make an IE-only page is easy. Make an IE-except page is easier. lol</p>
+<hr>
+<p>Chrome frame show my html5 page (maybe). It’s beautiful than IE. But it cannot works when I send ajax request.</p>
+<p>For example I write a link like this:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">&lt;!-- Rails html5 templete --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">%=</span> <span class="attribute">link_to</span> "<span class="attribute">Add</span> <span class="attribute">user</span>", <span class="attribute">new_user_path</span>, <span class="attribute">:remote</span> =&gt;</span> true %&gt;</span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Will product --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">a</span> <span class="attribute">href</span>=<span class="value">"/users/new"</span> <span class="attribute">data-remote</span>=<span class="value">"true"</span>&gt;</span>Add user<span class="tag">&lt;/<span class="title">a</span>&gt;</span></span><br><span class="line"></span><br><span class="line">Rails handle these link with data-remote by rails.js, It cancel click event, make a ajax request, then trigger ajax:success event back.</span><br><span class="line"></span><br><span class="line">    #!javascript</span><br><span class="line">    // Live is new method in jQuery 1.4+.</span><br><span class="line">    $('a[data-confirm]').live('click', function () &#123; ... &#125;);</span><br><span class="line"></span><br><span class="line">    // When user click the link. jQuery will handle it and send a ajax request.</span><br><span class="line">    $.ajax(&#123;</span><br><span class="line">    	url: "/users/new",</span><br><span class="line">    	dataType: "script",</span><br><span class="line">    	...</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>But chrome frame look like send a incorrect request to rails. Check the log of rails, I found this line:</p>
+<pre><code>Processing by UsersController#<span class="keyword">new</span> <span class="keyword">as</span> *<span class="comment">/*</span>
+</code></pre><p>The right process method is JS because the data type is script. I have test IE FF Chrome and Safari on win and mac. Only chrome frame has this issus.</p>
+<p>I think I should fix this at client side. When I try to get navigator.userAgent by javascript. I found it has the same value as chrome stand-alone.</p>
+<blockquote>
+<p>Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/533.4 (KHTML, like Gecko) <strong>Chrome/5.0.375.62</strong> Safari/533.4</p>
+</blockquote>
+<p>But rails could detect the right user agent:</p>
+<blockquote>
+<p>Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727) <strong>chromeframe/5.0.375.62</strong></p>
+</blockquote>
+<p>Oh! Javascript don’t know it’s running in chrome frame, so it can do anything. Rails know it’s processing the request from chrome frame, but it don’t know that’s a ajax request.</p>
+<p>After a minute. I decide let rails tell javascript: “u r working for chrome frame.”</p>
+<figure class="highlight html"><figcaption><span>application.html.erb</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Hold it in application.html.erb or ur own default layout. for this example put in navigator. --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%</span> <span class="attribute">if</span> @<span class="attribute">win_ie_with_chromeframe</span> %&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="nix"></span><br><span class="line">navigator.<span class="variable">chromeframe =</span> <span class="constant">true</span>;</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">%</span> <span class="attribute">end</span> <span class="attribute">-</span>%&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight ruby"><figcaption><span>application_controller.rb</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Detect chrome frame in application_controller.rb</span></span><br><span class="line">before_filter <span class="symbol">:chromeframe_detect</span></span><br><span class="line"></span><br><span class="line">protected</span><br><span class="line"><span class="function"><span class="keyword">def</span> </span>chromeframe_detect</span><br><span class="line">  ua = request.user_agent</span><br><span class="line">  <span class="variable">@win_ie_with_chromeframe</span> = ua =~ <span class="regexp">/Windows NT/</span> <span class="keyword">and</span> ua =~ <span class="regexp">/MSIE (\d+)/</span> <span class="keyword">and</span> <span class="variable">$1</span>.to_i &lt; <span class="number">9</span> <span class="keyword">and</span> ua =~ <span class="regexp">/chromeframe/</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>And then hack $.ajax. In fact I have three things need fix.</p>
+<ul>
+<li>Chrome frame cannot send PUT DELETE verb.</li>
+<li>Append .js to url tell rails I’m a JS request.</li>
+<li>jQuery will try parse the result as JSON when dataType is script. If it got html. You will see an error: “Uncaught SyntaxError: Unexpected token &lt;”.</li>
+</ul>
+<figure class="highlight javascript"><figcaption><span>application.js</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//BUGFIX: Chromeframe miss some features.</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span><span class="params">($)</span> </span>&#123;</span><br><span class="line">  $.oldAjax = $.ajax;</span><br><span class="line"></span><br><span class="line">  $.ajax = <span class="function"><span class="keyword">function</span><span class="params">(o)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// I can't detect it by navigator.userAgent. So I set it on server side.</span></span><br><span class="line">    <span class="keyword">if</span> (navigator.chromeframe) &#123;</span><br><span class="line">      <span class="comment">// Chromeframe can't send DELETE and PUT verb.</span></span><br><span class="line">      <span class="keyword">if</span> (o.type == <span class="string">"DELETE"</span>) &#123;</span><br><span class="line">        o.type = <span class="string">"POST"</span>;</span><br><span class="line">        o.data = <span class="string">"_method=delete"</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> <span class="keyword">if</span> (o.type == <span class="string">"PUT"</span>) &#123;</span><br><span class="line">        o.type = <span class="string">"POST"</span>;</span><br><span class="line">        o.data += <span class="string">"&amp;_method=put"</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Chromeframe send incorrect ajax type make rails process the request by */*. The right way is JS. I try many way to avoid this. But I can do this with append .js to url only.</span></span><br><span class="line">    <span class="keyword">if</span> (o.dataType == <span class="string">"script"</span> &amp;&amp; !<span class="regexp">/\.js$/</span>.test(o.url)) &#123;</span><br><span class="line">      o.url += <span class="string">".js"</span>;</span><br><span class="line">      <span class="comment">// Webkit try parse result to json then raise a syntax error when receive html. It appear in inspector only and user can't see that except u r a developer. The url(end of .js) has told rails how to process my request. So I set dataType as text because I need respondText only. I can parse json myself.</span></span><br><span class="line">      o.dataType = <span class="string">"text"</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $.oldAjax(o);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/06/11/when-rails-ujs-met-chrome-frame/" data-id="ci9p9dvva001c47jjlusobg9y" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/06/11/when-rails-ujs-met-chrome-frame/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Chrome/">Chrome</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Rails/">Rails</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jQuery/">jQuery</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-maybe-autocad-will-back-to-mac" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/05/23/maybe-autocad-will-back-to-mac/" class="article-date">
+  <time datetime="2010-05-22T16:00:00.000Z" itemprop="datePublished">2010-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/05/23/maybe-autocad-will-back-to-mac/">貌似 AutoCAD 又回到 Mac 了</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://lh3.ggpht.com/_M94xOMOWd6s/S_h8ULsCF3I/AAAAAAAABaQ/CO9eOXFFmFQ/s400/AutoCAD%20for%20Mac%201.png" alt="AutoCAD for Mac 1"><br><img src="http://lh5.ggpht.com/_M94xOMOWd6s/S_h8Ua_rq3I/AAAAAAAABaU/mgaNR_W4dWg/s400/AutoCAD%20for%20Mac%202.jpg" alt="AutoCAD for Mac 2"><br><img src="http://lh5.ggpht.com/_M94xOMOWd6s/S_h8UWOfQXI/AAAAAAAABaY/B0T33SgFMBA/s400/AutoCAD%20for%20Mac%203.jpg" alt="AutoCAD for Mac 3"><br><img src="http://lh4.ggpht.com/_M94xOMOWd6s/S_h8Uij9-_I/AAAAAAAABac/oX7z3rstSKY/s400/AutoCAD%20for%20Mac%204.png" alt="AutoCAD for Mac 4"><br><img src="http://lh6.ggpht.com/_M94xOMOWd6s/S_h8UsurYKI/AAAAAAAABag/ZijKl2bBDk4/s400/AutoCAD%20for%20Mac%205.png" alt="AutoCAD for Mac 5"><br><img src="http://lh5.ggpht.com/_M94xOMOWd6s/S_h8c0A9MII/AAAAAAAABao/SX2QHBGfe7Q/s400/AutoCAD%20for%20Mac%206.png" alt="AutoCAD for Mac 6"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/05/23/maybe-autocad-will-back-to-mac/" data-id="ci9p9dvvk001j47jjtc9dome1" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/05/23/maybe-autocad-will-back-to-mac/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AutoCAD/">AutoCAD</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-adobe-air2rc1-drag-list-item-to-trash-or-recyclebin-has-different-behavior" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/05/15/adobe-air2rc1-drag-list-item-to-trash-or-recyclebin-has-different-behavior/" class="article-date">
+  <time datetime="2010-05-14T16:00:00.000Z" itemprop="datePublished">2010-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/05/15/adobe-air2rc1-drag-list-item-to-trash-or-recyclebin-has-different-behavior/">Adobe Air2rc1 Drag List Item to Trash or RecycleBin Has Different Behavior</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">s:List</span> <span class="attribute">dragEnabled</span>=<span class="value">"true"</span> <span class="attribute">dragMoveEnabled</span>=<span class="value">"true"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">s:dataProvider</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">s:ArrayCollection</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">fx:Object</span> <span class="attribute">label</span>=<span class="value">"Item one"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">fx:Object</span> <span class="attribute">label</span>=<span class="value">"Item two"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">fx:Object</span> <span class="attribute">label</span>=<span class="value">"Item three"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">s:ArrayCollection</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">s:dataProvider</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">s:List</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/S-5p6tVP18I/AAAAAAAABZU/YCJ5VIlLX2Q/s800/adobe_air2rc1_drop_list_item_to_trash_on_mac_10_6_3.png" alt=""><br><img src="http://lh6.ggpht.com/_M94xOMOWd6s/S-5p6jMd5_I/AAAAAAAABZY/XkaSKjafBxI/s800/adobe_air2rc1_drop_list_item_to_trash_on_mac_10_6_3_after.png" alt=""></p>
+<p><img src="http://lh3.ggpht.com/_M94xOMOWd6s/S-5p6-Wtm0I/AAAAAAAABZc/MSUtJhlH5MY/s800/adobe_air2rc1_drop_list_item_to_trash_on_winxp.png" alt=""><br><img src="http://lh5.ggpht.com/_M94xOMOWd6s/S-5p6xJT8bI/AAAAAAAABZg/vaZZLZp_2tE/s800/adobe_air2rc1_drop_list_item_to_trash_on_winxp_after.png" alt=""></p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/S-5qFph_hMI/AAAAAAAABZk/CUiRYTTPBpA/s800/adobe_air2rc1_drop_list_item_to_trash_on_win7.png" alt=""><br><img src="http://lh3.ggpht.com/_M94xOMOWd6s/S-5qFmdy8lI/AAAAAAAABZo/p9PZvfWZjSs/s800/adobe_air2rc1_drop_list_item_to_trash_on_win7_after.png" alt=""></p>
+<p>I think this is a bug. But I have no solution.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/05/15/adobe-air2rc1-drag-list-item-to-trash-or-recyclebin-has-different-behavior/" data-id="ci9p9dvvr001n47jjswt1wsuq" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/05/15/adobe-air2rc1-drag-list-item-to-trash-or-recyclebin-has-different-behavior/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Air/">Air</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mac-server-servermgrd-crash" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2010/05/12/mac-server-servermgrd-crash/" class="article-date">
+  <time datetime="2010-05-11T16:00:00.000Z" itemprop="datePublished">2010-05-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2010/05/12/mac-server-servermgrd-crash/">Mac 服务器 Servermgrd 崩溃</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先说一下背景:</p>
+<p>我们平常用Server Admin来管理MacOSX Server时, 是通过图形界面与一个叫servermgrd的后台进程沟通交换数据的, 它由LaunchCtl启动<code>/System/Library/LaunchDaemon/com.apple.servermgrd.plist</code>实现开机自动运行, 侦听端口311.</p>
+<p>事实上servermgrd是一个Web服务器, 我们的Server Admin是通过HTTP的方式实现远程管理的(即便你在本机使用). 你可以在本机上打开<a href="https://localhost:311" target="_blank" rel="external">https://localhost:311</a>印证这一点.</p>
+<p>不得不说servermgrd的启动依赖太多东西, 修复的过程让我意识到许多服务的配置都会间接的导致servermgrd崩溃. 我认为这会导致许多不便, 问题的根源是servermgrd不能尝试去修复你的配置, 但至少应该兼容这些未包括在图形界面上或不正确的配置, 例如当配置Apache的时候用户自己打开配置文件加入的参数Server Admin是不会碰的. 总之, 不应该崩溃, 因为它一旦崩溃, Server Admin就无法修改, 这真的很尴尬.</p>
+<p>我的Mac Pro运行着Mac OS X Server 10.6.3. 在一次运行Gateway Setup Assistant失败后, 遭遇了servermgrd不能启动的尴尬局面. Console里显示servermgrd不能启动的原因是”Segmentation fault”.</p>
+<pre><code>May <span class="number">12</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">39</span> mes servermgrd[<span class="number">7658</span>]: <span class="string">servermgr_ipfilter:</span>ipfw <span class="string">config:</span><span class="string">Notice:</span>Flushed IPv4 rules
+May <span class="number">12</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">39</span> mes servermgrd[<span class="number">7658</span>]: <span class="string">servermgr_ipfilter:</span>ipfw <span class="string">config:</span><span class="string">Notice:</span>Flushed IPv6 rules
+May <span class="number">12</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">39</span> mes com.apple.launchd[<span class="number">1</span>] (com.apple.servermgrd[<span class="number">7658</span>]): Job appears to have <span class="string">crashed:</span> Segmentation fault
+May <span class="number">12</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">39</span> mes com.apple.launchd[<span class="number">1</span>] (com.apple.servermgrd): Throttling <span class="string">respawn:</span> Will start <span class="keyword">in</span> <span class="number">9</span> seconds
+May <span class="number">12</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">39</span> mes com.apple.ReportCrash.Root[<span class="number">7607</span>]: <span class="number">2010</span>-<span class="number">05</span>-<span class="number">12</span> <span class="number">14</span>:<span class="number">20</span>:<span class="number">39.824</span> ReportCrash[<span class="number">7607</span>:<span class="number">440</span>b] Saved crash report <span class="keyword">for</span> servermgrd[<span class="number">7658</span>] version ??? (???) to /Library/Logs/DiagnosticReports/servermgrd_2010-05-12-142039_localhost.crash
+</code></pre><p>我尝试着google各种可能的关键词, 发现servermgrd不能启动的原因真的太多了. 许多问题都没有答案, 解决办法往往是重装系统.</p>
+<p>没有了Server Admin这个图形化的工具, 其实我们还有serveradmin这个shell工具, 它不需要与后端通讯, 只是用起来有点不方便.</p>
+<p>我是在运行向导时出现的问题, 因此我将目标锁定在NAT服务. (说起来容易, 其实到此为止我已经浪费了大半天的时间了.)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看NAT服务配置</span></span><br><span class="line">sudo serveradmin settings nat</span><br><span class="line">nat:reverse = no</span><br><span class="line">nat:unregistered_only = yes</span><br><span class="line">nat:same_ports = yes</span><br><span class="line">nat:natportmap_interface = <span class="string">"en0"</span></span><br><span class="line">nat:<span class="built_in">log</span> = yes</span><br><span class="line">nat:clamp_mss = yes</span><br><span class="line">nat:dynamic = yes</span><br><span class="line">nat:<span class="built_in">log</span>_denied = no</span><br><span class="line">nat:use_sockets = yes</span><br><span class="line">nat:proxy_only = no</span><br><span class="line">nat:<span class="built_in">enable</span>_natportmap = yes</span><br><span class="line">nat:interface = <span class="string">""</span></span><br><span class="line">nat:deny_incoming = no</span><br></pre></td></tr></table></figure>
+<p>看到了没? NAT的接口竟然指向了空字符串.</p>
+<pre><code>nat:<span class="keyword">interface</span> = <span class="string">""</span>
+</code></pre><p>修复方法:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 试着改回正常值</span></span><br><span class="line">sudo serveradmin settings nat:natportmap_interface = <span class="string">"en1"</span></span><br><span class="line">nat:natportmap_interface = <span class="string">"en1"</span></span><br><span class="line">sudo serveradmin settings nat:interface = <span class="string">"en0"</span></span><br><span class="line">nat:interface = <span class="string">"en0"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 等10秒看看servermgrd起来没</span></span><br><span class="line">ps aux | grep servermgrd | grep -v grep</span><br><span class="line">root      <span class="number">7687</span>   <span class="number">0.0</span>  <span class="number">0.2</span>  <span class="number">2577788</span>  <span class="number">38484</span>   ??  Ss    <span class="number">2</span>:<span class="number">20</span>PM   <span class="number">0</span>:<span class="number">03.57</span> servermgrd -x</span><br></pre></td></tr></table></figure>
+<p>顺便跟着乔老爷子起哄, BS一下Adobe.</p>
+<p>起死回生的Server Admin再一次尝试连接时, 会出奇的慢, 似乎在重置着自己的配置. 等了N久后显示 <code>Server Admin wants to use the PrivateEncryptedDatak keychain</code>, 并且提示我输入密码, 可是怎么输也不对.</p>
+<p>你有没有觉得 <code>PrivateEncryptedDatak</code> 很眼生, 它是谁呀? Google后发现它是Adobe Air的一个示例程序生成的Keychain. Adobe suck!</p>
+<p>删了它, 没事的, 反正就一Demo.</p>
+<p>位置: <code>~/Library/Application Support/Adobe/AIR/ELS/com.adobe.demo.RememberMe/</code></p>
+<p>如果你有洁癖, 就继续打开Keychain - Edit - Keychain List. 把那里面的也删除了.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2010/05/12/mac-server-servermgrd-crash/" data-id="ci9p9dvvw001q47jjeouhb9q9" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2010/05/12/mac-server-servermgrd-crash/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Server/">Server</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

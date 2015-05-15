@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ViTarn Blog">
+<meta property="og:url" content="http://blog.vitarn.com/page/9/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViTarn Blog">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-fsharp-open-system-data-sqlite" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/07/07/fsharp-open-system-data-sqlite/" class="article-date">
+  <time datetime="2008-07-06T16:00:00.000Z" itemprop="datePublished">2008-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/07/07/fsharp-open-system-data-sqlite/">F# - Open System.Data.SQLite</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>System.Data.SQLite.dll可以从<a href="http://sqlite.phxsoftware.com" target="_blank" rel="external">sqlite.phxsoftware.com</a>得到. 冷门的语言+冷门的应用. 不多解释了, 直接上代码:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">#light</span><br><span class="line"><span class="keyword">open</span> System</span><br><span class="line"><span class="keyword">open</span> System.Data</span><br><span class="line"><span class="keyword">open</span> System.IO</span><br><span class="line">#r <span class="string">"System.Data.SQLite.DLL"</span></span><br><span class="line"><span class="keyword">open</span> System.Data.SQLite</span><br><span class="line"><span class="comment">// 输出调试结果到命名行</span></span><br><span class="line"><span class="keyword">let</span> debug x =</span><br><span class="line">    x |&gt; print_any</span><br><span class="line">    Console.WriteLine()</span><br><span class="line"><span class="keyword">let</span> space = [|<span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span> .. <span class="number">50</span> -&gt; <span class="string">"*"</span>|] |&gt; string.Concat</span><br><span class="line"><span class="comment">// 数据库文件名</span></span><br><span class="line"><span class="keyword">let</span> dbFileName = <span class="string">"HelloSQLite.sqlite"</span></span><br><span class="line"><span class="comment">// 连接字符串</span></span><br><span class="line"><span class="keyword">let</span> connString =</span><br><span class="line">    <span class="keyword">let</span> builder = SQLiteConnectionStringBuilder()</span><br><span class="line">    builder.DataSource &lt;- dbFileName</span><br><span class="line">    builder.ConnectionStringspace |&gt; debug</span><br><span class="line">    <span class="string">"连接字符串: "</span> + connString |&gt; debug</span><br><span class="line"><span class="comment">// 创建数据库文件</span></span><br><span class="line">space |&gt; debug</span><br><span class="line"><span class="string">"创建数据库..."</span> |&gt; debug</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">    dbFileName |&gt; File.Delete</span><br><span class="line">    SQLiteConnection.CreateFile dbFileNamewith e -&gt;</span><br><span class="line">        e |&gt; debug</span><br><span class="line">    <span class="keyword">let</span> test _ =</span><br><span class="line">        <span class="keyword">use</span> conn = <span class="keyword">new</span> SQLiteConnection(connString)</span><br><span class="line">        <span class="keyword">use</span> cmd = conn.CreateCommand()</span><br><span class="line">        conn.Open()</span><br><span class="line">        <span class="comment">// 开始计时</span></span><br><span class="line">        <span class="keyword">let</span> watch = <span class="keyword">new</span> System.Diagnostics.Stopwatch()</span><br><span class="line">        watch.Start()</span><br><span class="line">        space |&gt; debug</span><br><span class="line">        <span class="string">"创建表..."</span> |&gt; debug</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">            <span class="comment">(* SQLite 官方文档提及的数据类型只有5种: NULL INTEGER NUMERIC TEXT BLOB           你可能觉得太少了, 事实上 SQLite 是弱类型, 建表时定义的数据类型只是个标识, 对数据列的类型并没有实质性的作用.           你也可以把 TEXT 类型定义成更复杂的 NVARCHAR(50) 之类的, 这只是为了未来数据迁移的方便. *)</span></span><br><span class="line">            cmd.CommandText &lt;- <span class="string">"CREATE TABLE [Test] ( "</span> +</span><br><span class="line">                               <span class="string">"[Int32] INTEGER NOT NULL, "</span> +</span><br><span class="line">                               <span class="string">"[String] TEXT NOT NULL)"</span></span><br><span class="line">            cmd.ExecuteNonQuery() |&gt; ignore</span><br><span class="line">        <span class="keyword">with</span> e -&gt;</span><br><span class="line">            conn.Close()</span><br><span class="line">            e |&gt; debug</span><br><span class="line">            watch.Elapsed |&gt; debug</span><br><span class="line">            watch.Reset()</span><br><span class="line">            watch.Start()</span><br><span class="line">    space |&gt; debug</span><br><span class="line">    <span class="string">"乱入数据十万行..."</span> |&gt; debug</span><br><span class="line">    <span class="keyword">use</span> trans = conn.BeginTransaction()</span><br><span class="line">    cmd.Transaction &lt;- trans</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">        <span class="comment">// 注意: Int32这个列名有些误导, 封装的作者提及 INTEGER 对应 ADO.net 2.0 的 Int64 类型</span></span><br><span class="line">        cmd.CommandText &lt;- <span class="string">"INSERT INTO [Test](Int32, String) "</span> +</span><br><span class="line">                           <span class="string">"VALUES(?, ?)"</span></span><br><span class="line">        <span class="comment">// 下面这种生成参数的方式 在参数较多时会有方便 但不能用seq</span></span><br><span class="line">        [<span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> .. <span class="number">1</span> -&gt; cmd.CreateParameter()]</span><br><span class="line">        |&gt; List.to_array</span><br><span class="line">        |&gt; cmd.Parameters.AddRange</span><br><span class="line">        |&gt; ignore</span><br><span class="line">        <span class="comment">// 参数化插入 这是官方推荐的方式 性能最好</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> .. <span class="number">99999</span> <span class="keyword">do</span></span><br><span class="line">            <span class="keyword">let</span> vl = [box i; box ((i * <span class="number">1000</span>).ToString())]</span><br><span class="line">            <span class="keyword">for</span> j = <span class="number">0</span> <span class="keyword">to</span> (cmd.Parameters.Count - <span class="number">1</span>) <span class="keyword">do</span></span><br><span class="line">                cmd.Parameters.[j].Value &lt;- List.nth vl j</span><br><span class="line">                cmd.ExecuteNonQuery() |&gt; ignore</span><br><span class="line">                trans.Commit()</span><br><span class="line">    <span class="keyword">with</span> e -&gt;</span><br><span class="line">        trans.Rollback()</span><br><span class="line">        conn.Close()</span><br><span class="line">        e |&gt; debug</span><br><span class="line">        watch.Elapsed |&gt; debug</span><br><span class="line">        watch.Reset()</span><br><span class="line">        watch.Start()</span><br><span class="line">        space |&gt; debug</span><br><span class="line">    <span class="string">"查询前3行..."</span> |&gt; debug</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">        cmd.CommandText &lt;- <span class="string">"SELECT * FROM [Test] "</span> +</span><br><span class="line">                           <span class="string">"WHERE [Int32]&lt;3"</span></span><br><span class="line">        <span class="keyword">use</span> reader = cmd.ExecuteReader()</span><br><span class="line">        <span class="keyword">while</span> reader.Read() <span class="keyword">do</span></span><br><span class="line">            reader.GetInt32 <span class="number">0</span> |&gt; debug</span><br><span class="line">            reader.GetString <span class="number">1</span> |&gt; debug</span><br><span class="line">    <span class="keyword">with</span> e -&gt;</span><br><span class="line">        e |&gt; debug</span><br><span class="line">        watch.Elapsed |&gt; debug</span><br><span class="line">        watch.Stop()</span><br><span class="line">        conn.Close()</span><br><span class="line">    test()</span><br><span class="line">    Console.ReadKey()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/07/07/fsharp-open-system-data-sqlite/" data-id="ci9p9dw6k005z47jjk0shq9kg" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/07/07/fsharp-open-system-data-sqlite/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQLite/">SQLite</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-secret-of-blizzard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/28/secret-of-blizzard/" class="article-date">
+  <time datetime="2008-06-27T16:00:00.000Z" itemprop="datePublished">2008-06-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/06/28/secret-of-blizzard/">Blizzard冰封之谜</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.blizzard.com" target="_blank" rel="external">暴雪官方站</a>出现了一个神秘的Splash页面, 似乎有什么东西要破冰而出?</p>
+<p>第一天:</p>
+<p><img src="http://us.media.blizzard.com/232309/_images/ice1.jpg" alt=""></p>
+<p>第二天:</p>
+<p><img src="http://us.media.blizzard.com/232309/_images/ice2.jpg" alt=""></p>
+<p>第三天:</p>
+<p><img src="http://us.media.blizzard.com/232309/_images/ice3.jpg" alt=""></p>
+<p>第四天:</p>
+<p><img src="http://us.media.blizzard.com/232309/_images/ice4.jpg" alt=""></p>
+<p>第五天:</p>
+<p><img src="http://us.media.blizzard.com/232309/_images/ice5.jpg" alt=""></p>
+<p>第六天: (5andahalf 竟然是5.5 T_T):</p>
+<p><img src="http://us.media.blizzard.com/232309/_images/ice5andahalf.jpg" alt=""></p>
+<p>除此之外, 在首页源代码中唯一的.css文件里, 可以看到被注释掉的图片:</p>
+<p><a href="http://us.media.blizzard.com/232309/master.css" target="_blank" rel="external">http://us.media.blizzard.com/232309/master.css</a></p>
+<p><img src="http://us.media.blizzard.com/232309/_images/04.jpg" alt=""></p>
+<p><img src="http://us.media.blizzard.com/232309/_images/15.jpg" alt=""></p>
+<p><img src="http://us.media.blizzard.com/232309/_images/23.jpg" alt=""></p>
+<p><img src="http://us.media.blizzard.com/232309/_images/16.jpg" alt=""></p>
+<p><img src="http://us.media.blizzard.com/232309/_images/08.jpg" alt=""></p>
+<p><img src="http://us.media.blizzard.com/232309/_images/42.jpg" alt=""></p>
+<p>拼图已经完整:</p>
+<p><img src="/images/blizzard-232309-full.jpg" alt=""></p>
+<p>好眼生的说! 他/她/它是?</p>
+<p>DiabloIII 终于见到了真容:</p>
+<p>取代ice图片的过场<a href="http://us.media.blizzard.com/232309/_images/en-US/splash.swf" target="_blank" rel="external">Flash动画</a></p>
+<p><img src="/images/blizzard-diablo-iii.jpg" alt=""></p>
+<p>暴雪官方的暗黑3站点: <a href="http://www.blizzard.com/diablo3" target="_blank" rel="external">http://www.blizzard.com/diablo3</a></p>
+<p><img src="/images/blizzard-diablo-iii-index.jpg" alt=""></p>
+<p>人物设定 (目前仅有野蛮人和术士): <a href="http://www.blizzard.com/diablo3/characters/" target="_blank" rel="external">http://www.blizzard.com/diablo3/characters/</a></p>
+<p><img src="/images/blizzard-diablo-iii-characters.jpg" alt=""></p>
+<p><img src="/images/blizzard-diablo-iii-barbarian.jpg" alt=""></p>
+<p><img src="/images/blizzard-diablo-iii-witch-doctor.jpg" alt=""></p>
+<p>媒体资源页面: <a href="http://www.blizzard.com/diablo3/media" target="_blank" rel="external">http://www.blizzard.com/diablo3/media</a></p>
+<p>目前公布了三段视频, 官方页面还没有搞好, 下载视频需要确认生日是否够18岁, 但那个FLASH中的日期在IE和FF下都无法正常选择. 所以附上直接下载的地址:</p>
+<p><a href="http://us.media.blizzard.com/1901200114/_video/downloaders/cinematictrailer/Diablo3-cinematictrailer_en-US-downloader.exe" target="_blank" rel="external">Diablo3 cinematic trailer</a></p>
+<p><a href="http://us.media.blizzard.com/1901200114/_video/downloaders/gameplaytrailer/Diablo3-gameplaytrailer_en-US-downloader.exe" target="_blank" rel="external">Diablo3 gameplay trailer</a></p>
+<p><a href="http://us.media.blizzard.com/1901200114/_video/downloaders/artworktrailer/Diablo3-artworktrailer_en-US-downloader.exe" target="_blank" rel="external">Diablo3 artwork trailer</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/28/secret-of-blizzard/" data-id="ci9p9dw6o006247jjs9dyvjaw" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/28/secret-of-blizzard/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Game/">Game</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-silverlight2-beta2-wcf-404-error" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/24/silverlight2-beta2-wcf-404-error/" class="article-date">
+  <time datetime="2008-06-23T16:00:00.000Z" itemprop="datePublished">2008-06-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/06/24/silverlight2-beta2-wcf-404-error/">Silverlight 2 Beta2 + WCF = 404 Error ?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大致情形是这样的:</p>
+<ul>
+<li>Silverlight 2 beta2 (目前最新的支持 VS2008 中文版的开发包)</li>
+<li>WCF (采用 SL2b2 安装后新增的那个模板创建的)</li>
+<li>LINQ to SQL (对应 SQL 服务器中的四个表)</li>
+</ul>
+<p>使用 DataGrid 控件来显示和编辑 SQL 中的 Component 表, 强大的LINQ帮我创建了一个对应的 Component 类, 查询和显示的过程很顺利.</p>
+<p>可是到了更新数据这一步, 却碰上了莫名其妙的 404 错误… 少量可以, 大量数据就会出错.</p>
+<blockquote>
+<p>The remote server returned an unexpected response: (404) Not Found.</p>
+</blockquote>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[OperationContract]</span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Component&gt; <span class="title">QueryComponentList</span><span class="params">(Guid TowerID)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> db = <span class="keyword">new</span> LINQDataContext())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> linq =</span><br><span class="line">            <span class="keyword">from</span> l <span class="keyword">in</span> db.Component</span><br><span class="line">            <span class="keyword">where</span> l.TowerID.Equals(TowerID)</span><br><span class="line">            <span class="keyword">orderby</span> l.Section, l.Number</span><br><span class="line">            <span class="keyword">select</span> l;</span><br><span class="line">        <span class="keyword">return</span> linq.ToList();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">[OperationContract]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">UpdateComponentList</span><span class="params">(Guid tid, List&lt;Component&gt; source)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">using</span> (<span class="keyword">var</span> db = <span class="keyword">new</span> LINQDataContext())</span><br><span class="line">    &#123;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在官方论坛上我看到了N种解释, 总结如下:</p>
+<p>跨域安全问题, 也就是传说中的 crossdomain.xml 和 clientaccesspolicy.xml 两个文件. 试试, 虽然我知道不会奏效的.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- crossdomain.xml --&gt;</span></span><br><span class="line"><span class="pi">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">access-policy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">cross-domain-access</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">policy</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">allow-from</span> <span class="attribute">http-request-headers</span>=<span class="value">"*"</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">domain</span> <span class="attribute">uri</span>=<span class="value">"*"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">allow-from</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="title">grant-to</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="title">resource</span> <span class="attribute">path</span>=<span class="value">"/"</span> <span class="attribute">include-subpaths</span>=<span class="value">"true"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="title">grant-to</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">policy</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">cross-domain-access</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">access-policy</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- clientaccesspolicy.xml --&gt;</span></span><br><span class="line"><span class="pi">&lt;?xml version="1.0"?&gt;</span></span><br><span class="line"><span class="doctype">&lt;!DOCTYPE cross-domain-policy SYSTEM "http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd"&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">cross-domain-policy</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">allow-http-request-headers-from</span> <span class="attribute">domain</span>=<span class="value">"*"</span> <span class="attribute">headers</span>=<span class="value">"*"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">cross-domain-policy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Silverlight 项目中的 ServiceReferences.ClientConfig 文件, 增大 maxBufferSize 和 maxReceivedMessageSize. 我加到了 2147483647, 也就是 2G, 结果不行.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">binding</span> <span class="attribute">name</span>=<span class="value">"BasicHttpBinding_WCF"</span> <span class="attribute">maxBufferSize</span>=<span class="value">"2147483647"</span> <span class="attribute">maxReceivedMessageSize</span>=<span class="value">"2147483647"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>网站中的 web.config 文件, 增大若干个 max 开头的属性. 我估计有几项是客户端根本无法识别的 设置了也没用…</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">bindings</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">basicHttpBinding</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">binding</span> <span class="attribute">name</span>=<span class="value">"BasicHttpBinding_WCF"</span> <span class="attribute">maxBufferSize</span>=<span class="value">"2147483647"</span> <span class="attribute">maxReceivedMessageSize</span>=<span class="value">"2147483647"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">readerQuotas</span> <span class="attribute">maxArrayLength</span>=<span class="value">"2147483647"</span> <span class="attribute">maxDepth</span>=<span class="value">"2147483647"</span> <span class="attribute">maxBytesPerRead</span>=<span class="value">"2147483647"</span> <span class="attribute">maxNameTableCharCount</span>=<span class="value">"2147483647"</span> <span class="attribute">maxStringContentLength</span>=<span class="value">"2147483647"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">security</span> <span class="attribute">mode</span>=<span class="value">"None"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">binding</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">basicHttpBinding</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">bindings</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">services</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">service</span> <span class="attribute">behaviorConfiguration</span>=<span class="value">"WCFBehavior"</span> <span class="attribute">name</span>=<span class="value">"WCF"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">endpoint</span> <span class="attribute">address</span>=<span class="value">""</span> <span class="attribute">binding</span>=<span class="value">"basicHttpBinding"</span> <span class="attribute">bindingConfiguration</span>=<span class="value">"BasicHttpBinding_WCF"</span> <span class="attribute">contract</span>=<span class="value">"WCF"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">endpoint</span> <span class="attribute">address</span>=<span class="value">"mex"</span> <span class="attribute">binding</span>=<span class="value">"mexHttpBinding"</span> <span class="attribute">contract</span>=<span class="value">"IMetadataExchange"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">service</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">services</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在 web.config 文件中的 system.web/httpRuntime 节点下, 设置 POST 允许的最大长度, 以kb为单位, 那就是 int.MaxValue/1024=2097151. 早就知道问题不在这…</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">httpRuntime</span> <span class="attribute">maxRequestLength</span>=<span class="value">"2097151"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>web.config 中关于 WCF 还有个秘密, 那就是 <code>system.serviceModel/behaviors/serviceBehaviors/behavior/dataContractSerializer</code>. 天啊, 连这个都有人挖出来啦! 兴奋了几秒钟, 发现还是没搞定!</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">behaviors</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">serviceBehaviors</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">behavior</span> <span class="attribute">name</span>=<span class="value">"WCFBehavior"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">serviceMetadata</span> <span class="attribute">httpGetEnabled</span>=<span class="value">"true"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">serviceDebug</span> <span class="attribute">includeExceptionDetailInFaults</span>=<span class="value">"false"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">dataContractSerializer</span> <span class="attribute">maxItemsInObjectGraph</span>=<span class="value">"2147483647"</span> <span class="attribute">ignoreExtensionDataObject</span>=<span class="value">"true"</span> /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">behavior</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">serviceBehaviors</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">behaviors</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>仔细回忆到底是哪里出了问题, 我发现当数据少于 176 行时是没有问题的, 只要一超过这个数量, 就会弹出异常, 而且感觉上是在异步传递数据之后立即发生的, 比能够上传成功的 176 行数据响应的还快许多, 更奇怪的是虽然 VS2008 跳出异常, 接收到了 404 错误, 但此时任务管理器的 WebDev.WebServer.EXE 和 sqlserver.exe 都正忙着, 查看 SQL 发现数据也是成功写入了…</p>
+<p>那这 404 是哪里来的鬼东西? 无意中直接打开 IE 不经过调试, 结果我也没接收到 404 错误, 真的无奈了, 最后决定死马当活马医. 把上传数据那个函数从 void 类型改成 bool 类型, 让它具备一个布尔型的返回结果, 以确认上传是否成功(之前一直感觉这是多余的).</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[OperationContract]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">bool</span> <span class="title">UpdateComponentList</span><span class="params">(Guid tid, List&lt;Component&gt; source)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">using</span> (<span class="keyword">var</span> db = <span class="keyword">new</span> LINQDataContext())</span><br><span class="line">        &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">catch</span> (Exception)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>古怪的问题就这样华丽的消失了… 别问我为什么, 我也不知道!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/24/silverlight2-beta2-wcf-404-error/" data-id="ci9p9dw6u006447jjwx1nkr9y" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/24/silverlight2-beta2-wcf-404-error/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-silverlight2beta2-kidding-us" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/09/silverlight2beta2-kidding-us/" class="article-date">
+  <time datetime="2008-06-08T16:00:00.000Z" itemprop="datePublished">2008-06-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/06/09/silverlight2beta2-kidding-us/">Silverlight 2 Beta2 把我们都涮了</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前曾经写过一篇 <a href="/2008/06/06/buggy-silverlight-sdk/">矫情的 Silverlight 开发工具包</a></p>
+<p>不过之后我又发现相比刚刚推出的 beta2 版来说, 之前的 beta1 版算是比较的谦和了. 为什么这样说呢? 且看下去:</p>
+<p>当我在尝试安装 Silverlight 2 beta2 开发包的时候, 相同的错误对话框再一次出现了, 我确定这次一定与前次不同, 因为我已经有了教训, 把与 Silverlight 相关的所有成员全部驱逐出境了, 我真的不得不佩服这个经典的错误对话框, 因为它帮你仔细的列举了所有出错的可能性, 却并不指明到底是哪条错误导致安装失败的.</p>
+<p>为了一探究竟, 我将安装包解压了, 发现这次包含的 VS2008 补丁与前次不同, 名称是 VS90-KB950630.msp, 直接双击安装, 提示如下:</p>
+<blockquote>
+<p>Windows Installer 服务不能安装此升级修补程序, 因为找不到要升级的程序, 或者升级修补程序可能更新的是不同版本的程序. 请验证要升级的程序存在, 并且您的升级修补程序正确.</p>
+</blockquote>
+<p>已经可以确认安装错误的原因就是它了, 但为什么呢? 我到微软的网站上看了一下, 有两种语言可选, 我决定将日文安装包下载下来比对一下, 竟然发现在日文包内的 VS2008 补丁名称是 VS90-KB950631.msp</p>
+<p>一切都明白了, 这下你知道为什么中文版的 VS2008 在安装 Silverlight 2 beta2 时全军覆没了吧!</p>
+<p>使用 VS2008 中文版的朋友, 可以暂时放弃了, 别再为此事浪费心情了. 微软正在做本地化工作, 在还没有完成的情况下就抛出了这个 beta2 的安装包, 把我们这些人都涮了…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/09/silverlight2beta2-kidding-us/" data-id="ci9p9dw6y006747jjm2qwkmn2" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/09/silverlight2beta2-kidding-us/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-dotnet-ecosystem-visualization" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/09/dotnet-ecosystem-visualization/" class="article-date">
+  <time datetime="2008-06-08T16:00:00.000Z" itemprop="datePublished">2008-06-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/06/09/dotnet-ecosystem-visualization/">.NET 生态系统图示</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>发现了一个极棒的 .NET 生态系统图示</p>
+<p><img src="http://www.hanselman.com/blog/content/binary/WindowsLiveWriter/PuttingMixSilverlighttheCoreCLRandtheDLR_13FC1/HanselmanDotNetEcosystemVisualization%5B9%5D.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/09/dotnet-ecosystem-visualization/" data-id="ci9p9dw72006947jjjcxae3vt" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/09/dotnet-ecosystem-visualization/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-fsharp-resxc-exe-bug" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/07/fsharp-resxc-exe-bug/" class="article-date">
+  <time datetime="2008-06-06T16:00:00.000Z" itemprop="datePublished">2008-06-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/06/07/fsharp-resxc-exe-bug/">F# resxc.exe BUG</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我在研究如何把资源嵌入 F# 程序时, 从 F# 的示例中找到了答案 —- Samples101</p>
+<p>示例的编译参数主要部分如下:</p>
+<p><code>%FSC% --no-warn 62 -o samples101.exe SampleForm.resx sample.fs beginnersInLightSyntax.fs sampleform.fs program.fs</code></p>
+<p>这其实是把 .resx 资源当作工程的一部分直接编译到 .exe 当中.</p>
+<p>当我使用 FSharp-1.9.4.17 对其进行编译的时候, 我发现生成的 samples101.exe 文件尺寸有些不大对劲, 竟然有 323KB. 尝试使用 <a href="http://www.aisto.com/roeder/dotnet" target="_blank" rel="external">Reflector for .NET</a> 打开生成的可执行文件, 我惊奇的发现, 文件内竟然嵌入了七个相同的资源.</p>
+<p><img src="/images/fsharp-resxc-bug-1.png" alt=""></p>
+<p>查阅一些资料后明白, 原来在将 .resx 资源添加到工程中, 编译时会调用 resxc.exe 将 .resx 转化成 .resources 资源, 编译完成后又删除了中间过程产生的 .resources. 于是我试着使用 resxc.exe 手动生成 .resources, 发现生成的资源文件竟然比原有文件大了数倍. 看来问题就出现在 resxc.exe 身上了.</p>
+<p>接下来的一切也证明了这一点, 使用 <a href="http://www.aisto.com/roeder/dotnet" target="_blank" rel="external">Reflector for .NET</a> 打开 .resx 文件, 再另存为 .resources, 文件按照预期的尺寸生成了, 比原有文件稍小, 毕竟是相同的内容, 二进制的 .resources 文件当然要比十进制 XML 格式的 .resx 文件小一点才对.</p>
+<p>把直接嵌入的方式改为使用参数嵌入 <code>--resource SampleForm.resources</code>, 文件尺寸也降至 119KB.</p>
+<p><img src="/images/fsharp-resxc-bug-2.png" alt=""></p>
+<p>我考虑到了正在使用的 Win2k8 系统的特殊性, 又在一台只有 F# 安装包和 .NET 的 WinXP 系统的笔记本上试了一下, 资源还是被嵌入了七次. 或许这真的是一个 七次资源 BUG (7 Times Resources BUG)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/07/fsharp-resxc-exe-bug/" data-id="ci9p9dw79006a47jjwjqszaaq" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/07/fsharp-resxc-exe-bug/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-buggy-silverlight-sdk" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/06/06/buggy-silverlight-sdk/" class="article-date">
+  <time datetime="2008-06-05T16:00:00.000Z" itemprop="datePublished">2008-06-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/06/06/buggy-silverlight-sdk/">矫情的 Silverlight 开发工具包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>silverlight_chainer.exe 也就是那个 Silverlight 2 SDK 的全套开发工具包, 安装的时候报错.</p>
+<p>An Error Has Occurred:</p>
+<p>Silverlight Tools cannot be installed because one or more of the following conditions is true:</p>
+<ol>
+<li>Visual Studio 2008 RTM is not installed.</li>
+<li>The Web Authoring feature of Visual Studio is not installed.</li>
+<li>A previous version of the Silverlight Runtime is installed.</li>
+<li>A previous version of the Silverlight SDK is installed.</li>
+<li>The Visual Studio Update KB949325 is installed.</li>
+<li>A previous version of Silverlight Tools is installed.</li>
+</ol>
+<p>To continue, please install or uninstall the appropriate products and run this installer again.</p>
+<hr>
+<p>发生错误:</p>
+<p>Silverlight 工具因为下面问题中的一个或多个而无法安装:</p>
+<ol>
+<li>未安装 Visual Studio 2008 RTM.</li>
+<li>未安装 Visual Studio 的 WEB 创作功能.</li>
+<li>已安装上一版本的 Silverlight 运行时.</li>
+<li>已安装上一版本的 Silverlight SDK.</li>
+<li>已安装 Visual Studio 更新 KB949325</li>
+<li>已安装上一版本的 Silverlight 工具</li>
+</ol>
+<p>要继续, 请安装或卸载适当的产品后再运行安装包.</p>
+<hr>
+<p>逐一排除!</p>
+<ol>
+<li>不可能!</li>
+<li>开玩笑!</li>
+<li>装过, 刚刚卸载了!</li>
+<li>同上!</li>
+<li>这个…我也不知道!</li>
+<li>什么工具? 上一版有工具么?</li>
+</ol>
+<p>看来原因就在这个 KB949325 上面, 看了下已安装的更新, 还真有这个家伙, 全称很长:</p>
+<p>Update for Microsoft Visual Studio 2008 专业版 - 简体中文 (KB949325)</p>
+<p>卸载过程让人大跌眼镜, 竟然启动 VS2008 的维护模式, 持续1分钟之久…</p>
+<p>我终于明白上次 Silverlight 2 工具包在安装进度条到了100%之后, 我出去抽根烟又和同事聊了会儿天, 回来发现竟然还没有装好的原因了.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/06/06/buggy-silverlight-sdk/" data-id="ci9p9dw7c006c47jjcs9qjky1" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/06/06/buggy-silverlight-sdk/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-fsc-full-help-cn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/05/31/fsc-full-help-cn/" class="article-date">
+  <time datetime="2008-05-30T16:00:00.000Z" itemprop="datePublished">2008-05-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/05/31/fsc-full-help-cn/">F# 编译器参数说明 (Fsc --Full-Help)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><code>fsc --full-help</code></p>
+<blockquote>
+<p>  MSR F# Compiler, (c) Microsoft Corporation, All Rights Reserved<br>    F# Version 1.9.4.17, compiling for .NET Framework Version v2.0.50727<br>    Usage: fsc <options> [imported.dll … ] [file1.ml [file2.ml …] ]</options></p>
+</blockquote>
+<p>基本选项:</p>
+<ul>
+<li>-I <string>: 指定包含的路径目录.</string></li>
+<li>-r <string>: 引用 F# 或 .NET 程序集.</string></li>
+<li>-R <string>: 引用 F# 或 .NET 程序集并复制到本地.</string></li>
+<li>-o <string>: 命名输出文件.</string></li>
+<li>-a: 生成 DLL.</li>
+<li>-g: 生成调试文件. 如果未指定 -O 时禁用优化.</li>
+<li>—define <string>: 定义给定的条件编译符号.</string></li>
+<li>-i: 输出程序集的推导接口.</li>
+<li>-doc <string>: 将程序集的 XML 文档写入指定文件.</string></li>
+<li>-Ooff: 禁用所有的优化, 包括 JIT.</li>
+<li>-O0: 允许 JIT 优化.</li>
+<li>-O1: 允许 JIT 和本地优化.</li>
+<li>-O: 类似 -O2 (未使用 -g 时的默认值)</li>
+<li>-O2: 类似 -O1, 允许跨模块优化.</li>
+<li>-O3: 类似 -O2, 增加内置和对 lambda 表达式的优化.</li>
+<li>—no-mllib:<ul>
+<li>不引用 FSharp.Compatibility.dll 或<br>open Microsoft.FSharp.Compatibility.OCaml.Pervasives,<br>当希望避开对该模块的依赖时很有用.</li>
+</ul>
+</li>
+<li>—all-warnings: 输出全部警告.</li>
+<li>—no-warnings: 不输出警告.</li>
+<li>—warn <int>: 报告指定的警告.</int></li>
+<li>—no-warn <string>: 不报告指定的警告.</string></li>
+<li>—all-warnings-as-errors: 将全部警告视为错误.</li>
+<li>—warn-as-error <int>: 将指定的警告视为错误.</int></li>
+<li>—gnu-style-errors: 输出 GNU 风格的带行号的错误.</li>
+<li>—namespace <string>:<ul>
+<li>定义默认的根命名空间, 包括后来定义的 F# 子模块.</li>
+</ul>
+</string></li>
+<li>—open <string>:<ul>
+<li>打开指定模块作为每个源文件的初始定义.</li>
+</ul>
+</string></li>
+<li>—fullpaths: 编译器生成完整的路径描述.</li>
+<li>—clr-root <string>:<ul>
+<li>用于取代编译器寻找 mscorlib.dll 和构造组件的路径. 通常用于<br>—cli-version, 编译 Silverlight 或 .NET Compact Framework</li>
+</ul>
+</string></li>
+<li>—ml-compatibility: 忽略 OCaml 兼容性警告.</li>
+<li>—ml-keywords:<ul>
+<li>将 F# 中不属于 OCaml 的关键字视为标识符.</li>
+</ul>
+</li>
+<li>—copy-local <string>:<ul>
+<li>定位搜索路径中的指定文件, 复制到本地(例如 PDB).</li>
+</ul>
+</string></li>
+<li>—compiling-fslib: <internal use="" only=""></internal></li>
+<li>—compiling-mllib: <internal use="" only=""></internal></li>
+<li>—generate-interface-file <string>:<ul>
+<li>输出程序集的推导接口到文件.</li>
+</ul>
+</string></li>
+<li>—target-exe: 生成命令行可执行文件.</li>
+<li>—target-winexe: 生成不带 stdin/stdout/stderr 的可执行文件.</li>
+<li>—target-dll: 生成 DLL</li>
+<li>—target-module: 生成模块, 用于添加到另一个程序集.</li>
+<li>—auto-resolve: 自动引用 DLLs, 根据名称匹配需要的 F# 模块或命名空间. 实验性.</li>
+<li>-c: 编译成模块 (—target-module) 并且自动解析 (—auto-resolve). 实验性.</li>
+<li>—standalone:<ul>
+<li>静态链接 F# 库和所有涉及依赖 F# 库的 DLLs 到生成的程序集. 禁止生成 F#<br>接口并优化资源, 同时重命名所有 Microsoft.FSharp 开头的类型, 把它们<br>置于目标程序集的内部. 静态链接的程序集中类型名不能重复, 也不能使用代码<br>映射程序集中的类型, 并且也不能使用代码暴露 F# 库类型作为 API.</li>
+</ul>
+</li>
+<li>—static-link <string>:<ul>
+<li>静态链接给定的程序集和所有涉及到的 DLLs.<br>注意: 使用程序集名称 例如 mylib, 而不是 DLL 名称 例如 mylib.dll.</li>
+</ul>
+</string></li>
+<li>—keyfile <string>:<ul>
+<li>用给定的 key 文件注册程序集, 就像用 .NET Framework SDK 中的 \’sn.exe\’<br>工具一样. 它为程序集生成强名称. 这仅在生成在不同目录程序之间共享的<br>同一程序集时有用, 例如安装到 GAC (Global Assembly Cache).</li>
+</ul>
+</string></li>
+<li>—public-keyfile <string>:<ul>
+<li>使用给定的公开 key 文件延迟注册. 程序集随后可以使用 .NET Framework SDK<br>中的 \’sn.exe\’ 完成注册.</li>
+</ul>
+</string></li>
+<li>—retargetable <string>: 指定程序集可以引用 retargetable 形式. 用于创建独立于<ul>
+<li>引用 DLLs 发行者的二进制文件.</li>
+</ul>
+</string></li>
+<li>—win32res <string>: 指定 Win32 资源文件 (.res)</string></li>
+<li>—platform <string>: 限定代码可以在哪种平台上运行:<ul>
+<li>x86</li>
+<li>anycpu</li>
+<li>默认是 anycpu. 其他平台限制规则尚不可用 如 x64 和 Itanium.</li>
+</ul>
+</string></li>
+<li>—resource <string>: 嵌入指定的托管资源 (.resource).<ul>
+<li>可以使用 resgen.exe 或 resxc.exe 从 .resx 文件生成 .resource 文件.</li>
+</ul>
+</string></li>
+<li>—link-resource <string>:<ul>
+<li>链接指定的托管资源文件 (.resource).</li>
+<li>格式类似于 <file>[,<stringname>[,public|private]].</stringname></file></li>
+<li>可以使用 resgen.exe 从 .resx 文件生成 .resource 文件.</li>
+</ul>
+</string></li>
+<li>—base-address <string>: 用于创建库的基础地址.</string></li>
+<li>—version-file <string>:</string></li>
+<li>—version <string>:<ul>
+<li>为产生的 .NET 程序集产生版本号 (例如 1.2.0.1).</li>
+</ul>
+</string></li>
+<li>—cli-version <string>:<ul>
+<li>为指定的 CLI 版本产生代码, 不理会在编译时所安装的运行时 CLI.</li>
+<li>当前版本的 F# 可用值: 1.0, 1.1, 2.0</li>
+<li>创建标签例如 v2.0.x86chk</li>
+<li>你还需要把正确的 Framework 目录添加到包含路径中<br>—clr-root \WINDOWS\Microsoft.NET\Framework\v1.1.4322</li>
+<li>当然还需要对你的二进制文件运行适当版本的检验, 例如<br>C:\Program Files\Microsoft Visual Studio .NET 2003<br>\SDK\v1.1\Bin\PEVerify.exe</li>
+<li>以确保你和你导入的库没有使用指定 .NET Framework 版本之外的特性.</li>
+</ul>
+</string></li>
+<li>—clr-mscorlib <string>:<ul>
+<li>指定目标 CLR 上的 mscorlib</li>
+</ul>
+</string></li>
+<li>—debug-file <string>:<ul>
+<li>命名 debug 输出文件.</li>
+</ul>
+</string></li>
+<li>—generate-debug-file:</li>
+<li>—no-debug-file:<ul>
+<li>控制是否产生 debug 信息. 与 -g 不同, 它默认不关闭优化.</li>
+</ul>
+</li>
+<li>—generate-html:<ul>
+<li>生成 HTML 文档.</li>
+</ul>
+</li>
+<li>—html-output-directory <string>:<ul>
+<li>输出 HTML 的目录.</li>
+</ul>
+</string></li>
+<li>—html-css <string>:<ul>
+<li>设置 HTML 文档的 CSS (Cascading Style Sheet).</li>
+</ul>
+</string></li>
+<li>—html-namespace-file <string>:<ul>
+<li>设置主要的 namespaces.html 文件名称, 假定在输出目录.</li>
+</ul>
+</string></li>
+<li>—html-namespace-file-append:<ul>
+<li>当生成 HTML 文档时附加到主要的命名空间文件.</li>
+</ul>
+</li>
+<li>—no-optimization-data:<ul>
+<li>仅包括必要的实现内部结构的优化信息. 抑制内部跨模块可以改善二进制兼容性.</li>
+</ul>
+</li>
+<li>—generate-optimization-data-file:<ul>
+<li>将优化信息放入一个 .optdata 文件</li>
+</ul>
+</li>
+<li>—no-interface-data:<ul>
+<li>不将资源添加到产生的程序集当中, 包括用于其他 F# 程序集的接口数据. 程序集<br>只能被 .NET 程序集访问.</li>
+</ul>
+</li>
+<li>—quotation-data:<ul>
+<li>这一标志已过时. 代之使用 \’ReflectedDefinition\’ 属性.</li>
+</ul>
+</li>
+<li>—generate-config-file:<ul>
+<li>生成配置文件确保 .exe 运行在 —cli-version 指定的版本上. 文件包含<br>\’supportedRuntime\’ XML 元素.</li>
+</ul>
+</li>
+<li>—jit-optimize:</li>
+<li>—no-jit-optimize:</li>
+<li>—local-optimize:</li>
+<li>—no-local-optimize:</li>
+<li>—cross-optimize:</li>
+<li>—no-cross-optimize:<ul>
+<li>细微深入的控制 JIT 本地和跨模块.</li>
+</ul>
+</li>
+<li>—fast-sublanguage-only:<ul>
+<li>限制 F# 语言中很难有效编译的细微规则结构, 为编译器争得更多的优化机会.<br>配合下面所有的 —no-ABC 标志. 能显著改善性能.</li>
+</ul>
+</li>
+<li>—no-inner-polymorphism:<ul>
+<li>不允许内部绑定到真正的泛型.</li>
+</ul>
+</li>
+<li>—permit-inner-polymorphism:</li>
+<li>—no-string-interning: 运行时不保留编译的字符串常量.</li>
+<li>—statistics: 显示编译器统计.</li>
+<li>—progress: 显示编译器进度.</li>
+<li>—no-framework:<ul>
+<li>默认不引用 .NET Framework assemblies 程序集.</li>
+</ul>
+</li>
+<li>—sscli:<ul>
+<li>强迫编译器寻找并使用路径中的 SSCLI , 取代 Microsoft CLI.<br>生成的调试信息也是 SSCLI 格式的.</li>
+</ul>
+</li>
+<li>—max-errors <int>: <internal use=""></internal></int></li>
+<li>—generate-filter-blocks:<ul>
+<li>生成过滤块以允许第一时间捕获未处理的异常.</li>
+</ul>
+</li>
+<li>—stamps: <internal use=""></internal></li>
+<li>—ranges: <internal use=""></internal></li>
+<li>—terms: <internal use=""></internal></li>
+<li>—termsfile: <internal use=""></internal></li>
+<li>—ilfiles: <internal use=""></internal></li>
+<li>—times: <internal use=""></internal></li>
+<li>—detuple <int>: <internal use=""></internal></int></li>
+<li>—tlr <int>: <internal use=""></internal></int></li>
+<li>—tlrlift <int>: <internal use=""></internal></int></li>
+<li>—no-env: <internal use=""></internal></li>
+<li>—parse-only: <internal use="" only=""></internal></li>
+<li>—typecheck-only: <internal use="" only=""></internal></li>
+<li>—ast: <internal use="" only=""></internal></li>
+<li>—tokenize: <internal use="" only=""></internal></li>
+<li>—testInteractionParser: <internal use="" only=""></internal></li>
+<li>—light: <experimental use="" only=""></experimental></li>
+<li>—lightoff: <experimental use="" only=""></experimental></li>
+<li>—inline-threshold <int>: <internal use="" only=""></internal></int></li>
+<li>—extra-optimization-loops <int>: <internal use="" only=""></internal></int></li>
+<li>—generics:</li>
+<li>—no-generics:<ul>
+<li>细微调节是否生成 .NET CLR 通用支持的代码.</li>
+</ul>
+</li>
+<li>—all-tailcalls:</li>
+<li>—no-tailcalls:<ul>
+<li>细微调节是否发出尾部调用注解.</li>
+</ul>
+</li>
+<li>—closures-as-virtuals:<ul>
+<li>细微调节关闭实现.</li>
+</ul>
+</li>
+<li>—multi-entrypoint-closures:</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/05/31/fsc-full-help-cn/" data-id="ci9p9dw7h006e47jji9rd8bwq" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/05/31/fsc-full-help-cn/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-firefox-tor" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/05/29/firefox-tor/" class="article-date">
+  <time datetime="2008-05-28T16:00:00.000Z" itemprop="datePublished">2008-05-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/05/29/firefox-tor/">洋葱路由器图解 FireFox+Tor</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Tor: <a href="https://www.torproject.org/download.html.zh-cn" target="_blank" rel="external">https://www.torproject.org/download.html.zh-cn</a></p>
+<p>建议下载适用于Windows平台的简体中文稳定版, 安装包内的Privoxy是本地代理不必安装, 安装后无需特殊配置, 只要选择是否开机启动就可以了.</p>
+<p><img src="/images/firefox-tor-1.png" alt=""></p>
+<p>FireFox插件: <a href="http://foxyproxy.mozdev.org/downloads.html" target="_blank" rel="external">http://foxyproxy.mozdev.org/downloads.html</a></p>
+<p><img src="/images/firefox-tor-2.png" alt=""><br><img src="/images/firefox-tor-3.png" alt=""><br><img src="/images/firefox-tor-4.png" alt=""><br><img src="/images/firefox-tor-5.png" alt=""><br><img src="/images/firefox-tor-6.png" alt=""><br><img src="/images/firefox-tor-7.png" alt=""><br><img src="/images/firefox-tor-8.png" alt=""><br><img src="/images/firefox-tor-9.png" alt=""><br><img src="/images/firefox-tor-a.png" alt=""></p>
+<p>常见的规则有:</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">*</span>wordpress.com/<span class="keyword">*</span></span><br><span class="line"><span class="keyword">*</span>typed.com/<span class="keyword">*</span></span><br><span class="line"><span class="keyword">*</span>blogspot.com/<span class="keyword">*</span></span><br><span class="line"><span class="keyword">*</span>wikipedia.com/<span class="keyword">*</span></span><br></pre></td></tr></table></figure>
+<p>依此类推, Good luck!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/05/29/firefox-tor/" data-id="ci9p9dw7n006g47jjrdir8qm3" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/05/29/firefox-tor/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Firefox/">Firefox</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-fsharp-compiler-19417-msi" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/05/24/fsharp-compiler-19417-msi/" class="article-date">
+  <time datetime="2008-05-23T16:00:00.000Z" itemprop="datePublished">2008-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/05/24/fsharp-compiler-19417-msi/">F# Compiler 1.9.4.17 (Msi)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>2008年5月19日更新 <a href="http://research.microsoft.com/research/downloads/Details/7ac148a7-149b-4056-aa06-1e6754efd36f/Details.aspx?0sr=d" target="_blank" rel="external">F# 1.9.4.17</a></p>
+<p>我是在Mail List中看到的</p>
+<p>官网只留下了下载地址 未见更新内容</p>
+<p>根据版本号估计 可能只是更新了较严重的BUG</p>
+<p>BTW: 联想品牌机原装的Ramaxel内存 单根没有问题 两根就会引起蓝屏 怪哉!</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/05/24/fsharp-compiler-19417-msi/" data-id="ci9p9dw7v006i47jjpeao6n94" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/05/24/fsharp-compiler-19417-msi/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/8/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/10/">Next &raquo;</a>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

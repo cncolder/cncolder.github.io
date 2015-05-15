@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>F# - Open System.Data.SQLite | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="System.Data.SQLite.dll可以从sqlite.phxsoftware.com得到. 冷门的语言+冷门的应用. 不多解释了, 直接上代码:
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656">
+<meta property="og:type" content="article">
+<meta property="og:title" content="F# - Open System.Data.SQLite">
+<meta property="og:url" content="http://blog.vitarn.com/2008/07/07/fsharp-open-system-data-sqlite/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="System.Data.SQLite.dll可以从sqlite.phxsoftware.com得到. 冷门的语言+冷门的应用. 不多解释了, 直接上代码:
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="F# - Open System.Data.SQLite">
+<meta name="twitter:description" content="System.Data.SQLite.dll可以从sqlite.phxsoftware.com得到. 冷门的语言+冷门的应用. 不多解释了, 直接上代码:
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-fsharp-open-system-data-sqlite" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/07/07/fsharp-open-system-data-sqlite/" class="article-date">
+  <time datetime="2008-07-06T16:00:00.000Z" itemprop="datePublished">2008-07-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      F# - Open System.Data.SQLite
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>System.Data.SQLite.dll可以从<a href="http://sqlite.phxsoftware.com" target="_blank" rel="external">sqlite.phxsoftware.com</a>得到. 冷门的语言+冷门的应用. 不多解释了, 直接上代码:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">#light</span><br><span class="line"><span class="keyword">open</span> System</span><br><span class="line"><span class="keyword">open</span> System.Data</span><br><span class="line"><span class="keyword">open</span> System.IO</span><br><span class="line">#r <span class="string">"System.Data.SQLite.DLL"</span></span><br><span class="line"><span class="keyword">open</span> System.Data.SQLite</span><br><span class="line"><span class="comment">// 输出调试结果到命名行</span></span><br><span class="line"><span class="keyword">let</span> debug x =</span><br><span class="line">    x |&gt; print_any</span><br><span class="line">    Console.WriteLine()</span><br><span class="line"><span class="keyword">let</span> space = [|<span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span> .. <span class="number">50</span> -&gt; <span class="string">"*"</span>|] |&gt; string.Concat</span><br><span class="line"><span class="comment">// 数据库文件名</span></span><br><span class="line"><span class="keyword">let</span> dbFileName = <span class="string">"HelloSQLite.sqlite"</span></span><br><span class="line"><span class="comment">// 连接字符串</span></span><br><span class="line"><span class="keyword">let</span> connString =</span><br><span class="line">    <span class="keyword">let</span> builder = SQLiteConnectionStringBuilder()</span><br><span class="line">    builder.DataSource &lt;- dbFileName</span><br><span class="line">    builder.ConnectionStringspace |&gt; debug</span><br><span class="line">    <span class="string">"连接字符串: "</span> + connString |&gt; debug</span><br><span class="line"><span class="comment">// 创建数据库文件</span></span><br><span class="line">space |&gt; debug</span><br><span class="line"><span class="string">"创建数据库..."</span> |&gt; debug</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">    dbFileName |&gt; File.Delete</span><br><span class="line">    SQLiteConnection.CreateFile dbFileNamewith e -&gt;</span><br><span class="line">        e |&gt; debug</span><br><span class="line">    <span class="keyword">let</span> test _ =</span><br><span class="line">        <span class="keyword">use</span> conn = <span class="keyword">new</span> SQLiteConnection(connString)</span><br><span class="line">        <span class="keyword">use</span> cmd = conn.CreateCommand()</span><br><span class="line">        conn.Open()</span><br><span class="line">        <span class="comment">// 开始计时</span></span><br><span class="line">        <span class="keyword">let</span> watch = <span class="keyword">new</span> System.Diagnostics.Stopwatch()</span><br><span class="line">        watch.Start()</span><br><span class="line">        space |&gt; debug</span><br><span class="line">        <span class="string">"创建表..."</span> |&gt; debug</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">            <span class="comment">(* SQLite 官方文档提及的数据类型只有5种: NULL INTEGER NUMERIC TEXT BLOB           你可能觉得太少了, 事实上 SQLite 是弱类型, 建表时定义的数据类型只是个标识, 对数据列的类型并没有实质性的作用.           你也可以把 TEXT 类型定义成更复杂的 NVARCHAR(50) 之类的, 这只是为了未来数据迁移的方便. *)</span></span><br><span class="line">            cmd.CommandText &lt;- <span class="string">"CREATE TABLE [Test] ( "</span> +</span><br><span class="line">                               <span class="string">"[Int32] INTEGER NOT NULL, "</span> +</span><br><span class="line">                               <span class="string">"[String] TEXT NOT NULL)"</span></span><br><span class="line">            cmd.ExecuteNonQuery() |&gt; ignore</span><br><span class="line">        <span class="keyword">with</span> e -&gt;</span><br><span class="line">            conn.Close()</span><br><span class="line">            e |&gt; debug</span><br><span class="line">            watch.Elapsed |&gt; debug</span><br><span class="line">            watch.Reset()</span><br><span class="line">            watch.Start()</span><br><span class="line">    space |&gt; debug</span><br><span class="line">    <span class="string">"乱入数据十万行..."</span> |&gt; debug</span><br><span class="line">    <span class="keyword">use</span> trans = conn.BeginTransaction()</span><br><span class="line">    cmd.Transaction &lt;- trans</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">        <span class="comment">// 注意: Int32这个列名有些误导, 封装的作者提及 INTEGER 对应 ADO.net 2.0 的 Int64 类型</span></span><br><span class="line">        cmd.CommandText &lt;- <span class="string">"INSERT INTO [Test](Int32, String) "</span> +</span><br><span class="line">                           <span class="string">"VALUES(?, ?)"</span></span><br><span class="line">        <span class="comment">// 下面这种生成参数的方式 在参数较多时会有方便 但不能用seq</span></span><br><span class="line">        [<span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> .. <span class="number">1</span> -&gt; cmd.CreateParameter()]</span><br><span class="line">        |&gt; List.to_array</span><br><span class="line">        |&gt; cmd.Parameters.AddRange</span><br><span class="line">        |&gt; ignore</span><br><span class="line">        <span class="comment">// 参数化插入 这是官方推荐的方式 性能最好</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> .. <span class="number">99999</span> <span class="keyword">do</span></span><br><span class="line">            <span class="keyword">let</span> vl = [box i; box ((i * <span class="number">1000</span>).ToString())]</span><br><span class="line">            <span class="keyword">for</span> j = <span class="number">0</span> <span class="keyword">to</span> (cmd.Parameters.Count - <span class="number">1</span>) <span class="keyword">do</span></span><br><span class="line">                cmd.Parameters.[j].Value &lt;- List.nth vl j</span><br><span class="line">                cmd.ExecuteNonQuery() |&gt; ignore</span><br><span class="line">                trans.Commit()</span><br><span class="line">    <span class="keyword">with</span> e -&gt;</span><br><span class="line">        trans.Rollback()</span><br><span class="line">        conn.Close()</span><br><span class="line">        e |&gt; debug</span><br><span class="line">        watch.Elapsed |&gt; debug</span><br><span class="line">        watch.Reset()</span><br><span class="line">        watch.Start()</span><br><span class="line">        space |&gt; debug</span><br><span class="line">    <span class="string">"查询前3行..."</span> |&gt; debug</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">        cmd.CommandText &lt;- <span class="string">"SELECT * FROM [Test] "</span> +</span><br><span class="line">                           <span class="string">"WHERE [Int32]&lt;3"</span></span><br><span class="line">        <span class="keyword">use</span> reader = cmd.ExecuteReader()</span><br><span class="line">        <span class="keyword">while</span> reader.Read() <span class="keyword">do</span></span><br><span class="line">            reader.GetInt32 <span class="number">0</span> |&gt; debug</span><br><span class="line">            reader.GetString <span class="number">1</span> |&gt; debug</span><br><span class="line">    <span class="keyword">with</span> e -&gt;</span><br><span class="line">        e |&gt; debug</span><br><span class="line">        watch.Elapsed |&gt; debug</span><br><span class="line">        watch.Stop()</span><br><span class="line">        conn.Close()</span><br><span class="line">    test()</span><br><span class="line">    Console.ReadKey()</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/07/07/fsharp-open-system-data-sqlite/" data-id="ci9p9dw6k005z47jjk0shq9kg" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/07/07/fsharp-open-system-data-sqlite/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQLite/">SQLite</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2008/07/08/system-data-sqlite-datatype/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          System.Data.SQLite DataType
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2008/06/28/secret-of-blizzard/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Blizzard冰封之谜</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2008/07/07/fsharp-open-system-data-sqlite/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ViTarn Blog">
+<meta property="og:url" content="http://blog.vitarn.com/page/5/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ViTarn Blog">
+<meta name="twitter:description">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-mysql-quick-cleanup-database" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/02/20/mysql-quick-cleanup-database/" class="article-date">
+  <time datetime="2009-02-19T16:00:00.000Z" itemprop="datePublished">2009-02-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2009/02/20/mysql-quick-cleanup-database/">MySQL 快速清空数据库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>项目中使用了 InnoDB 引擎, 测试的时候, 使用的数据因为主键的唯一性和外键约束等问题, 导出和导入很是麻烦.</p>
+<p>于是想到了写一个能快速清空数据的存储过程.</p>
+<p>注意: 清空表数据使用了 TRUNCATE, 如果你的数据太多, 可能会非常慢!</p>
+<p>另外: 我也不是什么 DBA, 不能保证脚本的稳定性.</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">DELIMITER //</span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> <span class="string">`test`</span>.<span class="string">`CLEANDB`</span> (_db_name <span class="built_in">VARCHAR</span>(<span class="number">10</span>))</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line"># 结束符号</span><br><span class="line"><span class="keyword">DECLARE</span> _done BOOL <span class="keyword">DEFAULT</span> <span class="literal">false</span>;</span></span><br><span class="line"># 表名</span><br><span class="line"><span class="operator"><span class="keyword">DECLARE</span> _table_name <span class="built_in">VARCHAR</span>(<span class="number">45</span>);</span></span><br><span class="line"># 光标指向系统表中指定数据库的表名</span><br><span class="line"><span class="operator"><span class="keyword">DECLARE</span> _cur <span class="keyword">CURSOR</span> <span class="keyword">FOR</span></span><br><span class="line">  <span class="keyword">SELECT</span> <span class="string">`TABLE_NAME`</span></span><br><span class="line">    <span class="keyword">FROM</span> <span class="string">`information_schema`</span>.<span class="string">`TABLES`</span></span><br><span class="line">    <span class="keyword">WHERE</span> <span class="string">`TABLE_SCHEMA`</span>=_db_name;</span></span><br><span class="line"># 异常处理, 当光标达到最末时设置结束符号为真.</span><br><span class="line"><span class="operator"><span class="keyword">DECLARE</span> <span class="keyword">CONTINUE</span> <span class="keyword">HANDLER</span> <span class="keyword">FOR</span> <span class="keyword">NOT</span> <span class="keyword">FOUND</span> <span class="keyword">SET</span> _done = <span class="literal">true</span>;</span></span><br><span class="line"></span><br><span class="line"># 打开光标</span><br><span class="line">OPEN _cur;</span><br><span class="line"></span><br><span class="line">REPEAT</span><br><span class="line">  # 从光标中取出一行</span><br><span class="line">  FETCH _cur INTO _table_name;</span><br><span class="line">  # 拼接 SQL 语句</span><br><span class="line">  <span class="operator"><span class="keyword">SET</span> @truncate_sqlstring = <span class="keyword">CONCAT</span>(<span class="string">'TRUNCATE `'</span>, _db_name, <span class="string">'`.`'</span>, _table_name, <span class="string">'`;'</span>);</span></span><br><span class="line">  # 预处理 SQL 语句</span><br><span class="line">  <span class="operator"><span class="keyword">PREPARE</span> _truncate_table <span class="keyword">FROM</span> @truncate_sqlstring;</span></span><br><span class="line">  # 执行 SQL 语句</span><br><span class="line">  <span class="operator"><span class="keyword">EXECUTE</span> _truncate_table;</span></span><br><span class="line"># 如果结束符号为真则退出循环</span><br><span class="line">UNTIL _done <span class="operator"><span class="keyword">END</span> <span class="keyword">REPEAT</span>;</span></span><br><span class="line"></span><br><span class="line"># 关闭光标</span><br><span class="line">CLOSE _cur;</span><br><span class="line"></span><br><span class="line"><span class="operator"><span class="keyword">END</span>//</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/02/20/mysql-quick-cleanup-database/" data-id="ci9p9dvyd003f47jjw7qz3dh7" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/02/20/mysql-quick-cleanup-database/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-use-10moons-with-mac-os-x-and-paralells-desktop" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/02/09/use-10moons-with-mac-os-x-and-paralells-desktop/" class="article-date">
+  <time datetime="2009-02-08T16:00:00.000Z" itemprop="datePublished">2009-02-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2009/02/09/use-10moons-with-mac-os-x-and-paralells-desktop/">Mac OS X 外加 Paralells Desktop 使用天敏电视盒</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从天敏官方看, 想要让他们的产品支持 Mac 几乎是不可能了, 似乎只能从虚拟机入手.</p>
+<p><a href="http://www.10moons.com" target="_blank" rel="external"><img src="http://www.10moons.com/WebPic/SourceIMG/200607140715.jpg" alt=""></a></p>
+<p>目前我所知道的Mac版虚拟机共有四种:</p>
+<ul>
+<li><a href="http://www.vmware.com/products/fusion" target="_blank" rel="external">VMware Fusion</a> (最新2.01版 中文 带轻量级的3D加速)</li>
+<li><a href="http://www.parallels.com/products/desktop" target="_blank" rel="external">Parallels Desktop</a> (最新4.0版 英文 要求CPU支持硬件虚拟)</li>
+<li><a href="http://www.virtualbox.org" target="_blank" rel="external">VirtualBox</a> (最新2.1.2版 中文 开源免费)</li>
+<li>Virtual PC (最新7.03版 英文 微软收购以后基本停止开发)</li>
+</ul>
+<p>开始我尝试的是 VMware Fusion 2.0 中文版, 这是老牌虚拟机了. 不过在安装U盒驱动时失败, 最后一个文件无限期复制, 最后只能强行关机, 重新启动后看似安装成功了, 但是显然没有最终设置完成, 还导致虚拟机无法关机.</p>
+<p>对于 VirtualBox, 我经常用它在 Windows 下虚拟 Linux, 比较好用但设置复杂, 不过它对USB外设支持不好.</p>
+<p>Virtual PC 在被微软收购之后, 基本上停止了开发, 微软官方下载站只能搜索到一个 7.03 升级包, 据说原始安装盘是直接带 Windows XP 正版授权系统的, 价格不菲…</p>
+<p>下面要说的是今天的重点: Parallels Desktop 4.0</p>
+<p>这款虚拟机经常被说的很差, 有人说它性能和稳定性连 Parallels Desktop 3.0 都不如, 有人更是认为它比 VMware Fusion 差很多倍.</p>
+<p>但我的亲身经历告诉我, Parallels Desktop 4.0 不但能安装天敏U盒, 而且速度比 VMware Fusion 好的多.</p>
+<h3 id="第一步:_安装_PD_4-0">第一步: 安装 PD 4.0</h3><p><img src="http://www.parallels.com/files/img/pdfm40/screenshots/parallelsstartup.png" alt=""></p>
+<h3 id="第二步:_虚拟_Windows_XP">第二步: 虚拟 Windows XP</h3><p><img src="http://www.parallels.com/files/img/pdfm40/screenshots/voice_recognition.png" alt=""></p>
+<h3 id="第三步:_连接U盒">第三步: 连接U盒</h3><p>软件会提示询问要把USB设备连接到Mac主机还是WinXP虚拟机, 选”Connect it to this virtual machine”(把它连接到这台虚拟机). 之后WinXP虚拟机内会收到安装驱动的提示, 接下来的步骤和普通安装方式相同.</p>
+<p><img src="http://www.parallels.com/files/img/pdfm40/screenshots/smart_connect.png" alt=""></p>
+<h3 id="第四步:_看电视_^_^">第四步: 看电视 ^_^</h3><p><img src="http://lh6.ggpht.com/_M94xOMOWd6s/SY9yr2nXoHI/AAAAAAAABEA/X8f5rmdK4w0/s400/10moonsOnMacVirtualMachine.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/02/09/use-10moons-with-mac-os-x-and-paralells-desktop/" data-id="ci9p9dvyh003i47jjvnk8ak04" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/02/09/use-10moons-with-mac-os-x-and-paralells-desktop/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mysql-guid-issus-in-windows-7" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/01/16/mysql-guid-issus-in-windows-7/" class="article-date">
+  <time datetime="2009-01-15T16:00:00.000Z" itemprop="datePublished">2009-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2009/01/16/mysql-guid-issus-in-windows-7/">Windows 7 下 MySql Guid 问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前的文章提到过关于 MySql 数据库要如何保存 .NET Guid 类型的问题.</p>
+<p>根据 MySQL Connector Net Version 5.2 - 2/11/2008 CHANGES 中提到的:</p>
+<p>&gt;<br>    BINARY(16) columns are now returned as Guid objects</p>
+<p>那么使用 BINARY(16) 列做为 Guid 的载体是理所当然的了.</p>
+<p>通过一系统的试验, 读取是没问题的, 写入时要先转化为二进制数组 (ToByteArray), 因为只有这样才能保证长度是16, 否则任何方法都会告诉你数据太长.</p>
+<p>我是个不安分的人, 正如你在标题中看到的, 刚刚忍不住装上了 Windows 7 beta1, 在一阵兴奋和陶醉过后, 撞上了第一个棘手的问题:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#light</span><br><span class="line">#r <span class="string">@"D:\Program Files\MySQL\MySQL Connector Net 5.2.5\Binaries\.NET 2.0\MySql.Data.dll"</span></span><br><span class="line"><span class="keyword">open</span> System</span><br><span class="line"><span class="keyword">open</span> System.Data</span><br><span class="line"><span class="keyword">open</span> MySql.Data.MySqlClient</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> conn =</span><br><span class="line">    <span class="keyword">let</span> builder = MySqlConnectionStringBuilder(CharacterSet = <span class="string">"utf8"</span>, Server = <span class="string">"localhost"</span>, UserID = <span class="string">"root"</span>, Password = <span class="string">"erp"</span>, Database = <span class="string">"erp"</span>)</span><br><span class="line">    <span class="keyword">let</span> conn = <span class="keyword">new</span> MySqlConnection(builder.ConnectionString)</span><br><span class="line">    conn.Open()</span><br><span class="line">    conn</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> cmd = conn.CreateCommand()</span><br><span class="line"></span><br><span class="line">cmd.CommandText &lt;- <span class="string">"</span><br><span class="line">DROP TABLE IF EXISTS `TestGuid`;</span><br><span class="line">CREATE  TABLE IF NOT EXISTS `TestGuid`</span><br><span class="line">  (`ID` BINARY(16))</span><br><span class="line">ENGINE = InnoDB;</span><br><span class="line">INSERT</span><br><span class="line">  INTO `TestGuid`</span><br><span class="line">  VALUES (0x012345670123012301230123456789ab);</span><br><span class="line">INSERT</span><br><span class="line">  INTO `TestGuid`</span><br><span class="line">  VALUES (?_ID);"</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">let</span> guid = Guid(<span class="string">"12345678-1234-1234-1234-123456789abc"</span>)</span><br><span class="line"></span><br><span class="line">cmd.Parameters.AddWithValue(<span class="string">"_ID"</span>, guid.ToByteArray())</span><br><span class="line">cmd.ExecuteNonQuery()</span><br><span class="line">cmd.CommandText &lt;- <span class="string">"</span><br><span class="line">SELECT *</span><br><span class="line">  FROM `TestGuid`"</span></span><br><span class="line"><span class="keyword">let</span> reader = cmd.ExecuteReader()</span><br><span class="line"><span class="keyword">while</span> reader.Read() <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> .. reader.FieldCount - <span class="number">1</span> <span class="keyword">do</span></span><br><span class="line">        print_any (reader.GetValue i)</span><br><span class="line">        printfn <span class="string">""</span></span><br><span class="line">        </span><br><span class="line">Console.ReadKey()</span><br></pre></td></tr></table></figure>
+<p>上面这段代码只是简单的创建一个名为 TestGuid 的表, 只有的一个名为 ID 的 BINARY(16) 列.</p>
+<p>第一行数据直接插入 0x012345670123012301230123456789ab (从0开始, 按 8 4 4 4 12 分5部分)</p>
+<p>第二行数据使用参数 Guid(“12345678-1234-1234-1234-123456789abc”) (从1开始, 规律同上)</p>
+<p>之后又将数据取回, 输出到命令行, 猜猜看在 Windows 7 中结果是什么?</p>
+<p><em>67452301-2301-2301-0123-0123456789ab</em></p>
+<p><em>12345678-1234-1234-1234-123456789abc</em></p>
+<p>注意看第一行, 前半部分, 也就是 8 4 4 的部分, 顺序乱了…</p>
+<p>Guid 去掉中间的连字符 “-“, 共32个字符, 每两位合并后可以获得16个字节, 那么第一条数据的前8个字节顺序被搞反了, 而且是在各自的组内被搞反的.</p>
+<p>让我们再回到数据库中看一眼</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SELECT</span> <span class="keyword">HEX</span>(ID) <span class="keyword">FROM</span> TestGuid</span><br><span class="line"><span class="keyword">HEX</span>(ID)</span><br><span class="line"><span class="string">'012345670123012301230123456789AB'</span></span><br><span class="line"><span class="string">'78563412341234121234123456789ABC'</span></span></span><br></pre></td></tr></table></figure>
+<p>天~ 这次是第二个反了.</p>
+<p>冷静的想一想, 看来 MySql Server 是没有问题的, 问题出在 MySQL Connector Net 上面. 它在写入数据的时候搞错了二进制的高位与低位, 在读取的时候同样又搞错了一次, 错上加错, 结果似乎是对了, 只不过这个问题在其他系统中是不存在的, 换句话说, 这个问题带来的是跨系统之间数据不兼容.</p>
+<p>没办法, 只能判断一下数据类型和操作系统版本, 暂时的规避一下吧:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先给 List 扩展一个切片方法, 以便支持 lst.[1 .. 3] 这样的操作</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Microsoft</span>.<span class="title">FSharp</span>.<span class="title">Collections</span>.<span class="title">List</span>&lt;<span class="title">'a</span>&gt; <span class="title">with</span></span></span><br><span class="line">    <span class="keyword">member</span> t.GetSlice(n1, n2) =</span><br><span class="line">        <span class="keyword">let</span> l = t.Length - <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> n1 = <span class="keyword">match</span> n1 <span class="keyword">with</span> Some x -&gt; max x <span class="number">0</span> | _ -&gt; <span class="number">0</span></span><br><span class="line">        <span class="keyword">let</span> n2 = <span class="keyword">match</span> n2 <span class="keyword">with</span> Some x -&gt; min x l | _ -&gt; l</span><br><span class="line">        [ <span class="keyword">for</span> i <span class="keyword">in</span> n1 .. n2 -&gt; List.nth t i ]</span><br><span class="line">        </span><br><span class="line"><span class="comment">/// 修正 MySql 不能识别 Windows7 Guid 的问题</span></span><br><span class="line"><span class="keyword">let</span> repairWin7Guid (x :obj) =</span><br><span class="line">    <span class="keyword">match</span> x <span class="keyword">with</span></span><br><span class="line">    | :? Guid <span class="keyword">as</span> g -&gt;</span><br><span class="line">        <span class="keyword">if</span> Environment.OSVersion.Version.Major = <span class="number">6</span> &amp;&amp; Environment.OSVersion.Version.Minor &gt;= <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">let</span> w = g.ToByteArray() |&gt; Array.to_list</span><br><span class="line">            <span class="keyword">let</span> r = w.[<span class="number">3</span>] :: w.[<span class="number">2</span>] :: w.[<span class="number">1</span>] :: w.[<span class="number">0</span>] :: w.[<span class="number">5</span>] :: w.[<span class="number">4</span>] :: w.[<span class="number">7</span>] :: w.[<span class="number">6</span>] :: w.[<span class="number">8</span> ..] |&gt; Array.of_list</span><br><span class="line">            Guid(r) |&gt; box</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            x</span><br><span class="line">    | _ -&gt; x</span><br></pre></td></tr></table></figure>
+<p>这样做似乎不能彻底的解决问题, 幸好我的项目中 Guid 的出入口只有一个, 只要加在这两处就行了.</p>
+<p>越来越对 MySql 不放心了 T_T</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/01/16/mysql-guid-issus-in-windows-7/" data-id="ci9p9dvyk003k47jju8xecs1b" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/01/16/mysql-guid-issus-in-windows-7/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-thanks-cndns" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/01/14/thanks-cndns/" class="article-date">
+  <time datetime="2009-01-13T16:00:00.000Z" itemprop="datePublished">2009-01-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2009/01/14/thanks-cndns/">致谢 Cndns</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>从1月9日开始博客程序开始不正常起来, 不能发文, 不能修改设置, 连换肤都会失败, 又不出现任何错误, 起先怀疑是 WP Super Cache 的问题.</p>
+<p>今天到虚拟目录里看了一眼, 发现最近几天的错误日志异常庞大 (M级别). 打开一看基本上都是一句话, 看起来就像 MySQL 变成只读了一样, 查询正常, 写入失败, 报 1030 错误.</p>
+<p>简单的 Google 一下, 是 InnoDB 的问题, 提交了故障申报, 然后就没去管了.</p>
+<p>从中午到下午连续接到三次客服打来的电话, 虽然没能修复这个问题, 不过同意帮我换一个数据库主机.</p>
+<p>正如你现在所看到的, 不只是修正了错误, 速度明显流畅了许多.</p>
+<p>不说了, 再说有人怀疑这是枪文了, 总之:<strong>赞一下<a href="http://www.cndns.com" target="_blank" rel="external">美橙</a></strong>.</p>
+<p>央视要来送欢乐, 为什么不送些温暖呢? 等下的三个小时会冷死~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/01/14/thanks-cndns/" data-id="ci9p9dvyn003m47jj5ax1tidb" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/01/14/thanks-cndns/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2008-01-01-07-59-60" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/12/31/2008-01-01-07-59-60/" class="article-date">
+  <time datetime="2008-12-30T16:00:00.000Z" itemprop="datePublished">2008-12-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/12/31/2008-01-01-07-59-60/">2008-01-01-07-59-60</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="北京时间_2008年1月1日_7时_59分_60秒">北京时间 2008年1月1日 7时 59分 60秒</h3><p>你感觉到多出一秒了吗?</p>
+<p><em>什么是闰秒?</em></p>
+<p><a href="http://zh.wikipedia.org/wiki/闰秒" target="_blank" rel="external">维基的解释</a> 或者 <a href="http://news.google.cn/news?q=闰秒&amp;hl=zh-CN" target="_blank" rel="external">Google新闻</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/12/31/2008-01-01-07-59-60/" data-id="ci9p9dvys003n47jjqjhjvqtq" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/12/31/2008-01-01-07-59-60/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Google/">Google</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Wikipedia/">Wikipedia</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-wp-super-cache-make-firefox-500" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/12/19/wp-super-cache-make-firefox-500/" class="article-date">
+  <time datetime="2008-12-18T16:00:00.000Z" itemprop="datePublished">2008-12-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/12/19/wp-super-cache-make-firefox-500/">Wp-Super-Cache 导致 FireFox 500</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这两天没注意看</p>
+<p>刚刚有人提醒我, 博客访问不到了. 本以为又是数据库超时, 赶过来看了下, 没发现什么问题, 心想肯定是数据库偶然超时吧.</p>
+<p>不过回头仔细一看朋友的截图, 竟然是一个没见过的错误:</p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/SUuASc47lcI/AAAAAAAAA-8/dzqSB_CDa9g/s400/wp_super_cache_500_error_title.png" alt=""></p>
+<p><img src="http://lh3.ggpht.com/_M94xOMOWd6s/SUuASTvy6-I/AAAAAAAAA_E/XEPnGO2wbX4/s400/wp_super_cache_500_error_page.png" alt=""></p>
+<p>显然这个错误页面不是 Wordpress 的, 而是空间提供商定制的.</p>
+<p>更让我觉得不可思议的是, 这个错误只有 FireFox 看得到, 并且只有访问首页时才会这样, IE 和 Chrome 却都很正常.</p>
+<p>这两天勤快些, 从 2.6 升级到 2.7, 换了皮肤, 新装了 wp-super-cache. 一下子还真想不出会是哪里出了毛病…</p>
+<p>Google 一下, 发现好多人讨论这个 500 错误与 wp-super-cache 有关, 大体上有说编码有问题的, 有说标签有问题的, 只有一个人提到 FireFox, 但却没有答案.</p>
+<p>没有时间再去研究 php 代码啦~</p>
+<p><strong>在后台设置里, 把 WP Super Cache Status 改为 HALF ON.</strong></p>
+<p>也就是禁用 Super Cache, 只启用基本的 Wp Cache.</p>
+<p>问题就此解决了.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/12/19/wp-super-cache-make-firefox-500/" data-id="ci9p9dvyw003q47jjvzd0mjfr" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/12/19/wp-super-cache-make-firefox-500/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Firefox/">Firefox</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Workpress/">Workpress</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-lingoes-suck" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/12/12/lingoes-suck/" class="article-date">
+  <time datetime="2008-12-11T16:00:00.000Z" itemprop="datePublished">2008-12-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/12/12/lingoes-suck/">Lingoes 亮了</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/SUHRaXAFf8I/AAAAAAAAA-0/ZejekjwYTMs/s400/Lingoes_The_Last_Word_Zygote.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/12/12/lingoes-suck/" data-id="ci9p9dvz0003v47jjge3u6uin" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/12/12/lingoes-suck/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-f-will-merge-to-visual-studio-2010" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/12/11/f-will-merge-to-visual-studio-2010/" class="article-date">
+  <time datetime="2008-12-10T16:00:00.000Z" itemprop="datePublished">2008-12-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/12/11/f-will-merge-to-visual-studio-2010/">F# 即将并入 Visual Studio 2010</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>原文链接: <a href="http://blogs.msdn.com/dsyme/archive/2008/12/10/fsharp-to-ship-as-part-of-visual-studio-2010.aspx" target="_blank" rel="external">http://blogs.msdn.com/dsyme/archive/2008/12/10/fsharp-to-ship-as-part-of-visual-studio-2010.aspx</a></p>
+<p>去年, 微软开发部门的领导者 S. Somasegar, 宣布微软已经决定将 <a href="http://blogs.msdn.com/controlpanel/blogs/blogs.msdn.com/somasegar/archive/2007/10/17/f-a-functional-programming-language.aspx" target="_blank" rel="external">F# 作为受微软支持的 .NET 平台语言</a>. 我现在兴奋的宣布一项结果: <strong>F# 将会整合到 Visual Studio 2010 当中</strong>, 自从 <a href="http://blogs.msdn.com/controlpanel/blogs/blogs.msdn.com/dsyme/archive/2008/08/29/the-f-september-2008-ctp-is-now-available.aspx" target="_blank" rel="external">F# September 2008 CTP</a> 以来, F# 项目组一直致力于同 Visual Studio 2010 的整合工作. 下面的截屏展示了在 2010 shell 下使用 F# 开发工具, 以及新的编辑器和新的 look-back-in-time “调试历史”窗口.<br>去年, 我们在 F# 开发者社区和用户组看到了惊人的增长速度, 还有热烈的讨论. 还有两处更为显著的是: <a href="http://channel9.msdn.com/pdc2008/TL11/" target="_blank" rel="external">PDC presentation on F# by Luca Bolognese</a> 还有在 JAOO 上的关于 F# 和其他语言的现场演示 <a href="http://jaoo.blip.tv/file/1317881/" target="_blank" rel="external">Anders Hejlsberg, Where are Programming Languages Going</a>. 如果你想知道为什么微软会把一门函数式语言添加到 Visual Studio 以及 .NET 开发工具当中, 一种原因或许是因为它给予特定领域极大的生产力提升, 除此之外我也想不出更好的能超过这两位微软最有经验的专家的理由.<br>在第一个受支持的发行版中, 我们将目标聚集于 F# 内核的强项: 探索 F# 交互编程, 数据编程, 实现并行和异步组件. 在我们私底下谈论这件事的时候, 这期间自然有很多问题被多次问到, 我将这些问题列在下面, 如果你有更多的问题要问, 请回复.</p>
+<p><img src="http://lh4.ggpht.com/_M94xOMOWd6s/SUDRgOWTzBI/AAAAAAAAA-s/jM3ZSx8P1RU/s400/FSharpShipInVisualStudio2010.png" alt=""></p>
+<p><strong>问: 下一个 F# 发行版是什么时候? 我能继续在 VS2008 中使用吗?</strong></p>
+<p>下一个主要的发行版将会内置于 Visual Studio 2010 的第一个测试版当中, 届时会提供用于 Visual Studio 2008/.NET2.0 的 F# 编译器及工具.</p>
+<p><strong>问: 还开源吗?</strong></p>
+<p>我们的计划是让 F# 编译器和核心库在 CodePlex 上开源, 我们还计划启动一个叫 “F# Power Pack” 的 CodePlex 项目, 包含 F# 解析器和语法分析器. 我们已经在 <a href="http://article.gmane.org/gmane.comp.lang.fsharp.general/1000" target="_blank" rel="external">10 月份的 F# 邮件</a>当中发布了这件事.</p>
+<p><strong>问: F# 在 .NET 4.0 中吗?</strong></p>
+<p>按当前计划, F# 核心库和编译器会放在附加组件中, 不在 .NET 框架里. 预计会作为 F# 可再发行包. 在 Visual Studio 安装项目中引用这个包就可以把核心库部署到客户机上了.</p>
+<p><strong>问: 工具支持程度有多高?</strong></p>
+<p>按上面的描述, 对于 F# 的这个发行版, 我们主要致力于使它成为丰富数据和丰富控制流的编程语言, 处理函数式语言的使用方法 (思考算法, 数据维护, 数据转换, 并行编程, 反向编程组件). 工具支持计划围绕着编辑, 脚本, 交互体验, 项目系统, 调试, 分析以及与 C# 和 Visual Basic 的高度整合.</p>
+<p><strong>问: 这个发行版会包含设计工具吗?</strong></p>
+<p>我们关注的是交付高质量的 F# 核心工具用于设计参数, Visual Studio 在面向对象程序环境具备令人吃惊的丰富呈现能力, 结果是我们明确自己的决心, 与 C# 和 Visual Basic 这样的具备丰富设计呈现能力的编程语言寻求一个平衡点. 这意味着 F# 用户应该使用 Visual Studio 设计工具产生 C# 或 Visual Basic 代码后包含在 F# 应用程序当中. 在 Visual Studio 2010 中, 预计包含内建设计组件(例如: WinForms, ASP.NET, Silverlight 和 WPF 应用程序设计前端) F# 应用程序通常要使用混合语言创作. 我们会提供向导模板引导 F# 开发者.</p>
+<p><strong>问: 关于 Mono?</strong></p>
+<p>F# 编译器和工具会继续通过 Visual Studio 2008/.NET2.0 提供给 Mono 用户. (详见后文)</p>
+<p><strong>问: F# 起源于 “OCaml-like language for .NET”? 它还会继续沿着这条路走下去吗?</strong></p>
+<p>F# 从 INRIA 共享出色的 OCaml 语言核心结构. 这是早期设计的决定和承诺, Caml 语言家族的重要性在于它是一门实用的函数式语言, 作为创新, F# 本身已经成熟, 包括面向对象, 运算单位和计算表达式. 回首以前, 我们计划是继续允许 F# 使用特定模式支持跨编译公共子集, 现在仍然如此. 这通常需要使用 F# Power Pack 组件, 但它会从 Visual Studio 2010 中分离出来.</p>
+<p><strong>问 : 微软研究院还在参与吗?</strong></p>
+<p>是的当然! F# 是连接微软研究院, 剑桥和微软开发部的纽带. 我很高兴继续参与语言的设计, 同时还能留在微软研究院. 我们的团队包括剑桥 雷德蒙 温哥华 中国 德国还有纽约的人. 我一直对人们给这个项目带来的增进感到惊讶, 我希望把它当成微软创新的榜样.<br>非常感谢每个在 F# .NET MSR 还有语言社区的支持和帮助, 有他们才会有 F# 的今天. 之前一直很高兴, 我们相信这种发展会让 F# 在更多的领域受到关注.<br>快乐的编写和开发吧!</p>
+<p>Don</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/12/11/f-will-merge-to-visual-studio-2010/" data-id="ci9p9dvz3003w47jjnziew9xj" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/12/11/f-will-merge-to-visual-studio-2010/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-silverlight-toolkit-bug-treeview-in-tabcontrol" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/12/05/silverlight-toolkit-bug-treeview-in-tabcontrol/" class="article-date">
+  <time datetime="2008-12-04T16:00:00.000Z" itemprop="datePublished">2008-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/12/05/silverlight-toolkit-bug-treeview-in-tabcontrol/">Silverlight Toolkit Bug (发生在 TabControl 里的 TreeView 身上)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="描述:">描述:</h3><p>将Microsoft.Windows.Controls.TreeView置入System.Windows.Controls.TabControl中, 并且选中TreeViewItem时, 如果切换TabItem, 你会发现树节点的焦点从选中那一项开始依次向下切换, 直到最末一项, 其中包括已展开的所有条目.</p>
+<h3 id="重现:">重现:</h3><p>前端模板:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">usercontrol</span> <span class="attribute">x:class</span>=<span class="value">"TreeViewFocus.Page"</span></span><br><span class="line">                    <span class="attribute">xmlns</span>=<span class="value">"http://schemas.microsoft.com/winfx/2006/xaml/presentation"</span></span><br><span class="line">                    <span class="attribute">xmlns:x</span>=<span class="value">"http://schemas.microsoft.com/winfx/2006/xaml"</span></span><br><span class="line">                    <span class="attribute">xmlns:microsoft_windows_controls</span>=<span class="value">"clr-namespace:Microsoft.Windows.Controls;assembly=Microsoft.Windows.Controls"</span></span><br><span class="line">                    <span class="attribute">xmlns:system_windows_controls</span>=<span class="value">"clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">stackpanel</span> <span class="attribute">x:name</span>=<span class="value">"LayoutRoot"</span> <span class="attribute">background</span>=<span class="value">"White"</span> <span class="attribute">orientation</span>=<span class="value">"Horizontal"</span> <span class="attribute">margin</span>=<span class="value">"16"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">system_windows_controls:tabcontrol</span> <span class="attribute">x:name</span>=<span class="value">"tabcontrol"</span> <span class="attribute">width</span>=<span class="value">"150"</span>&gt;</span></span><br><span class="line">    	<span class="tag">&lt;<span class="title">system_windows_controls:tabitem</span> <span class="attribute">header</span>=<span class="value">"一"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">microsoft_windows_controls:treeview</span> <span class="attribute">x:name</span>=<span class="value">"treeview"</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="title">microsoft_windows_controls:treeview.itemtemplate</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">microsoft_windows_controls:hierarchicaldatatemplate</span> <span class="attribute">itemssource</span>=<span class="value">"&#123;Binding Path=Child&#125;"</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="title">contentcontrol</span> <span class="attribute">content</span>=<span class="value">"&#123;Binding Path=Name&#125;"</span> /&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="title">microsoft_windows_controls:hierarchicaldatatemplate</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="title">microsoft_windows_controls:treeview.itemtemplate</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="title">microsoft_windows_controls:treeview</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="title">system_windows_controls:tabitem</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">system_windows_controls:tabitem</span> <span class="attribute">header</span>=<span class="value">"二"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="title">textblock</span> <span class="attribute">text</span>=<span class="value">"Look Right :("</span> <span class="attribute">fontsize</span>=<span class="value">"16"</span> <span class="attribute">foreground</span>=<span class="value">"Red"</span>/&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="title">system_windows_controls:tabitem</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="title">system_windows_controls:tabcontrol</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="title">textbox</span> <span class="attribute">x:name</span>=<span class="value">"textbox"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="title">stackpanel</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">usercontrol</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>后端代码:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 随便定义一个类用于数据源</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> ObservableCollection&lt;Person&gt; Child &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">override</span> <span class="keyword">string</span> <span class="title">ToString</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> Name; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Page</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">    InitializeComponent();</span><br><span class="line">    <span class="comment">// 随便填充点数据</span></span><br><span class="line">    <span class="keyword">var</span> source = <span class="keyword">new</span> ObservableCollection&lt;Person&gt; &#123;</span><br><span class="line">        <span class="keyword">new</span> Person&#123;Name=<span class="string">"蓝皮鼠"</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> Person&#123;Name=<span class="string">"大脸猫"</span>&#125;,</span><br><span class="line">        <span class="keyword">new</span> Person&#123;Name=<span class="string">"小头爸爸"</span>, Child = <span class="keyword">new</span> ObservableCollection&lt;Person&gt;&#123;<span class="keyword">new</span> Person&#123;Name=<span class="string">"大头儿子"</span>&#125;&#125;&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 绑定到 TreeView (模板已经设置好了)</span></span><br><span class="line">    treeview.ItemsSource = source;</span><br><span class="line">    <span class="comment">// 当 TreeView 的选中项发生变化时, 输出到右侧的文本框中.</span></span><br><span class="line">    treeview.SelectedItemChanged += (s, e) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        textbox.Text += e.NewValue == <span class="keyword">null</span> ? <span class="string">""</span> : e.NewValue.ToString() + <span class="string">"\n"</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>OK, 让我们看看发生了什么(图有些难看…):</p>
+<p><img src="http://lh3.ggpht.com/_M94xOMOWd6s/STkUOoa3iPI/AAAAAAAAA-E/g6VM-wzZwZc/s400/SilverlightToolkitBug_TreeViewInTabControl_1.png" alt=""></p>
+<p>标签切换的瞬间, 树像是被一阵风吹过, 焦点从不至下依次选中过, 顺序与按键盘上的TAB键时的情形相似.</p>
+<p><img src="http://lh3.ggpht.com/_M94xOMOWd6s/STkUO7bW7ZI/AAAAAAAAA-M/OA7hnFsEmXw/s400/SilverlightToolkitBug_TreeViewInTabControl_2.png" alt=""></p>
+<p>我还曾经试过ListBox, 并没有发现这一问题, 可以肯定的说这是个BUG了.</p>
+<p>怎么解决呢? 办法有点以暴治暴的感觉, 失去焦点的标签, 如果有内容, 暂时将内容禁用, 当标签获得焦点时再次启用:</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">tabcontrol.SelectionChanged += (s, e) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (e.RemovedItems != <span class="keyword">null</span> &amp;&amp; e.RemovedItems.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> tab = e.RemovedItems.Cast&lt;TabItem&gt;().First();</span><br><span class="line">        <span class="keyword">if</span> (tab.Content != <span class="keyword">null</span>) (tab.Content <span class="keyword">as</span> Control).IsEnabled = <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (e.AddedItems != <span class="keyword">null</span> &amp;&amp; e.AddedItems.Count &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">var</span> tab = e.AddedItems.Cast&lt;TabItem&gt;().First();</span><br><span class="line">        <span class="keyword">if</span> (tab.Content != <span class="keyword">null</span>) (tab.Content <span class="keyword">as</span> Control).IsEnabled = <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>打完收工~~~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/12/05/silverlight-toolkit-bug-treeview-in-tabcontrol/" data-id="ci9p9dvz6003y47jjlvjp0ebw" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/12/05/silverlight-toolkit-bug-treeview-in-tabcontrol/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-share-to-coder-like-silverlight-and-wcf" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/11/28/share-to-coder-like-silverlight-and-wcf/" class="article-date">
+  <time datetime="2008-11-27T16:00:00.000Z" itemprop="datePublished">2008-11-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2008/11/28/share-to-coder-like-silverlight-and-wcf/">推荐给喜欢 Silverlight 和 WCF 的人</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="http://www.netfxharmonics.com/2008/11/Understanding-WCF-Services-in-Silverlight-2" target="_blank" rel="external">http://www.netfxharmonics.com/2008/11/Understanding-WCF-Services-in-Silverlight-2</a></p>
+<ul>
+<li>内容</li>
+<li>介绍</li>
+<li>构建服务</li>
+<li>客户端访问</li>
+<li>访问服务</li>
+<li>异步规范</li>
+<li>站点外部访问</li>
+<li>基本访问配置</li>
+<li>强类型客户端</li>
+<li>安全</li>
+<li>SSL 通讯</li>
+<li>用户名验证</li>
+<li>异常处理</li>
+<li>JSON 服务</li>
+<li>线程等待</li>
+<li>使用 DevServer</li>
+</ul>
+<p>已经很久没有看到这么好的文章了.</p>
+<p>文章中的内容几乎涵盖了 Silverlight 与 WCF 通讯面临的所有问题和完美解决方案.</p>
+<p>有几处与我原来的想法相似, 但原作者显然技高一筹.</p>
+<p>比如将异常打包在数据契约当中, 建议客户端泛型工厂.</p>
+<p>还有几处是我一直以来头疼的地方.</p>
+<p>用户名验证, 线程等待.</p>
+<p>总之一句话: 不好我不推荐! 顺便再次赞一下原作者.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/11/28/share-to-coder-like-silverlight-and-wcf/" data-id="ci9p9dvza004147jjt11mj9v0" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/11/28/share-to-coder-like-silverlight-and-wcf/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Silverlight/">Silverlight</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WCF/">WCF</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+    </nav>
+  
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

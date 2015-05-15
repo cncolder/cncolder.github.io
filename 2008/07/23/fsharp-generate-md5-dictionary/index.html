@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>F#生成MD5字典 | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前想到的一种逆向思维求解MD5的方法.
+后来发现真的有人这么做了, 其中数据量最大的网站标称自己拥有4T的数据量, 可以解8位以下的数字和字母组合.
+即然是之前自己有过的想法, 那就拿F#来具体实现一下吧:
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152">
+<meta property="og:type" content="article">
+<meta property="og:title" content="F#生成MD5字典">
+<meta property="og:url" content="http://blog.vitarn.com/2008/07/23/fsharp-generate-md5-dictionary/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="之前想到的一种逆向思维求解MD5的方法.
+后来发现真的有人这么做了, 其中数据量最大的网站标称自己拥有4T的数据量, 可以解8位以下的数字和字母组合.
+即然是之前自己有过的想法, 那就拿F#来具体实现一下吧:
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="F#生成MD5字典">
+<meta name="twitter:description" content="之前想到的一种逆向思维求解MD5的方法.
+后来发现真的有人这么做了, 其中数据量最大的网站标称自己拥有4T的数据量, 可以解8位以下的数字和字母组合.
+即然是之前自己有过的想法, 那就拿F#来具体实现一下吧:
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-fsharp-generate-md5-dictionary" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2008/07/23/fsharp-generate-md5-dictionary/" class="article-date">
+  <time datetime="2008-07-22T16:00:00.000Z" itemprop="datePublished">2008-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      F#生成MD5字典
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前想到的一种逆向思维求解MD5的方法.</p>
+<p>后来<a href="http://www.google.cn/search?aq=f&amp;complete=1&amp;hl=zh-CN&amp;newwindow=1&amp;q=MD5%E5%9C%A8%E7%BA%BF%E6%9F%A5%E8%AF%A2&amp;btnG=Google+%E6%90%9C%E7%B4%A2&amp;meta=" target="_blank" rel="external">发现真的有人这么做了</a>, 其中数据量最大的网站标称自己拥有4T的数据量, 可以解8位以下的数字和字母组合.</p>
+<p>即然是之前自己有过的想法, 那就拿F#来具体实现一下吧:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">#light</span><br><span class="line"><span class="keyword">namespace</span> ViTarn</span><br><span class="line"><span class="keyword">module</span> MD5</span><br><span class="line"><span class="keyword">open</span> System</span><br><span class="line"><span class="keyword">open</span> System.Data</span><br><span class="line"><span class="keyword">open</span> System.Diagnostics</span><br><span class="line"><span class="keyword">open</span> System.IO</span><br><span class="line"><span class="keyword">open</span> System.Security.Cryptography</span><br><span class="line"><span class="keyword">open</span> System.Text</span><br><span class="line"><span class="comment">// sqlite.phxsoftware.com</span></span><br><span class="line">#r <span class="string">"System.Data.SQLite.DLL"</span></span><br><span class="line"><span class="keyword">open</span> System.Data.SQLite</span><br><span class="line"><span class="comment">// 数据库名</span></span><br><span class="line"><span class="keyword">let</span> dbFile = <span class="string">"db.sqlite"</span></span><br><span class="line"><span class="comment">// 连接字符串</span></span><br><span class="line"><span class="keyword">let</span> connString =</span><br><span class="line">    <span class="keyword">let</span> csb = SQLiteConnectionStringBuilder ()</span><br><span class="line">    csb.DataSource &lt;- dbFile</span><br><span class="line">    csb.ConnectionString</span><br><span class="line"><span class="comment">// 秒表</span></span><br><span class="line"><span class="keyword">let</span> watch = <span class="keyword">new</span> Stopwatch ()</span><br><span class="line">watch.Start()</span><br><span class="line"><span class="comment">// 为调试方便 输出对象并换行</span></span><br><span class="line"><span class="keyword">let</span> debug x =</span><br><span class="line">    x |&gt; print_any</span><br><span class="line">    Console.WriteLine ()</span><br><span class="line"><span class="comment">// 从\' \'到\'~\'共95个常用于密码的字符 可以当成95进制看待</span></span><br><span class="line"><span class="keyword">let</span> n2cl n =</span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">rec</span> prase n l =</span><br><span class="line">        <span class="keyword">let</span> d = n % <span class="number">95</span></span><br><span class="line">        <span class="keyword">let</span> c = d + <span class="number">32</span> |&gt; char</span><br><span class="line">        <span class="keyword">let</span> d = n - d</span><br><span class="line">        <span class="keyword">if</span> d &gt; <span class="number">95</span> <span class="keyword">then</span></span><br><span class="line">            prase (d / <span class="number">95</span>) (c :: l)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            c :: l |&gt; List.to_array prase n []</span><br><span class="line"><span class="comment">// MD5加密字符串</span></span><br><span class="line"><span class="keyword">let</span> md5 (str : string) =</span><br><span class="line">    <span class="keyword">use</span> md5Hasher = MD5.Create ()</span><br><span class="line">    str</span><br><span class="line">    |&gt; Encoding.Default.GetBytes</span><br><span class="line">    |&gt; md5Hasher.ComputeHash</span><br><span class="line">    |&gt; Seq.map (<span class="keyword">fun</span> x -&gt;</span><br><span class="line">        x.ToString <span class="string">"x2"</span>)</span><br><span class="line">    |&gt; Seq.fold (<span class="keyword">fun</span> x y -&gt; x + y) <span class="string">""</span></span><br><span class="line"><span class="comment">// 创建数据库</span></span><br><span class="line"><span class="keyword">if</span> dbFile |&gt; File.Exists |&gt; not <span class="keyword">then</span></span><br><span class="line">    dbFile |&gt; SQLiteConnection.CreateFile</span><br><span class="line"><span class="keyword">use</span> conn = <span class="keyword">new</span> SQLiteConnection (connString)</span><br><span class="line"><span class="keyword">let</span> sql = <span class="string">"PRAGMA auto_vacuum = 1; "</span> +</span><br><span class="line">          <span class="string">"PRAGMA encoding = \'UTF-8\'; "</span> +</span><br><span class="line">          <span class="string">"PRAGMA page_size = 4096; "</span> +</span><br><span class="line">          <span class="string">"PRAGMA synchronous = OFF; "</span> +</span><br><span class="line">          <span class="string">"CREATE TABLE md5 (p VARCHAR(42)  NOT NULL  COLLATE NOCASE, s VARCHAR(9)  NOT NULL  COLLATE NOCASE);"</span></span><br><span class="line"><span class="keyword">use</span> cmd = <span class="keyword">new</span> SQLiteCommand (sql, conn)</span><br><span class="line">conn.Open ()</span><br><span class="line">cmd.ExecuteNonQuery () |&gt; ignore</span><br><span class="line">conn.Close ()</span><br><span class="line"><span class="keyword">let</span> main _ =</span><br><span class="line">    <span class="keyword">let</span> sql = <span class="string">"INSERT INTO md5 "</span> +</span><br><span class="line">              <span class="string">"VALUES(?, ?); "</span></span><br><span class="line">    <span class="keyword">use</span> conn = <span class="keyword">new</span> SQLiteConnection (connString)</span><br><span class="line">    <span class="keyword">use</span> cmd = <span class="keyword">new</span> SQLiteCommand(sql, conn)</span><br><span class="line">    cmd.Parameters.AddRange [|<span class="keyword">new</span> SQLiteParameter(); <span class="keyword">new</span> SQLiteParameter()|]</span><br><span class="line">    conn.Open ()</span><br><span class="line">    <span class="keyword">use</span> tr = conn.BeginTransaction ()</span><br><span class="line">    cmd.Transaction &lt;- tr</span><br><span class="line">    <span class="keyword">for</span> i = <span class="number">0</span> <span class="keyword">to</span> <span class="number">857374</span> <span class="keyword">do</span></span><br><span class="line">        <span class="keyword">let</span> s = <span class="keyword">new</span> String (n2cl i)</span><br><span class="line">        <span class="keyword">let</span> p = md5 s</span><br><span class="line">        cmd.Parameters.[<span class="number">0</span>].Value &lt;- p</span><br><span class="line">        cmd.Parameters.[<span class="number">1</span>].Value &lt;- s</span><br><span class="line">        cmd.ExecuteNonQuery () |&gt; ignore</span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">10000</span> = <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">            i |&gt; debug</span><br><span class="line">    tr.Commit()</span><br><span class="line">    conn.Close ()</span><br><span class="line">main ()</span><br><span class="line">watch.Elapsed |&gt; debug</span><br><span class="line">Console.ReadKey()</span><br></pre></td></tr></table></figure>
+<p>为什么是857374? 95 <em> 95 </em> 95 - 1 = 857374</p>
+<p>模拟的95进制, 是从空格(\’ \’)到波浪线(\’~\’)的, 用ASCII表示就是32到126. 所在0 to 857374代表\’ \’到\’~~~\’</p>
+<p>在我的电脑上耗时00:01:08</p>
+<ul>
+<li>CPU: AMD3000+</li>
+<li>RAM: 1G</li>
+</ul>
+<p>以DEBUG模式运行 最终产生的数据库约36M+</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2008/07/23/fsharp-generate-md5-dictionary/" data-id="ci9p9dw5e005o47jjrkn2rcxa" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2008/07/23/fsharp-generate-md5-dictionary/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Fsharp/">Fsharp</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2008/07/24/kean-and-his-f-article/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Kean 和 F#
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2008/07/22/cadbury-gorilla-at-cannes-lions-advertising-campaign-2008/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">吉百利大猩猩 - 2008嘎纳广告节</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2008/07/23/fsharp-generate-md5-dictionary/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

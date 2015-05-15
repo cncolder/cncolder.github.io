@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Flex 提交 Xml 到 Rails | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="如何从 Flex3.2 调用 Rails2.3.2 的 Restful API?
+所谓 Restful API, 简单的说就是利用已有的四个 HTTP 动作实现对资源的四种操作:
+
+GET 获取
+POST 创建
+PUT 更新
+DELETE 删除
+
+在这里对 REST 不作更详尽的解释, 相关资料网上有很多, 争议更多. 我们暂且不管这些争论(包括作者自己也在争论), 单从纯技术角度来看, 这种方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flex 提交 Xml 到 Rails">
+<meta property="og:url" content="http://blog.vitarn.com/2009/03/22/flex-put-xml-to-rails/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="如何从 Flex3.2 调用 Rails2.3.2 的 Restful API?
+所谓 Restful API, 简单的说就是利用已有的四个 HTTP 动作实现对资源的四种操作:
+
+GET 获取
+POST 创建
+PUT 更新
+DELETE 删除
+
+在这里对 REST 不作更详尽的解释, 相关资料网上有很多, 争议更多. 我们暂且不管这些争论(包括作者自己也在争论), 单从纯技术角度来看, 这种方式">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flex 提交 Xml 到 Rails">
+<meta name="twitter:description" content="如何从 Flex3.2 调用 Rails2.3.2 的 Restful API?
+所谓 Restful API, 简单的说就是利用已有的四个 HTTP 动作实现对资源的四种操作:
+
+GET 获取
+POST 创建
+PUT 更新
+DELETE 删除
+
+在这里对 REST 不作更详尽的解释, 相关资料网上有很多, 争议更多. 我们暂且不管这些争论(包括作者自己也在争论), 单从纯技术角度来看, 这种方式">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-flex-put-xml-to-rails" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/03/22/flex-put-xml-to-rails/" class="article-date">
+  <time datetime="2009-03-21T16:00:00.000Z" itemprop="datePublished">2009-03-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Flex 提交 Xml 到 Rails
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如何从 Flex3.2 调用 Rails2.3.2 的 Restful API?</p>
+<p>所谓 Restful API, 简单的说就是利用已有的四个 HTTP 动作实现对资源的四种操作:</p>
+<ul>
+<li>GET 获取</li>
+<li>POST 创建</li>
+<li>PUT 更新</li>
+<li>DELETE 删除</li>
+</ul>
+<p>在这里对 REST 不作更详尽的解释, 相关资料网上有很多, 争议更多. 我们暂且不管这些争论(包括作者自己也在争论), 单从纯技术角度来看, 这种方式对于我们常见的 CRUD 操作实在是再方便不过了.</p>
+<p>但是且慢, 如果你拥有一个独立的客户端, 发送这四种动作是不成问题的, 可是如果你是做 RIA 开发(Flex 或 Silverlight), 目前的浏览器宿主只能支持 GET 和 POST. 后两种动作怎么办?</p>
+<p><em>注: 虽然 Flex 里的 HTTPService 组件有8种动作, 但并不起作用.</em></p>
+<p>也许你已经见过很多动态网站系统采用的解决办法了, 那就是加 URL 参数.</p>
+<pre><code><span class="string">http:</span><span class="comment">//www.example.com/admin.asp?action=newpost&amp;title=abc</span>
+</code></pre><p>这样做的好处是通过直观的参数与服务器进行对话.</p>
+<p>当然坏处也不少, 按照 HTTP 协议, GET 动作是不能对服务器有副作用的, 因为 GET 只负责读取, 另外这样的 URL 如果被搜索引擎收录了, 或者被用户加入收藏夹, 虽然不是什么致命的问题, 但终究还是对 HTTP 协议的一种误读.</p>
+<p>OK~, 既然浏览器不支持, 提倡 Restful 的框架又普遍不满意这种 URL 参数的工作方式, 那 rails 是如何解决这个问题的呢?</p>
+<p>Rails 也没有能力解决浏览器的问题, 她同样需要使用额外的方法来模拟 PUT 和 DELETE 动作, 查看产生的源代码, 你会发现她采用的方法是读取 POST 表单里的 hidden 域 _method</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">input</span> <span class="attribute">name</span>=<span class="value">"_method"</span> <span class="attribute">type</span>=<span class="value">"hidden"</span> <span class="attribute">value</span>=<span class="value">"put"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>采用这种办法对于网页的表单来说或许是合适的, 但对于像我这样使用 Flex 开发 RIA 客户端程序的人来说, 会存在下面的问题:</p>
+<p>我读取的文档可能是这样的</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">user</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">name</span>&gt;</span>路飞<span class="tag">&lt;/<span class="title">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">age</span>&gt;</span>20<span class="tag">&lt;/<span class="title">age</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">user</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>那么我为什么要转换成类似下面的表单来提交?</p>
+<pre><code><span class="built_ins">user</span>[name]=路飞&amp;<span class="built_ins">user</span>[age]=20
+</code></pre><p>如果可以读取也是 xml, 提交亦是 xml, 生活就简单的多了, 不是么?</p>
+<p>提交 xml 就意味着 _method 必须放在别的地方(xml 是不能有两个根元素的), rails 2.2.2 之前的版本(具体到哪一版并不清楚), 服务器是接受 GET 参数的, 也就是说可以写成这样:</p>
+<pre><code><span class="attribute">/users/1?_method</span>=<span class="string">PUT</span>
+</code></pre><p>_method 虽然有了安身之处, 但是且慢! 这样安全吗? 正规吗? 我想 rails 的开发者也对这个东西看不顺眼, 所以在 rails 2.3.2 里, 这种方法被禁止了.</p>
+<p>详见:</p>
+<blockquote>
+<p>lib/action_controller/vendor/rack-1.0/rack/methodoverride.rb</p>
+</blockquote>
+<p>新版本只在 POST 表单里读取 _method, My God…</p>
+<p>幸运的是, methodoverride.rb 这个文件的内容为我指明了另一个方向:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> </span>call(env)</span><br><span class="line">  <span class="keyword">if</span> env[<span class="string">"REQUEST_METHOD"</span>] == <span class="string">"POST"</span></span><br><span class="line">    req = <span class="constant">Request</span>.new(env)</span><br><span class="line">    method = req.<span class="constant">POST</span>[<span class="constant">METHOD_OVERRIDE_PARAM_KEY</span>] ||</span><br><span class="line">      env[<span class="constant">HTTP_METHOD_OVERRIDE_HEADER</span>]</span><br><span class="line">    method = method.to_s.upcase</span><br><span class="line">    <span class="keyword">if</span> <span class="constant">HTTP_METHODS</span>.<span class="keyword">include</span>?(method)</span><br><span class="line">      env[<span class="string">"rack.methodoverride.original_method"</span>] = env[<span class="string">"REQUEST_METHOD"</span>]</span><br><span class="line">      env[<span class="string">"REQUEST_METHOD"</span>] = method</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>这个文件告诉我们, 服务器除了接受 _method 隐藏域之外, 还接受一个叫 “HTTP_X_HTTP_METHOD_OVERRIDE” 的消息头, 太棒了, 让我们迎着光明继续前进~</p>
+<p>为了能够看到提交的消息头, 我们需要在 application_controller.rb 里添加点代码. (Rails 2.2.2 之前该文件名为 application.rb)</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplicationController</span> <span class="inheritance">&lt; <span class="parent">ActionController::Base</span></span></span></span><br><span class="line">  before_filter <span class="symbol">:print_headers</span></span><br><span class="line">  <span class="function"><span class="keyword">def</span> </span>print_headers</span><br><span class="line">    request.headers.each &#123; |k,v| logger.info(<span class="string">"<span class="subst">#&#123;k&#125;</span> <span class="subst">#&#123;v&#125;</span>"</span>) &#125;</span><br><span class="line">  <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>现在回到 Flex 我们创建一个客户端试验一下效果.</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> svc:HTTPService = <span class="keyword">new</span> HTTPService();</span><br><span class="line">svc.method = <span class="string">"POST"</span>;</span><br><span class="line">svc.url = <span class="string">"/users/1"</span>;</span><br><span class="line">svc.headers = &#123; HTTP_X_HTTP_METHOD_OVERRIDE:<span class="string">"PUT"</span>, Accept:<span class="string">"application/xml"</span> &#125;;</span><br><span class="line">svc.request = &#123; user:&#123; age:<span class="number">30</span> &#125; &#125;;</span><br><span class="line">svc.send();</span><br></pre></td></tr></table></figure>
+<p>结果有点长, 删减之后你会发现类似下面这样的内容:</p>
+<pre><code>Processing UsersController#<span class="operator"><span class="keyword">create</span> <span class="keyword">to</span> <span class="keyword">xml</span> (<span class="keyword">for</span> <span class="number">127.0</span>.0.1 <span class="keyword">at</span> <span class="number">2009</span>-<span class="number">03</span>-<span class="number">22</span> <span class="number">11</span>:<span class="number">02</span>:<span class="number">04</span>) [POST]
+HTTP_HTTP_X_HTTP_METHOD_OVERRIDE PUT</span>
+</code></pre><p>呃… 为什么会多出个 HTTP_ 前缀来呢? 这个问题留给你来解答吧, 我也实在是说不清楚.</p>
+<p>不过没关系, 问题已经明朗了, 重新设计一下我们的消息头就可以了.</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 首先创建服务代理, 这里只是个例子, 实例上你可能更喜欢用 Mxml.</span></span><br><span class="line"><span class="keyword">var</span> svc:HTTPService = <span class="keyword">new</span> HTTPService();</span><br><span class="line"><span class="comment">// 只能是 POST, 不要被其他那些参数给骗了.</span></span><br><span class="line">svc.method = <span class="string">"POST"</span>;</span><br><span class="line"><span class="comment">// 朝用户 ID 为 1 的资源发出 PUT 动作</span></span><br><span class="line">svc.url = <span class="string">"/users/1"</span>;</span><br><span class="line"><span class="comment">// 既然不知道哪里来了个 HTTP_ 前缀, 那我们就少打5个字母好了.</span></span><br><span class="line"><span class="comment">// Accept 消息头可以使我们的 url 不必以 .xml 结尾来说明 format.</span></span><br><span class="line">svc.headers = &#123; X_HTTP_METHOD_OVERRIDE:<span class="string">"PUT"</span>, Accept:<span class="string">"application/xml"</span> &#125;;</span><br><span class="line"><span class="comment">// 请求的内容是你想要更新的字段, 这里视情况而定, 也可以直接写 xml.</span></span><br><span class="line">svc.request = &#123; user:&#123; age:<span class="number">30</span> &#125; &#125;;</span><br><span class="line"><span class="comment">// 发射!!!</span></span><br><span class="line">svc.send();</span><br></pre></td></tr></table></figure>
+<p>结果:</p>
+<pre><code>Processing UsersController#<span class="operator"><span class="keyword">update</span> <span class="keyword">to</span> <span class="keyword">xml</span> (<span class="keyword">for</span> <span class="number">127.0</span>.0.1 <span class="keyword">at</span> <span class="number">2009</span>-<span class="number">03</span>-<span class="number">22</span> <span class="number">11</span>:<span class="number">05</span>:<span class="number">13</span>) [PUT]
+Parameters: {<span class="string">"id"</span>=&gt;<span class="string">"1"</span>}
+.......
+HTTP_X_HTTP_METHOD_OVERRIDE PUT
+.......
+    <span class="keyword">User</span> <span class="keyword">Load</span> (<span class="number">0.0</span>ms) <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">"users"</span> <span class="keyword">WHERE</span> (<span class="string">"users"</span>.<span class="string">"id"</span> = <span class="number">1</span>)
+    <span class="keyword">User</span> <span class="keyword">Update</span> (<span class="number">2.0</span>ms) <span class="keyword">UPDATE</span> <span class="string">"users"</span> <span class="keyword">SET</span> <span class="string">"age"</span> = <span class="number">30</span>, <span class="string">"updated_at"</span> = <span class="string">'2009-03-22 03:05:13'</span> <span class="keyword">WHERE</span> <span class="string">"id"</span> = <span class="number">1</span>
+Completed <span class="keyword">in</span> <span class="number">164</span>ms (<span class="keyword">View</span>: <span class="number">4</span>, DB: <span class="number">2</span>) | <span class="number">200</span> OK [http://<span class="number">192.168</span>.0.1/users/<span class="number">1</span>]</span>
+</code></pre><p>OK~ 看来 Rails 已经收到我们的信号, 并且正确识别了我们想要的动作 PUT. 其他类似的动作可以由我们自由发挥了, 再也不用受 _method 的牵拌.</p>
+<p>嗯, 如果你也是一个像我一样的在技术领域无聊的完美主义者, 但愿这个结果能够令你满意.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/03/22/flex-put-xml-to-rails/" data-id="ci9p9dvy7003c47jjhschk5m2" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/03/22/flex-put-xml-to-rails/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flash/">Flash</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Rails/">Rails</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2009/04/01/understand-nix-folder/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          弄懂 *Nix 文件夹
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2009/02/20/mysql-quick-cleanup-database/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">MySQL 快速清空数据库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2009/03/22/flex-put-xml-to-rails/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>

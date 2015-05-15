@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Windows 7 下 MySql Guid 问题 | ViTarn Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="之前的文章提到过关于 MySql 数据库要如何保存 .NET Guid 类型的问题.
+根据 MySQL Connector Net Version 5.2 - 2/11/2008 CHANGES 中提到的:
+&amp;gt;    BINARY(16) columns are now returned as Guid objects
+那么使用 BINARY(16) 列做为 Guid 的载体是理所当然的了.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 7 下 MySql Guid 问题">
+<meta property="og:url" content="http://blog.vitarn.com/2009/01/16/mysql-guid-issus-in-windows-7/index.html">
+<meta property="og:site_name" content="ViTarn Blog">
+<meta property="og:description" content="之前的文章提到过关于 MySql 数据库要如何保存 .NET Guid 类型的问题.
+根据 MySQL Connector Net Version 5.2 - 2/11/2008 CHANGES 中提到的:
+&amp;gt;    BINARY(16) columns are now returned as Guid objects
+那么使用 BINARY(16) 列做为 Guid 的载体是理所当然的了.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows 7 下 MySql Guid 问题">
+<meta name="twitter:description" content="之前的文章提到过关于 MySql 数据库要如何保存 .NET Guid 类型的问题.
+根据 MySQL Connector Net Version 5.2 - 2/11/2008 CHANGES 中提到的:
+&amp;gt;    BINARY(16) columns are now returned as Guid objects
+那么使用 BINARY(16) 列做为 Guid 的载体是理所当然的了.">
+  
+    <link rel="alternative" href="/atom.xml" title="ViTarn Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">ViTarn Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/googlessl">GoogleSSL</a>
+        
+          <a class="main-nav-link" href="/lookuptower">LookupTower</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="q" value="site:http://blog.vitarn.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-mysql-guid-issus-in-windows-7" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2009/01/16/mysql-guid-issus-in-windows-7/" class="article-date">
+  <time datetime="2009-01-15T16:00:00.000Z" itemprop="datePublished">2009-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Windows 7 下 MySql Guid 问题
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>之前的文章提到过关于 MySql 数据库要如何保存 .NET Guid 类型的问题.</p>
+<p>根据 MySQL Connector Net Version 5.2 - 2/11/2008 CHANGES 中提到的:</p>
+<p>&gt;<br>    BINARY(16) columns are now returned as Guid objects</p>
+<p>那么使用 BINARY(16) 列做为 Guid 的载体是理所当然的了.</p>
+<p>通过一系统的试验, 读取是没问题的, 写入时要先转化为二进制数组 (ToByteArray), 因为只有这样才能保证长度是16, 否则任何方法都会告诉你数据太长.</p>
+<p>我是个不安分的人, 正如你在标题中看到的, 刚刚忍不住装上了 Windows 7 beta1, 在一阵兴奋和陶醉过后, 撞上了第一个棘手的问题:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#light</span><br><span class="line">#r <span class="string">@"D:\Program Files\MySQL\MySQL Connector Net 5.2.5\Binaries\.NET 2.0\MySql.Data.dll"</span></span><br><span class="line"><span class="keyword">open</span> System</span><br><span class="line"><span class="keyword">open</span> System.Data</span><br><span class="line"><span class="keyword">open</span> MySql.Data.MySqlClient</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> conn =</span><br><span class="line">    <span class="keyword">let</span> builder = MySqlConnectionStringBuilder(CharacterSet = <span class="string">"utf8"</span>, Server = <span class="string">"localhost"</span>, UserID = <span class="string">"root"</span>, Password = <span class="string">"erp"</span>, Database = <span class="string">"erp"</span>)</span><br><span class="line">    <span class="keyword">let</span> conn = <span class="keyword">new</span> MySqlConnection(builder.ConnectionString)</span><br><span class="line">    conn.Open()</span><br><span class="line">    conn</span><br><span class="line">    </span><br><span class="line"><span class="keyword">let</span> cmd = conn.CreateCommand()</span><br><span class="line"></span><br><span class="line">cmd.CommandText &lt;- <span class="string">"</span><br><span class="line">DROP TABLE IF EXISTS `TestGuid`;</span><br><span class="line">CREATE  TABLE IF NOT EXISTS `TestGuid`</span><br><span class="line">  (`ID` BINARY(16))</span><br><span class="line">ENGINE = InnoDB;</span><br><span class="line">INSERT</span><br><span class="line">  INTO `TestGuid`</span><br><span class="line">  VALUES (0x012345670123012301230123456789ab);</span><br><span class="line">INSERT</span><br><span class="line">  INTO `TestGuid`</span><br><span class="line">  VALUES (?_ID);"</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">let</span> guid = Guid(<span class="string">"12345678-1234-1234-1234-123456789abc"</span>)</span><br><span class="line"></span><br><span class="line">cmd.Parameters.AddWithValue(<span class="string">"_ID"</span>, guid.ToByteArray())</span><br><span class="line">cmd.ExecuteNonQuery()</span><br><span class="line">cmd.CommandText &lt;- <span class="string">"</span><br><span class="line">SELECT *</span><br><span class="line">  FROM `TestGuid`"</span></span><br><span class="line"><span class="keyword">let</span> reader = cmd.ExecuteReader()</span><br><span class="line"><span class="keyword">while</span> reader.Read() <span class="keyword">do</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span> .. reader.FieldCount - <span class="number">1</span> <span class="keyword">do</span></span><br><span class="line">        print_any (reader.GetValue i)</span><br><span class="line">        printfn <span class="string">""</span></span><br><span class="line">        </span><br><span class="line">Console.ReadKey()</span><br></pre></td></tr></table></figure>
+<p>上面这段代码只是简单的创建一个名为 TestGuid 的表, 只有的一个名为 ID 的 BINARY(16) 列.</p>
+<p>第一行数据直接插入 0x012345670123012301230123456789ab (从0开始, 按 8 4 4 4 12 分5部分)</p>
+<p>第二行数据使用参数 Guid(“12345678-1234-1234-1234-123456789abc”) (从1开始, 规律同上)</p>
+<p>之后又将数据取回, 输出到命令行, 猜猜看在 Windows 7 中结果是什么?</p>
+<p><em>67452301-2301-2301-0123-0123456789ab</em></p>
+<p><em>12345678-1234-1234-1234-123456789abc</em></p>
+<p>注意看第一行, 前半部分, 也就是 8 4 4 的部分, 顺序乱了…</p>
+<p>Guid 去掉中间的连字符 “-“, 共32个字符, 每两位合并后可以获得16个字节, 那么第一条数据的前8个字节顺序被搞反了, 而且是在各自的组内被搞反的.</p>
+<p>让我们再回到数据库中看一眼</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">SELECT</span> <span class="keyword">HEX</span>(ID) <span class="keyword">FROM</span> TestGuid</span><br><span class="line"><span class="keyword">HEX</span>(ID)</span><br><span class="line"><span class="string">'012345670123012301230123456789AB'</span></span><br><span class="line"><span class="string">'78563412341234121234123456789ABC'</span></span></span><br></pre></td></tr></table></figure>
+<p>天~ 这次是第二个反了.</p>
+<p>冷静的想一想, 看来 MySql Server 是没有问题的, 问题出在 MySQL Connector Net 上面. 它在写入数据的时候搞错了二进制的高位与低位, 在读取的时候同样又搞错了一次, 错上加错, 结果似乎是对了, 只不过这个问题在其他系统中是不存在的, 换句话说, 这个问题带来的是跨系统之间数据不兼容.</p>
+<p>没办法, 只能判断一下数据类型和操作系统版本, 暂时的规避一下吧:</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 先给 List 扩展一个切片方法, 以便支持 lst.[1 .. 3] 这样的操作</span></span><br><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Microsoft</span>.<span class="title">FSharp</span>.<span class="title">Collections</span>.<span class="title">List</span>&lt;<span class="title">'a</span>&gt; <span class="title">with</span></span></span><br><span class="line">    <span class="keyword">member</span> t.GetSlice(n1, n2) =</span><br><span class="line">        <span class="keyword">let</span> l = t.Length - <span class="number">1</span></span><br><span class="line">        <span class="keyword">let</span> n1 = <span class="keyword">match</span> n1 <span class="keyword">with</span> Some x -&gt; max x <span class="number">0</span> | _ -&gt; <span class="number">0</span></span><br><span class="line">        <span class="keyword">let</span> n2 = <span class="keyword">match</span> n2 <span class="keyword">with</span> Some x -&gt; min x l | _ -&gt; l</span><br><span class="line">        [ <span class="keyword">for</span> i <span class="keyword">in</span> n1 .. n2 -&gt; List.nth t i ]</span><br><span class="line">        </span><br><span class="line"><span class="comment">/// 修正 MySql 不能识别 Windows7 Guid 的问题</span></span><br><span class="line"><span class="keyword">let</span> repairWin7Guid (x :obj) =</span><br><span class="line">    <span class="keyword">match</span> x <span class="keyword">with</span></span><br><span class="line">    | :? Guid <span class="keyword">as</span> g -&gt;</span><br><span class="line">        <span class="keyword">if</span> Environment.OSVersion.Version.Major = <span class="number">6</span> &amp;&amp; Environment.OSVersion.Version.Minor &gt;= <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">let</span> w = g.ToByteArray() |&gt; Array.to_list</span><br><span class="line">            <span class="keyword">let</span> r = w.[<span class="number">3</span>] :: w.[<span class="number">2</span>] :: w.[<span class="number">1</span>] :: w.[<span class="number">0</span>] :: w.[<span class="number">5</span>] :: w.[<span class="number">4</span>] :: w.[<span class="number">7</span>] :: w.[<span class="number">6</span>] :: w.[<span class="number">8</span> ..] |&gt; Array.of_list</span><br><span class="line">            Guid(r) |&gt; box</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            x</span><br><span class="line">    | _ -&gt; x</span><br></pre></td></tr></table></figure>
+<p>这样做似乎不能彻底的解决问题, 幸好我的项目中 Guid 的出入口只有一个, 只要加在这两处就行了.</p>
+<p>越来越对 MySql 不放心了 T_T</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://blog.vitarn.com/2009/01/16/mysql-guid-issus-in-windows-7/" data-id="ci9p9dvyk003k47jju8xecs1b" class="article-share-link">Share</a>
+      
+        <a href="http://blog.vitarn.com/2009/01/16/mysql-guid-issus-in-windows-7/#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MySQL/">MySQL</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2009/02/09/use-10moons-with-mac-os-x-and-paralells-desktop/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Mac OS X 外加 Paralells Desktop 使用天敏电视盒
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2009/01/14/thanks-cndns/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">致谢 Cndns</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Air/" style="font-size: 10px;">Air</a><a href="/tags/Apple/" style="font-size: 12.22px;">Apple</a><a href="/tags/AutoCAD/" style="font-size: 17.78px;">AutoCAD</a><a href="/tags/Chrome/" style="font-size: 11.11px;">Chrome</a><a href="/tags/Cordova-Phaser-iOS-Android/" style="font-size: 11.11px;">Cordova Phaser iOS Android</a><a href="/tags/Csharp/" style="font-size: 10px;">Csharp</a><a href="/tags/Firefox/" style="font-size: 13.33px;">Firefox</a><a href="/tags/Flash/" style="font-size: 11.11px;">Flash</a><a href="/tags/Fsharp/" style="font-size: 20px;">Fsharp</a><a href="/tags/Game/" style="font-size: 15.56px;">Game</a><a href="/tags/Github/" style="font-size: 10px;">Github</a><a href="/tags/Google/" style="font-size: 15.56px;">Google</a><a href="/tags/Heroku/" style="font-size: 10px;">Heroku</a><a href="/tags/IE/" style="font-size: 10px;">IE</a><a href="/tags/Jekyll/" style="font-size: 10px;">Jekyll</a><a href="/tags/LISP/" style="font-size: 16.67px;">LISP</a><a href="/tags/Mac/" style="font-size: 18.89px;">Mac</a><a href="/tags/Movie/" style="font-size: 12.22px;">Movie</a><a href="/tags/MySQL/" style="font-size: 12.22px;">MySQL</a><a href="/tags/Objc/" style="font-size: 10px;">Objc</a><a href="/tags/Rails/" style="font-size: 13.33px;">Rails</a><a href="/tags/Ruby/" style="font-size: 14.44px;">Ruby</a><a href="/tags/SQLite/" style="font-size: 11.11px;">SQLite</a><a href="/tags/SVN/" style="font-size: 10px;">SVN</a><a href="/tags/Safari/" style="font-size: 11.11px;">Safari</a><a href="/tags/Server/" style="font-size: 11.11px;">Server</a><a href="/tags/Silverlight/" style="font-size: 17.78px;">Silverlight</a><a href="/tags/Textmate/" style="font-size: 10px;">Textmate</a><a href="/tags/Toto/" style="font-size: 10px;">Toto</a><a href="/tags/WCF/" style="font-size: 14.44px;">WCF</a><a href="/tags/Wikipedia/" style="font-size: 11.11px;">Wikipedia</a><a href="/tags/Wordpress/" style="font-size: 12.22px;">Wordpress</a><a href="/tags/Workpress/" style="font-size: 10px;">Workpress</a><a href="/tags/iPhone/" style="font-size: 10px;">iPhone</a><a href="/tags/jQuery/" style="font-size: 10px;">jQuery</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2012/03/">三月 2012</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/09/">九月 2011</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">七月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/06/">六月 2011</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/08/">八月 2010</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/07/">七月 2010</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/06/">六月 2010</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/05/">五月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2010/04/">四月 2010</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/08/">八月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/07/">七月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/06/">六月 2009</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/05/">五月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/04/">四月 2009</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/03/">三月 2009</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/02/">二月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2009/01/">一月 2009</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/12/">十二月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/11/">十一月 2008</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/10/">十月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/09/">九月 2008</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/08/">八月 2008</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/07/">七月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/06/">六月 2008</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/05/">五月 2008</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/04/">四月 2008</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/03/">三月 2008</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2008/01/">一月 2008</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/12/">十二月 2007</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/11/">十一月 2007</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/10/">十月 2007</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/09/">九月 2007</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/06/">六月 2007</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/05/">五月 2007</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2007/04/">四月 2007</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-2/">Cordova+Phaser 简易APP开发日记(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2015/05/15/cordova-phaser-simple-app-develop-note-1/">Cordova+Phaser 简易APP开发日记(一)</a>
+          </li>
+        
+          <li>
+            <a href="/2012/03/22/macbook-466-467-ssd/">MacBook 466/467 固态硬盘</a>
+          </li>
+        
+          <li>
+            <a href="/2011/09/09/thunder-for-mac-with-gougou-search/">迅雷 for Mac 夹带狗狗搜索</a>
+          </li>
+        
+          <li>
+            <a href="/2011/07/18/ruby-koans/">Ruby Koans</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 Colder<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/googlessl" class="mobile-nav-link">GoogleSSL</a>
+  
+    <a href="/lookuptower" class="mobile-nav-link">LookupTower</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'vitarn';
+  
+  var disqus_url = 'http://blog.vitarn.com/2009/01/16/mysql-guid-issus-in-windows-7/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="/js/jquery.js" type="text/javascript"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+  </div>
+</body>
+</html>
